@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Confetti from 'react-confetti';
+import Button from '../components/Button';
 
 const TicTacToe = () => {
   const [board, setBoard] = useState(Array(9).fill(null));
@@ -8,7 +9,7 @@ const TicTacToe = () => {
   const [winner, setWinner] = useState(null);
 
   useEffect(() => {
-    document.title = 'Tic-Tac-Toie animation';
+    document.title = 'Tic-Tac-Toe';
   }, []);
 
   const checkWinner = (board) => {
@@ -72,12 +73,12 @@ const TicTacToe = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white to-gray-100 flex flex-col items-center justify-center">
+    <div className="min-h-screen bg-secondary from-white to-gray-100 flex flex-col items-center justify-center">
       {winner && <Confetti />}
-      <h1 className="text-4xl font-bold text-[#b71c1c] mb-6">Tic-Tac-Toe</h1>
+      <h1 className="text-4xl font-bold text-dark mb-6">Tic-Tac-Toe</h1>
       <div className="mb-4 text-xl font-medium text-gray-700">
         {winner ? (
-          <span className="text-green-600">{winner} Wins!</span>
+          <span className="text-green-500">{winner} Wins!</span>
         ) : board.every((square) => square !== null) ? (
           <span className="text-yellow-600">It’s a Draw!</span>
         ) : (
@@ -89,12 +90,13 @@ const TicTacToe = () => {
       <div className="grid grid-cols-3 gap-2">
         {board.map((_, index) => renderSquare(index))}
       </div>
-      <button
+      <Button
         onClick={resetGame}
-        className="mt-6 px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
+        variant='primary'
+        className="mt-6 px-6 py-2 text-dark rounded-lg shadow-md transition"
       >
         Restart Game
-      </button>
+      </Button>
     </div>
   );
 };

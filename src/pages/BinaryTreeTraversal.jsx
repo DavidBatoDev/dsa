@@ -7,6 +7,7 @@ import ReactFlow, {
 } from "reactflow";
 import { motion } from "framer-motion";
 import "reactflow/dist/style.css";
+import Button from "../components/Button";
 
 const AnimatedNode = ({ id, data, position, style }) => {
   return (
@@ -108,14 +109,15 @@ const BinaryTreeTraversal = () => {
         data: { label: `Node ${value}` },
         position: { x, y },
         style: {
-          background: "#b71c1c",
-          color: "white",
+          background: "#FFE4BA",
+          color: "black",
           borderRadius: "50%",
           width: 60,
           height: 60,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          fontFamily: "Cabin",
         }, 
         rightOrLeft: parentId ? (value % 2 === 0 ? "left" : "right") : "root",
       };
@@ -126,8 +128,8 @@ const BinaryTreeTraversal = () => {
           id: `e${parentId}-${nodeId}`,
           source: parentId,
           target: nodeId,
-          animated: true, // Edge appears when added
-          style: { stroke: "#b71c1c", strokeWidth: 4, strokeDasharray: 5 },
+          animated: true,
+          style: { stroke: "black", strokeWidth: 4, strokeDasharray: 5 },
         });
       }
 
@@ -335,8 +337,8 @@ const BinaryTreeTraversal = () => {
         ...node,
         style: {
           ...node.style,
-          background: "#b71c1c", // Default color
-          color: "white",
+          background: "#FFE4BA", // Default color
+          color: "black",
         },
       }))
     );
@@ -372,8 +374,8 @@ const BinaryTreeTraversal = () => {
               ...node,
               style: {
                 ...node.style,
-                background: "#b71c1c", // Default color
-                color: "white",
+                background: "#FFE4BA", // Default color
+                color: "black",
               },
             };
           } else if (node.id === currentNodeId) {
@@ -382,8 +384,8 @@ const BinaryTreeTraversal = () => {
               ...node,
               style: {
                 ...node.style,
-                background: "#ff5722", // Highlight color
-                color: "white",
+                background: "#FFDE00", // Highlight color
+                color: "black",
               },
             };
           }
@@ -413,14 +415,12 @@ const BinaryTreeTraversal = () => {
   };
 
 
-  console.log(nodes);
-
   return (
     <div className="w-full h-screen relative">
       {/* Modal for Levels */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96 text-center">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-30">
+          <div className="bg-secondary-light p-6 rounded-lg shadow-lg w-96 text-center z-10">
             <h2 className="text-2xl font-bold mb-4">Enter Levels (1-5)</h2>
             <input
               type="number"
@@ -428,23 +428,23 @@ const BinaryTreeTraversal = () => {
               onChange={(e) =>
                 handleLevelChange(Math.min(5, Math.max(1, +e.target.value)))
               }
-              className="p-2 border border-gray-300 rounded text-center w-24 mb-4 focus:outline-none focus:ring-2 focus:ring-red-600"
+              className="p-2 border border-dark bg-transparent rounded text-center w-24 mb-4 focus:outline-none focus:ring-2 focus:ring-red-600"
               min="1"
               max="5"
             />
             <div className="flex justify-center space-x-4">
-              <button
+              <Button
                 onClick={handleGenerate}
-                className="bg-red-800 text-white px-4 py-2 rounded shadow-md hover:bg-red-600 transition"
+                className="text-dark px-4 py-2 rounded shadow-md transition"
               >
                 Generate Tree
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => setIsModalOpen(false)}
-                className="bg-gray-500 text-white px-4 py-2 rounded shadow-md hover:bg-gray-600 transition"
+                className="bg-delete text-dark px-4 py-2 rounded shadow-md hover:bg-red-400 transition"
               >
                 Close
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -456,37 +456,39 @@ const BinaryTreeTraversal = () => {
           <div className="bg-white p-6 rounded-lg shadow-lg w-96 text-center">
             <h2 className="text-2xl font-bold mb-4">Choose Traversal Type</h2>
             <div className="flex flex-col space-y-4">
-              <button
+              <Button
                 onClick={() => handleTraversalSelect("Preorder")}
-                className="bg-red-800 text-white px-4 py-2 rounded shadow-md hover:bg-red-600 transition"
+                className="bg-primary text-dark px-4 py-2 rounded shadow-md hover:bg-primary-light transition"
               >
                 Preorder (TLR)
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => handleTraversalSelect("Inorder")}
-                className="bg-red-800 text-white px-4 py-2 rounded shadow-md hover:bg-red-600 transition"
+                className="bg-primary text-dark px-4 py-2 rounded shadow-md hover:bg-primary-light transition"
               >
                 Inorder (LTR)
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="primary"
                 onClick={() => handleTraversalSelect("Postorder")}
-                className="bg-red-800 text-white px-4 py-2 rounded shadow-md hover:bg-red-600 transition"
+                className="text-dark px-4 py-2 rounded shadow-md hover:bg-primary-light transition"
               >
                 Postorder (LRT)
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="danger"
                 onClick={() => setIsTraversalModalOpen(false)}
-                className="bg-gray-500 text-white px-4 py-2 rounded shadow-md hover:bg-gray-600 transition"
+                className="text-dark px-4 py-2 rounded shadow-md hover:bg-red-400 transition"
               >
                 Close
-              </button>
+              </Button>
             </div>
           </div>
         </div>
       )}
 
       {/* Header */}
-      <div className="text-center p-4 bg-red-800 text-white fixed top-0 z-10 w-full">
+      <div className="text-center p-4 bg-secondary text-dark fixed top-0 z-10 w-full">
         <h1 className="text-xl font-bold">Binary Tree Traversal</h1>
       </div>
 
@@ -498,20 +500,23 @@ const BinaryTreeTraversal = () => {
         fitView
         onInit={setReactFlowInstance} // Capture the ReactFlow instance
         ref={reactFlowWrapper}
-        className="w-full h-full bg-white"
+        className="w-full h-full bg-secondary-light"
         panOnDrag={false} // Disables panning by dragging the canvas
         zoomOnScroll={false} // Disables zooming with the scroll wheel or touchpad
         zoomOnPinch={false} // Disables zooming with pinch gestures on touch devices
         panOnScroll={false} // Disables panning with the scroll wheel or touchpad
       >
         <Background color="#800000" gap={16} />
-        <div
-          onClick={handleChooseTraversal}
-          className="absolute top-20 right-4 bg-red-800 text-white px-4 py-2 rounded shadow-md hover:bg-red-600 cursor-pointer transition z-30"
-        >
-          Choose Traversal
+        <div className="absolute top-20 right-4">
+          <Button
+            onClick={handleChooseTraversal}
+            variant="danger"
+            className="text-dark px-4 py-2 rounded shadow-md cursor-pointer transition z-30"
+          >
+            Choose Traversal
+          </Button>
         </div>
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-80 py-2 flex justify-center min-w-[800px] w-[1400px]">
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-secondary-light bg-opacity-80 py-2 flex justify-center min-w-[800px] w-[1400px]">
           <span className="block text-sm text-gray-800">
             {traversalResult || ""}
           </span>
@@ -522,12 +527,15 @@ const BinaryTreeTraversal = () => {
 
       {/* Reopen Modal Button */}
       {!isModalOpen && (
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="absolute z-50 top-20 right-44 bg-red-800 text-white px-4 py-2 rounded shadow-md hover:bg-red-600 transition"
-        >
-          Edit Levels
-        </button>
+        <div className="absolute z-10 top-20 right-44">
+          <Button
+          variant="primary"
+            onClick={() => setIsModalOpen(true)}
+            className=" text-dark px-4 py-2 rounded shadow-md hover:bg-primary-light transition"
+          >
+            Edit Levels
+          </Button>
+        </div>
       )}
     </div>
   );

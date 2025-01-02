@@ -27,7 +27,7 @@ const Navbar = () => {
         <div className="fixed top-4 left-4 z-50">
           <button
             onClick={toggleDrawer}
-            className="p-2 bg-[#b71c1c] text-white rounded-full shadow-md hover:bg-red-500 transition"
+            className="p-2 bg-primary text-dark rounded-full shadow-md hover:bg-primary-light transition"
           >
             <FiMenu size={24} />
           </button>
@@ -45,15 +45,15 @@ const Navbar = () => {
         transition={{ type: 'tween', duration: 0.5, }}
         // transition={{ type: 'spring', stiffness: 70 }}
         // transition={{ type: 'keyframes', duration: 0.7, ease: 'easeInOut' }}
-        className="fixed top-0 left-0 h-full w-64 bg-gradient-to-br from-white to-gray-100 shadow-lg z-40 p-6 bg-opacity-20"
+        className="fixed top-0 left-0 h-full w-64 bg-secondary-light shadow-lg z-50 bg-opacity-20"
       >
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Navigation</h2>
-        <ul className="space-y-4">
+        <h2 className="text-2xl font-bold text-gray-800 p-6">Navigation</h2>
+        <ul className="display flex flex-col">
           {navLinks.map((link) => (
-            <li key={link.path}>
+            <li key={link.path} className='hover:bg-primary-light p-3'>
               <Link
                 to={link.path}
-                className="block text-lg font-medium text-gray-700 hover:text-blue-500 transition"
+                className="block text-lg hover:text-black transition"
                 onClick={() => setIsOpen(false)}
               >
                 {link.name}

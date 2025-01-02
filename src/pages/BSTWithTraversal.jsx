@@ -7,6 +7,7 @@ import ReactFlow, {
 } from "reactflow";
 import dagre from "dagre";
 import "reactflow/dist/style.css";
+import Button from "../components/Button";
 
 /** 1) DAGRE LAYOUT HELPER */
 const getLayoutedElements = (nodes, edges, direction = "TB") => {
@@ -191,8 +192,8 @@ const BinarySearchTree = () => {
         data: { label: node.val, side },
         position: { x: 0, y: 0 }, // placeholder
         style: {
-          background: "#b71c1c",
-          color: "white",
+          background: "#FFE4BA",
+          color: "black",
           borderRadius: "50%",
           width: 60,
           height: 60,
@@ -210,7 +211,7 @@ const BinarySearchTree = () => {
           source: id,
           target: leftId,
           animated: true,
-          style: { stroke: "#b71c1c", strokeWidth: 4, strokeDasharray: 5 },
+          style: { stroke: "black", strokeWidth: 4, strokeDasharray: 5 },
         });
         queue.push({
           node: node.left,
@@ -227,7 +228,7 @@ const BinarySearchTree = () => {
           source: id,
           target: rightId,
           animated: true,
-          style: { stroke: "#b71c1c", strokeWidth: 4, strokeDasharray: 5 },
+          style: { stroke: "black", strokeWidth: 4, strokeDasharray: 5 },
         });
         queue.push({
           node: node.right,
@@ -376,7 +377,7 @@ const BinarySearchTree = () => {
   return (
     <div className="w-full h-screen flex">
       {/* LEFT: input form */}
-      <div className="w-1/4 p-4 border-r border-gray-300 flex flex-col gap-4">
+      <div className="bg-secondary w-1/4 p-4 border-r border-gray-300 flex flex-col gap-4">
         <h2 className="text-xl font-bold mb-2 ml-14">BST Input</h2>
         <form onSubmit={handleInsert} className="flex flex-row gap-2">
           <input
@@ -384,14 +385,15 @@ const BinarySearchTree = () => {
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
             placeholder="Enter integer"
-            className="p-2 border border-gray-300 rounded focus:outline-none w-full"
+            className="p-2 border border-black bg-transparent rounded focus:outline-none w-full"
           />
-          <button
+          <Button
+            variant="primary"
             type="submit"
-            className="bg-red-800 text-white px-4 py-2 rounded hover:bg-red-600"
+            className="text-dark px-4 py-2 rounded hover:bg-red-600"
           >
             Insert
-          </button>
+          </Button>
         </form>
 
         <div className="text-sm">
@@ -400,18 +402,20 @@ const BinarySearchTree = () => {
         </div>
 
         <div className="flex flex-row gap-2 mt-auto">
-          <button
+          <Button
+            variant="danger"
             onClick={() => setIsTraversalModalOpen(true)}
-            className="bg-red-800 text-white px-4 py-2 rounded hover:bg-red-600"
+            className="text-dark px-4 py-2 rounded hover:bg-red-600"
           >
             Choose Traversal
-          </button>
-          <button
+          </Button>
+          <Button
+          variant="danger"
             onClick={handleClear}
-            className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+            className="bg-gray-500 text-dark px-4 py-2 rounded hover:bg-gray-600"
           >
             Clear All
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -471,7 +475,7 @@ const BinarySearchTree = () => {
           panOnScroll
           zoomOnScroll
           zoomOnPinch
-          className="w-full h-full bg-white"
+          className="w-full h-full bg-secondary-light"
         >
           <Background color="#800000" gap={16} />
           <Controls />

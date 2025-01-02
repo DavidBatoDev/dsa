@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaCar } from 'react-icons/fa';
+import Button from '../components/Button';
 
 const Stack = () => {
   const [garage, setGarage] = useState([]);
@@ -83,7 +84,7 @@ const Stack = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white to-gray-100 p-10 text-gray-800 relative">
+    <div className="min-h-screen bg-secondary p-10 text-gray-800 relative">
       <h1 className="text-4xl font-bold mb-6 text-center">PUP-CEA Parking Garage</h1>
 
       {/* Notification */}
@@ -100,7 +101,7 @@ const Stack = () => {
 
       <div className="flex">
         {/* Form Section */}
-        <div className="w-1/3 bg-white text-black p-6 rounded-lg shadow-lg border border-gray-200">
+        <div className="w-1/3 bg-secondary-light text-black p-6 rounded-lg shadow-lg border border-gray-200">
           <h2 className="text-2xl font-bold mb-4">Car Arrival/Departure</h2>
           <form
             onSubmit={(e) => e.preventDefault()}
@@ -112,35 +113,35 @@ const Stack = () => {
               value={plateNumber}
               onChange={(e) => setPlateNumber(e.target.value)}
               placeholder="Enter Plate Number"
-              className="p-2 rounded border text-black border-gray-300"
+              className="p-2 rounded border text-black border-black bg-transparent"
             />
-            <button
-              type="button"
-              onClick={handleArrival}
-              className="bg-green-500 hover:bg-green-600 transition text-white font-bold py-2 px-4 rounded flex items-center justify-center space-x-2 shadow-sm"
-            >
-              <FaCar className="text-xl" />
-              <span>Arrival</span>
-            </button>
-            <button
-              type="button"
-              onClick={handleDeparture}
-              className="bg-red-500 hover:bg-red-600 transition text-white font-bold py-2 px-4 rounded flex items-center justify-center space-x-2 shadow-sm"
-            >
+          <Button
+            variant="success" 
+            size="md" 
+            className="flex items-center justify-center gap-2"
+            onClick={handleArrival}
+          >
+            <FaCar className="text-xl" />
+            <span>Arrival</span>
+          </Button>
+          <Button
+            variant="danger" 
+            size="md" 
+            className="flex items-center justify-center gap-2"
+            onClick={handleDeparture}
+          >
               <FaCar className="text-xl" />
               <span>Departure</span>
-            </button>
-            <button
-              type="button"
+            </Button>
+            <Button
+              variant="primary" 
+              size="md" 
+              className="flex items-center justify-center gap-2"
               onClick={departLastCar}
-              disabled={isDeparting} // Disable button during departure
-              className={`${
-                isDeparting ? 'bg-gray-400 cursor-not-allowed' : 'bg-yellow-500 hover:bg-yellow-600'
-              } transition text-white font-bold py-2 px-4 rounded flex items-center justify-center space-x-2 shadow-sm`}
-            >
+          >
               <FaCar className="text-xl" />
               <span>Depart Last Car</span>
-            </button>
+            </Button>
           </form>
           <div className="mt-6">
             <p className="text-lg">Total Arrivals: {arrivals}</p>
@@ -159,8 +160,8 @@ const Stack = () => {
         </div>
 
         {/* Garage Section */}
-        <div className="w-2/3 flex justify-center items-center">
-          <div className="bg-white p-2 rounded-lg shadow-lg border border-gray-200 w-full h-[560px] flex flex-col-reverse items-center overflow-hidden">
+        <div className="w-2/3  flex justify-center items-center">
+          <div className="bg-secondary-light p-2 rounded-lg shadow-lg border border-gray-200 w-full h-[560px] flex flex-col-reverse items-center overflow-hidden">
             {garage.map((car, index) => (
               <motion.div
                 key={index}

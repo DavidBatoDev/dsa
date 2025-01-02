@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    font-family: 'Cabin', sans-serif;
+  }
+  
+  h1 {
+    font-family: 'Calistoga', sans-serif;
+  }

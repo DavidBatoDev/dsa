@@ -1,117 +1,192 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Button from "../components/Button";
 
-const TowersOfHanoi = () => {
-  const [moveCount, setMoveCount] = useState(0);
-  const [dragId, setDragId] = useState();
-  const [tiles, setTiles] = useState([
-    { id: "Tile-1", column: 1, row: 1, width: 2 },
-    { id: "Tile-2", column: 1, row: 2, width: 4 },
-    { id: "Tile-3", column: 1, row: 3, width: 6 },
-    { id: "Tile-4", column: 1, row: 4, width: 8 },
-    { id: "Tile-5", column: 1, row: 5, width: 10 },
-    { id: "Tile-6", column: 1, row: 6, width: 12 },
+const TowerOfHanoi = () => {
+  const [disks, setDisks] = useState(3);
+  const [towers, setTowers] = useState([
+    Array.from({ length: 3 }, (_, i) => 3 - i),
+    [],
+    [],
   ]);
+  const [moves, setMoves] = useState(0);
+  const [isSolved, setIsSolved] = useState(false);
+  const [exceededMoves, setExceededMoves] = useState(false);
+  const [draggedDisk, setDraggedDisk] = useState(null);
+  const [timer, setTimer] = useState(0);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+
+  const minMoves = Math.pow(2, disks) - 1;
+
+
+    useEffect(() => {
+      document.title = 'Towers of Hanoi';
+    }, []);
 
   useEffect(() => {
-    document.title = "Towers of Hanoi (WIP)";
-  }, []);
+    const isComplete = towers[2].length === disks;
+    setIsSolved(isComplete);
+    setExceededMoves(moves > minMoves);
+  }, [towers, moves, disks]);
 
-  const handleDrag = (ev) => {
-    const dragTile = tiles.find((tile) => tile.id === ev.currentTarget.id);
-    const topTile = tiles
-      .filter((tile) => tile.column === dragTile.column)
-      .sort((a, b) => a.width - b.width)[0];
+  useEffect(() => {
+    let interval = null;
 
-    if (topTile && ev.currentTarget.id === topTile.id) {
-      setDragId(ev.currentTarget.id);
+    if (isTimerRunning && !isSolved) {
+      interval = setInterval(() => {
+        setTimer((prevTimer) => prevTimer + 1);
+      }, 1000);
     } else {
-      ev.preventDefault();
+      clearInterval(interval);
+    }
+
+    return () => clearInterval(interval);
+  }, [isTimerRunning, timer, isSolved]);
+
+  const resetGame = () => {
+    setTowers([Array.from({ length: disks }, (_, i) => disks - i), [], []]);
+    setMoves(0);
+    setIsSolved(false);
+    setExceededMoves(false);
+    setTimer(0);
+    setIsTimerRunning(false);
+  };
+
+  const handleDragStart = (disk) => {
+    setDraggedDisk(disk);
+    if (!isTimerRunning && !isSolved) {
+      setIsTimerRunning(true);
     }
   };
 
-  const handleDrop = (ev) => {
-    const dragTile = tiles.find((tile) => tile.id === dragId);
-    const dropColumn = ev.currentTarget.id;
+  const handleDrop = (to) => {
+    if (draggedDisk === null || isSolved) return;
 
-    const dropColumnTopTile = tiles
-      .filter((tile) => tile.column.toString() === dropColumn.toString())
-      .sort((a, b) => a.width - b.width)[0];
+    const from = towers.findIndex((tower) => tower.includes(draggedDisk));
 
-    let newTileState = tiles;
-
-    if (!dropColumnTopTile || dragTile.width < dropColumnTopTile.width) {
-      newTileState = tiles.map((tile) => {
-        if (tile.id === dragTile.id) {
-          tile.column = parseInt(dropColumn, 10);
-          setMoveCount(moveCount + 1);
+    if (
+      from !== -1 &&
+      (towers[to].length === 0 || towers[to][towers[to].length - 1] > draggedDisk)
+    ) {
+      const newTowers = towers.map((tower, index) => {
+        if (index === from) {
+          return tower.slice(0, -1);
         }
-
-        return tile;
+        if (index === to) {
+          return [...tower, draggedDisk];
+        }
+        return tower;
       });
+      setTowers(newTowers);
+      setMoves(moves + 1);
     }
-
-    setTiles(newTileState);
+    setDraggedDisk(null);
   };
 
-  const column1Tiles = tiles.filter((tile) => tile.column === 1);
-  const column2Tiles = tiles.filter((tile) => tile.column === 2);
-  const column3Tiles = tiles.filter((tile) => tile.column === 3);
-
-  const winCondition = tiles.every((tile) => tile.column === 3);
   return (
-    <div className="flex flex-col items-center">
-      <div className="mb-8 text-center">
-        <div>
-          This page is currently under construction. Please come back later.
-        </div>
-        <div>
-          bruh moment
-        </div>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-secondary-light text-black px-6">
+      <h1 className="text-4xl font-extrabold mb-6">Tower of Hanoi</h1>
+      
+      <div className="flex flex-col items-center bg-secondary p-6 rounded-lg shadow-md border border-gray-300 mb-6 w-full max-w-xl">
+        <label className="text-lg font-medium mb-2">Number of Disks:</label>
+        <input
+          type="number"
+          value={disks}
+          min={3}
+          max={5}
+          onChange={(e) => {
+            const num = parseInt(e.target.value);
+            setDisks(num);
+            setTowers([Array.from({ length: num }, (_, i) => num - i), [], []]);
+            setMoves(0);
+            setIsSolved(false);
+            setExceededMoves(false);
+            setTimer(0);
+            setIsTimerRunning(false);
+          }}
+          className="w-20 text-center border border-black rounded-md py-2 px-4 bg-white text-black"
+        />
       </div>
-      <div className="flex justify-around w-full">
-        {[1, 2, 3].map((column) => (
+
+      <div className="flex justify-center items-start gap-32 w-full max-w-4xl">
+        {towers.map((tower, i) => (
           <div
-            key={`column-${column}`}
-            id={column}
-            onDragOver={(ev) => ev.preventDefault()}
-            onDrop={handleDrop}
-            className="flex flex-col items-center relative w-1/3 border border-gray-400 h-[80vh]"
+            key={i}
+            className="flex flex-col items-center justify-end relative h-80 w-5 bg-[#6B4226] rounded-t-lg"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={() => handleDrop(i)}
           >
-            {/* Center Pole */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 bg-brown-700 w-2 h-full z-[-1]" />
-            {tiles
-              .filter((tile) => tile.column === column)
-              .sort((a, b) => a.width - b.width)
-              .map((tile, index) => {
-                const tileStyles = {
-                  width: `${tile.width}em`,
-                  marginTop: index === 0 ? `calc(80vh - ${tiles.length * 40}px)` : "0",
-                };
-                return (
-                  <div
-                    id={tile.id}
-                    key={`tile-${tile.id}`}
-                    draggable
-                    onDragStart={handleDrag}
-                    style={tileStyles}
-                    className="h-10 bg-yellow-600 border border-black rounded-sm z-10"
-                  />
-                );
-              })}
+            {tower.map((disk, index) => (
+              <motion.div
+                key={disk}
+                className={`absolute bg-yellow-400 text-black font-bold text-center border border-black rounded-md cursor-grab ${
+                  draggedDisk === disk ? "opacity-50" : "opacity-100"
+                }`}
+                draggable={index === tower.length - 1}
+                onDragStart={() => handleDragStart(disk)}
+                style={{
+                  width: `${40 + disk * 20}px`,
+                  height: "24px",
+                  bottom: `${index * 26}px`,
+                  left: `calc(50% - ${(40 + disk * 20) / 2}px)`,
+                }}
+                initial={{ y: -50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 50, opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {disk}
+              </motion.div>
+            ))}
           </div>
         ))}
       </div>
-      {winCondition && (
-        <div className="absolute bg-green-700 text-yellow-300 text-4xl font-bold text-center p-4 rounded-lg">
-          You Win!
-          <div className="text-2xl font-medium mt-2">
-            You did it in <span className="text-blue-300">{moveCount}</span> moves
-          </div>
-        </div>
-      )}
-      <div className="mt-4 text-lg">Move count: {moveCount}</div>
+
+      <div className="flex gap-6 mt-8">
+        <Button
+          onClick={resetGame}
+          className="text-dark font-bold rounded-lg hover:bg-gray-700"
+        >
+          Reset
+        </Button>
+      </div>
+
+      <div className="flex items-center gap-8 mt-6">
+        <p className={`text-lg font-bold ${exceededMoves ? "text-red-500" : "text-black"}`}>
+          Moves: {moves}
+        </p>
+        <p className="text-lg font-bold text-black">Time: {timer}s</p>
+      </div>
+
+      <AnimatePresence>
+        {isSolved && (
+          <motion.p
+            className="mt-6 text-lg text-green-600 font-bold"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.5 }}
+          >
+            Congratulations! You solved it!
+          </motion.p>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {exceededMoves && !isSolved && (
+          <motion.p
+            className="mt-6 text-lg text-red-500 font-bold"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.5 }}
+          >
+            Exceeded optimal moves!
+          </motion.p>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
 
-export default TowersOfHanoi;
+export default TowerOfHanoi;

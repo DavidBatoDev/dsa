@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaCar } from "react-icons/fa";
+import Button from "../components/Button";
 
 const Queue = () => {
   const [garage, setGarage] = useState([]);
@@ -9,11 +10,21 @@ const Queue = () => {
   const [departures, setDepartures] = useState(0);
   const [message, setMessage] = useState(null);
   const [notification, setNotification] = useState(null);
-
+  const [highlightedCar, setHighlightedCar] = useState(null);
 
   useEffect(() => {
     document.title = "Queue";
   }, []);
+
+  useEffect(() => {
+    const foundCar = garage.find(car => plateNumber === car);
+    setHighlightedCar(foundCar || null);
+  }, [plateNumber, garage]);
+  
+
+
+  console.log(garage);
+  console.log(highlightedCar);
 
   // Helper to show a quick error/warning message
   const showMessage = (msg) => {
@@ -87,7 +98,7 @@ const Queue = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white to-gray-100 p-10 text-gray-800 relative">
+    <div className="min-h-screen bg-secondary p-10 text-gray-800 relative">
       <h1 className="text-4xl font-bold mb-6 text-center">PUP-CEA Parking Garage</h1>
 
       {/* Notification (Animated Slide-In) */}
@@ -104,7 +115,7 @@ const Queue = () => {
 
       {/* Form Section */}
       <div className="flex justify-center mb-8">
-        <div className="bg-white text-black p-6 rounded-lg shadow-lg border border-gray-200 w-[1300px] max-w-7xl min-h-64">
+        <div className="bg-secondary-light text-black p-6 rounded-lg shadow-lg border border-gray-200 w-[1300px] max-w-7xl min-h-64">
           <h2 className="text-2xl font-bold mb-4 text-center">Car Arrival/Departure</h2>
           <form
             onSubmit={(e) => e.preventDefault()}
@@ -115,34 +126,37 @@ const Queue = () => {
               value={plateNumber}
               onChange={(e) => setPlateNumber(e.target.value)}
               placeholder="Enter Plate Number"
-              className="p-2 rounded border text-black border-gray-300 w-full md:w-auto"
+              className="p-2 rounded border text-black border-dark bg-transparent w-full md:w-auto"
             />
-            <button
-              type="button"
+            <Button
+              variant="success"
+              size="md"
               onClick={handleArrival}
-              className="bg-green-500 hover:bg-green-600 transition text-white font-bold py-2 px-4 rounded flex items-center justify-center space-x-2 shadow-sm"
+              className="flex items-center justify-center gap-2"
             >
               <FaCar className="text-xl" />
               <span>Arrival</span>
-            </button>
-            <button
-              type="button"
+            </Button>
+            <Button
+              variant="danger"
+              size="md"
+              className="flex items-center justify-center gap-2"
               onClick={() => departCar(plateNumber)}
-              className="bg-red-500 hover:bg-red-600 transition text-white font-bold py-2 px-4 rounded flex items-center justify-center space-x-2 shadow-sm"
+
             >
               <FaCar className="text-xl" />
               <span>Departure</span>
-            </button>
+            </Button>
 
 
-            <button
-              type="button"
+            <Button
+              type="primary"
               onClick={handleDepartureLastCar}
-              className="bg-yellow-500 hover:bg-yellow-600 transition text-white font-bold py-2 px-4 rounded flex items-center justify-center space-x-2 shadow-sm"
+              className="flex items-center justify-center gap-2"
             >
               <FaCar className="text-xl" />
               <span>Depart Front Car</span>
-            </button>
+            </Button>
           </form>
           <div className="mt-6 w-full flex justify-around">
             <div className="flex gap-10">
@@ -164,7 +178,7 @@ const Queue = () => {
       </div>
 
       {/* Garage Section */}
-      <div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200 w-full max-w-7xl mx-auto flex justify-center items-center overflow-x-auto space-x-4">
+      <div className="bg-secondary-light p-4 rounded-lg shadow-lg border border-gray-200 w-full max-w-7xl mx-auto flex justify-center items-center overflow-x-auto space-x-4">
         <div className="flex gap-2 justify-start items-center w-full mx-auto">
           <AnimatePresence>
             {garage.map((car, index) => {
@@ -178,11 +192,13 @@ const Queue = () => {
               let borderClass = "";
               if (isFront && isRear) {
                 // Both front and rear
-                borderClass = "border-4 border-purple-500"; 
+                borderClass = "border-4 border-primary"; 
+              } else if (highlightedCar === car) {
+                borderClass = "border-4 border-delete";
               } else if (isFront) {
-                borderClass = "border-4 border-red-500";
+                borderClass = "border-4 border-primary";
               } else if (isRear) {
-                borderClass = "border-4 border-yellow-500";
+                borderClass = "border-4 border-green-500";
               }
 
               return (
@@ -216,7 +232,7 @@ const Queue = () => {
                         damping: 12,
                         delay: 0.1,
                       }}
-                      className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold shadow"
+                      className="absolute -top-4 left-1/2 transform font-primary font-bold -translate-x-1/2 bg-primary px-2 py-1 rounded-full text-dark text-xs shadow"
                     >
                       FRONT
                     </motion.div>
@@ -233,11 +249,25 @@ const Queue = () => {
                         damping: 12,
                         delay: 0.1,
                       }}
-                      className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-yellow-500 text-white px-2 py-1 rounded-full text-xs font-bold shadow"
+                      className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-dark px-2 py-1 rounded-full text-xs font-bold shadow"
                     >
                       REAR
                     </motion.div>
                   )}
+
+                  {/* if highlited */}
+                  {highlightedCar === car && (
+                    <motion.div
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0, opacity: 0 }}
+                      transition={{ type: "spring", stiffness: 100, duration: 1 }}
+                      className="absolute -top-4 right-1/2 transform translate-x-1/2 bg-delete px-2 py-1 rounded-full text-dark text-xs font-bold shadow"
+                    >
+                      SELECTED
+                    </motion.div>
+                  )}
+
                 </motion.div>
               );
             })}
