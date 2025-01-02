@@ -1,3 +1,5 @@
+import plugin from "tailwindcss/plugin";
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
@@ -13,7 +15,7 @@ export default {
         secondary: "var(--secondary-color)",
         "secondary-light": "var(--secondary-light-color)",
         post: "var(--post-color)",
-        delete: "var(--delete-color)",
+        y: "var(--delete-color)",
         light: "var(--light-color)",
         grey: "var(--grey-color)",
         dark: "var(--dark-color)",
@@ -45,7 +47,7 @@ export default {
     },
   },
   plugins: [
-    require("tailwindcss/plugin")(function ({ addBase }) {
+    plugin(function ({ addBase }) {
       addBase({
         ":root": {
           "--primary-color": "#FFDE00",
