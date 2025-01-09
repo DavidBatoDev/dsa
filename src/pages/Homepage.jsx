@@ -1,119 +1,123 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { FaGamepad, FaStackOverflow, FaListUl, FaTree, FaCodeBranch, FaHiking } from "react-icons/fa";
+import MinecraftBtn from "../components/MinecraftBtn";
+import { FaVolumeUp, FaVolumeMute } from "react-icons/fa";
 
-const HomePage = () => {
-  const navLinks = [
-    {
-      path: "/case1",
-      name: "Tic-Tac-Toe",
-      description: "A classic game of strategy for two players.",
-      icon: <FaGamepad />,
-      bgColor: "bg-yellow-400",
-      hoverColor: "hover:bg-yellow-500",
-    },
-    {
-      path: "/case2",
-      name: "Stack",
-      description: "Visualize how stacks work in data structures.",
-      icon: <FaStackOverflow />,
-      bgColor: "bg-blue-400",
-      hoverColor: "hover:bg-blue-500",
-    },
-    {
-      path: "/case3",
-      name: "Queue",
-      description: "Learn the basics of queue operations.",
-      icon: <FaListUl />,
-      bgColor: "bg-green-400",
-      hoverColor: "hover:bg-green-500",
-    },
-    {
-      path: "/case4",
-      name: "Binary Tree",
-      description: "Understand binary tree structures.",
-      icon: <FaTree />,
-      bgColor: "bg-orange-400",
-      hoverColor: "hover:bg-orange-500",
-    },
-    {
-      path: "/case5",
-      name: "BST with Traversal",
-      description: "Explore binary search trees and traversals.",
-      icon: <FaCodeBranch />,
-      bgColor: "bg-purple-400",
-      hoverColor: "hover:bg-purple-500",
-    },
-    {
-      path: "/case6",
-      name: "Towers of Hanoi",
-      description: "Solve the classic Towers of Hanoi puzzle.",
-      icon: <FaHiking />,
-      bgColor: "bg-red-400",
-      hoverColor: "hover:bg-red-500",
-    },
-  ];
+function Homepage() {
+  // Ref for the <audio> element
+  const audioRef = useRef(null);
+
+  // State to track whether audio is playing
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  // Toggle audio playback
+  const handleSoundToggle = () => {
+    if (!audioRef.current) return;
+
+    if (!isPlaying) {
+      // Start playing
+      audioRef.current.currentTime = 0;
+      audioRef.current.play().catch((err) => {
+        console.warn("Playback failed:", err);
+      });
+    } else {
+      // Pause
+      audioRef.current.pause();
+    }
+
+    // Flip the isPlaying state
+    setIsPlaying((prev) => !prev);
+  };
 
   return (
-    <div className="min-h-screen bg-secondary-light p-10">
-      <motion.h1
-        className="text-5xl font-extrabold text-center text-gray-800 mb-10"
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
-      >
-        Welcome to <span className="text-primary">DSA Group # Case Study</span>
-      </motion.h1>
+    <div className="h-screen w-screen flex justify-center items-center">
+      {/* Audio element (no autoPlay) */}
+      <audio ref={audioRef} src="/audio/minecraft-bg-music.mp3" loop />
 
-      <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-        initial="hidden"
-        animate="visible"
-        variants={{
-          hidden: { opacity: 0 },
-          visible: {
-            opacity: 1,
-            transition: { staggerChildren: 0.2 },
-          },
-        }}
+      {/* This is our main container with the background */}
+      <div
+        className="
+          relative
+          h-full w-full
+          bg-[url('/images/home-bg.png')]
+          bg-no-repeat
+          bg-cover
+          md:bg-[length:150%]
+          lg:bg-[length:150%]
+          animate-panBackground
+          flex flex-col items-center
+        "
       >
-        {navLinks.map((link) => (
-          <motion.div
-            key={link.path}
-            className={`group relative block border-black border rounded-lg shadow-lg p-6 transition transform hover:scale-105 ${link.bgColor} ${link.hoverColor}`}
-            whileHover={{ rotate: [0, 3, -3, 3, 0], transition: { duration: 0.6 } }}
-          >
-            <Link to={link.path} className="flex flex-col items-center text-center">
-              <motion.div
-                className="text-dark text-5xl mb-4"
-                whileHover={{ scale: 1.2, transition: { duration: 0.3 } }}
-              >
-                {link.icon}
-              </motion.div>
-              <h2 className="text-xl font-bold text-dark group-hover:text-white">
-                {link.name}
-              </h2>
-              <p className="text-dark mt-2 group-hover:text-white">{link.description}</p>
-            </Link>
-          </motion.div>
-        ))}
-      </motion.div>
-
-      <div className="flex justify-center mt-10">
-        <motion.button
-          whileHover={{
-            scale: 1.1,
-            backgroundColor: "#FFDE00",
-            transition: { duration: 0.3 },
-          }}
-          className="px-6 py-3 bg-primary text-dark font-bold rounded-lg shadow-md hover:shadow-lg"
+        {/* Sound Icon Button (Top-Right) */}
+        <button
+          onClick={handleSoundToggle}
+          className="
+            absolute top-4 right-4
+            p-2
+            bg-gray-700
+            rounded
+            text-white
+            font-bold
+            hover:bg-gray-600
+            transition
+          "
+          style={{ textShadow: "1px 1px 0 #000" }}
         >
-          Explore All
-        </motion.button>
+          {/* If using React Icons: isPlaying ? <FaVolumeMute /> : <FaVolumeUp /> */}
+          {isPlaying ? <FaVolumeUp/> : <FaVolumeMute/>}
+        </button>
+
+        {/* Title Section */}
+        <div className="absolute top-14 lg:left-1/2 lg:transform lg:-translate-x-1/2 text-center">
+          <div className="relative inline-block">
+            <img
+              src="/svg/home-title.svg"
+              className="w-[700px]"
+              alt="DSA Project"
+            />
+
+            {/* Animate the yellow text using Framer Motion */}
+            <motion.span
+              className="
+                absolute
+                bottom-4 right-10
+                text-yellow-300
+                font-minecraftBold
+                text-xs
+                lg:text-xl
+                tracking-wide
+              "
+              initial={{ rotate: 0, scale: 1 }}
+              animate={{
+                rotate: [0, 5, -5, 0],
+                scale: [1, 1.1, 1, 1.1, 1],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              Bruh
+            </motion.span>
+          </div>
+        </div>
+
+        {/* Buttons */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-5 w-80">
+          <MinecraftBtn className="w-full">Play</MinecraftBtn>
+          <MinecraftBtn className="w-full">About</MinecraftBtn>
+        </div>
+
+        {/* Footer text */}
+        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex flex-col items-center">
+          <p className="font-minecraftItalic text-lg text-white">
+            BSCPE 2-4 &nbsp;|&nbsp; Group 12
+          </p>
+        </div>
       </div>
     </div>
   );
-};
+}
 
-export default HomePage;
+export default Homepage;

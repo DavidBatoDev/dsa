@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaCar } from 'react-icons/fa';
-import Button from '../components/Button';
+import CustomButton from '../components/CustomButton';
+import CartEmpty from '/svg/cart-empty.svg';
+import InventoryTable from '../components/InventoryTable';
+import CartChest from '/svg/cart-chest.svg';
 
 const Stack = () => {
   const [garage, setGarage] = useState([]);
@@ -16,7 +19,6 @@ const Stack = () => {
   useEffect(() => {
     document.title = "Stack";
   }, []);
-
 
   const showMessage = (msg) => {
     setMessage(msg);
@@ -53,6 +55,10 @@ const Stack = () => {
       showMessage('Plate number cannot be empty!');
       return;
     }
+    if (plateNumber.length > 11) {
+      showMessage('Plate number must be 11 characters or less!');
+      return;
+    }
     if (garage.includes(plateNumber)) {
       showMessage('Plate number must be unique!');
       return;
@@ -81,11 +87,19 @@ const Stack = () => {
       return;
     }
     departLastCar(); // Use the same logic as departLastCar
+    setPlateNumber('');
   };
 
   return (
-    <div className="min-h-screen bg-secondary p-10 text-gray-800 relative">
-      <h1 className="text-4xl font-bold mb-6 text-center">PUP-CEA Parking Garage</h1>
+    <div className="min-h-screen bg-secondary p-8 text-gray-800 relative
+            bg-[url('/images/stack-bg.png')] bg-cover md:bg-[length:150%] lg:bg-[length:150%] bg-center 
+          animate-panBackground
+    ">
+      <div className='flex justify-center items-center gap-2'>
+        <div className='bg-[#7f7f7f] p-2 rounded-lg border-4 border-black mb-2'>
+          <h1 className="text-4xl font-bold text-center text-white font-minecraftBold">PUP-CEA Parking Garage</h1>
+        </div>
+      </div>
 
       {/* Notification */}
       {notification && (
@@ -99,95 +113,144 @@ const Stack = () => {
         </motion.div>
       )}
 
-      <div className="flex">
+      <div className="flex gap-5">
         {/* Form Section */}
-        <div className="w-1/3 bg-secondary-light text-black p-6 rounded-lg shadow-lg border border-gray-200">
-          <h2 className="text-2xl font-bold mb-4">Car Arrival/Departure</h2>
-          <form
-            onSubmit={(e) => e.preventDefault()}
-            className="flex flex-col space-y-4"
-          >
-            <label className="text-lg font-medium">Car Plate Number:</label>
-            <input
-              type="text"
-              value={plateNumber}
-              onChange={(e) => setPlateNumber(e.target.value)}
-              placeholder="Enter Plate Number"
-              className="p-2 rounded border text-black border-black bg-transparent"
-            />
-          <Button
-            variant="success" 
-            size="md" 
-            className="flex items-center justify-center gap-2"
-            onClick={handleArrival}
-          >
-            <FaCar className="text-xl" />
-            <span>Arrival</span>
-          </Button>
-          <Button
-            variant="danger" 
-            size="md" 
-            className="flex items-center justify-center gap-2"
-            onClick={handleDeparture}
-          >
-              <FaCar className="text-xl" />
-              <span>Departure</span>
-            </Button>
-            <Button
-              variant="primary" 
-              size="md" 
-              className="flex items-center justify-center gap-2"
-              onClick={departLastCar}
-          >
-              <FaCar className="text-xl" />
-              <span>Depart Last Car</span>
-            </Button>
-          </form>
-          <div className="mt-6">
-            <p className="text-lg">Total Arrivals: {arrivals}</p>
-            <p className="text-lg">Total Departures: {departures}</p>
-          </div>
-          {message && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="mt-4 bg-red-100 text-red-700 p-3 rounded border border-red-400"
+        <div className='w-[40%] bg-[#D9D9D9] flex justify-center items-center p-6 rounded-lg border-4 border-black shadow'>
+          <div className="w-full h-full bg-minecraft-abyss bg-secondary-light text-black p-6 rounded-lg border border-[#1c1c1c] shadow-craftingBoard">
+            <h2 className="text-2xl font-bold mb-4 font-minecraftRegular text-center text-[#C28340]">Car Arrival/Departure</h2>
+            <form
+              onSubmit={(e) => e.preventDefault()}
+              className="flex flex-col space-y-4"
             >
-              {message}
-            </motion.div>
-          )}
-        </div>
-
-        {/* Garage Section */}
-        <div className="w-2/3  flex justify-center items-center">
-          <div className="bg-secondary-light p-2 rounded-lg shadow-lg border border-gray-200 w-full h-[560px] flex flex-col-reverse items-center overflow-hidden">
-            {garage.map((car, index) => (
-              <motion.div
-                key={index}
-                initial={{ y: -50, opacity: 0 }}
-                animate={
-                  departingCar === car
-                    ? { x: 300, opacity: 0 } // Animate departure
-                    : { y: 0, opacity: 1 }
-                }
-                transition={{ type: 'spring', stiffness: 100, duration: 1 }}
-                className="bg-gray-100 text-gray-800 p-[10px] rounded-lg w-[90%] flex items-center justify-between mb-2 shadow-md border border-gray-300"
+              <label className="text-lg font-minecraftRegular text-white text-center">Car Plate Number:</label>
+              <input
+                type="text"
+                value={plateNumber}
+                onChange={(e) => setPlateNumber(e.target.value)}
+                placeholder="Enter Plate Number"
+                className="p-2 rounded border border-black bg-[#FFF] font-minecraftRegular text-center text-[#C28340]"
+              />
+              <CustomButton
+                variant="arrival"
+                icon={() => <FaCar className="text-xl" />}
+                onClick={handleArrival}
               >
-                <span>Plate Number: {car}</span>
-                <FaCar className="text-xl text-gray-600" />
+                Arrival
+              </CustomButton>
+              <CustomButton
+                variant="departure"
+                icon={() => <FaCar className="text-xl" />}
+                onClick={handleDeparture}
+              >
+                Departure
+              </CustomButton>
+              <CustomButton
+                variant="departLastCar"
+                icon={() => <FaCar className="text-xl" />}
+                onClick={departLastCar}
+              >
+                Depart Last Car
+              </CustomButton>
+            </form>
+            <div className="mt-6">
+              <p className="text-lg font-minecraftRegular text-white text-center">Total Arrivals: {arrivals}</p>
+              <p className="text-lg font-minecraftRegular text-white text-center">Total Departures: {departures}</p>
+            </div>
+            {message && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="mt-4 bg-red-100 text-red-700 p-3 rounded border border-red-400"
+              >
+                {message}
               </motion.div>
-            ))}
-            {garage.length === 0 && (
-              <div className="w-full h-full flex items-center justify-center">
-                <div className="flex justify-center flex-col items-center space-y-4">
-                  <FaCar className="text-6xl text-gray-300" />
-                  <p className="text-2xl font-bold text-gray-400">Garage is Empty</p>
-                </div>
-              </div>
             )}
           </div>
         </div>
+
+        {/* Garage Section */}
+        <div className="w-[60%] h-[550px] flex py-6 px-5 bg-minecraft-whiteSecondary border-black border-4 rounded-lg shadow-whiteinset">
+          {/*  */}
+          <div className='flex flex-col justify-center items-center h-full w-full'>
+            <div className="border border-black w-[97%] bg-[#BBB] rounded-lg shadow-whiteinset">
+              <div className="text-white">
+                <h2 className="text-[15px] p-2 font-pressStart text-[#C28340] text-stroke">
+                  Car Information
+                </h2>
+              </div>
+            </div>
+            <div className="rounded-lg w-full h-full flex flex-col-reverse items-center overflow-hidden">
+              {garage.map((car, index) => {
+                // Ensure 10 cells by padding with empty strings
+                const paddedCarData = [...car.split(''), ...Array(11 - car.length).fill('')];
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ y: -50, opacity: 0 }}
+                    animate={
+                      departingCar === car
+                        ? { x: 300, opacity: 0 } // Animate departure
+                        : { y: 0, opacity: 1 }
+                    }
+                    transition={{ type: "spring", stiffness: 100, duration: 1 }}
+                    className="bg-[#D9D9D9] rounded-lg shadow-md"
+                  >
+                    <InventoryTable
+                      data={paddedCarData} // Pass the padded array with exactly 10 cells
+                      className="bg-[#BBB] p-[2px] rounded shadow-md border border-[#8B8B8B]"
+                      cellClassName="text-white font-pressStart text-sm w-[50px] h-[2.40rem]"
+                    />
+                  </motion.div>
+                );
+              })}
+              {garage.length === 0 && (
+                <div className="w-full h-full flex items-center justify-center">
+                  <div className="flex justify-center flex-col items-center space-y-4">
+                    <img src={CartEmpty} alt="Garage Empty" />
+                    <p className="text-2xl font-pressStart text-stroke text-[#C28340]">
+                      Garage is Empty ...
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Cart Chest Section */}
+          <div className="flex flex-col justify-end items-center w-[70px] h-full">
+            <div className="w-[97%] bg-[#BBB] rounded-lg shadow-whiteinset">
+              <div className="rounded-lg w-full h-full flex flex-col-reverse items-center overflow-hidden">
+                {[...Array(10)].map((_, index) => {
+                  // Render the cart chest SVG if how many cars are in the garage, if the garage has 2 cars, render 2 cart chest SVGs
+                  const cartNumber = index + 1; // Numbers from 10 (bottom) to 1 (top)
+
+                  const isCartChest = garage.length >= cartNumber; 
+
+
+                  return (
+                    <motion.div
+                      key={index}
+                      initial={{ y: -50, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ type: "spring", stiffness: 100, duration: 1 }}
+                      className="bg-[#D9D9D9] rounded-lg shadow-md"
+                    >
+                      <InventoryTable
+                        data={isCartChest ? [<img src={CartChest} alt="Cart Chest" className="w-[40px] h-[40px]" />] : ['']}
+                        className="bg-[#BBB] p-[2px] rounded shadow-md border border-[#8B8B8B]"
+                        cellClassName="text-white font-pressStart text-sm w-[50px] h-[2.40rem]"
+                      />
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
       </div>
     </div>
   );

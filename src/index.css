@@ -2,10 +2,45 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'MinecraftRegular';
+  src: url('/fonts/MinecraftRegular-Bmg3.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MinecraftItalic';
+  src: url('/fonts/MinecraftItalic-R8Mo.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'MinecraftBold';
+  src: url('/fonts/MinecraftBold-nMK1.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MinecraftBoldItalic';
+  src: url('/fonts/MinecraftBoldItalic-1y1e.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+}
+
+
 body {
-    font-family: 'Cabin', sans-serif;
-  }
-  
+  font-family: 'minecraft', sans-serif;
+  background-color: #2e2e2e;
+}
   h1 {
     font-family: 'Calistoga', sans-serif;
+  }
+
+
+  .text-stroke {
+    -webkit-text-stroke-width: 1px; /* Change stroke thickness */
+    -webkit-text-stroke-color: #000000; /* Change stroke color */
   }
