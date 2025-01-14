@@ -1,17 +1,22 @@
-import React, { useState, useEffect, useRef } from "react";
+// src/pages/BinaryTreeTraversal.jsx
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import ReactFlow, {
   Controls,
   Background,
   useNodesState,
   useEdgesState,
 } from "reactflow";
-import { motion } from "framer-motion";
 import "reactflow/dist/style.css";
 import Button from "../components/Button";
 import AnimatedNode from "../components/AnimatedNode";
 
+// Define nodeTypes outside the component to prevent React Flow warning
+const nodeTypes = {
+  animatedNode: AnimatedNode,
+};
+
 const BinaryTreeTraversal = () => {
-  const [levels, setLevels] = useState(0);
+  const [levels, setLevels] = useState(1); // Initialize to 1 for better UX
   const [isModalOpen, setIsModalOpen] = useState(true);
 
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -44,7 +49,7 @@ const BinaryTreeTraversal = () => {
       clearInterval(traversalIntervalRef.current);
       traversalIntervalRef.current = null;
     }
-    setTraversalResult(""); 
+    setTraversalResult("");
   };
 
   // Define the fitView function
@@ -59,20 +64,19 @@ const BinaryTreeTraversal = () => {
     }
   };
 
-  const createTree = (levels) => {
+  const createTree = (desiredLevels) => {
     clearTraversal();
 
-    if (levels < 1 || levels > 5) {
+    if (desiredLevels < 1 || desiredLevels > 5) {
       alert("Levels must be between 1 and 5!");
       return;
     }
-    
 
     // Clear existing nodes and edges
     setNodes([]);
     setEdges([]);
 
-    const baseHorizontalSpacing = 500 + 100 * (levels - 1); // Dynamic spacing
+    const baseHorizontalSpacing = 500 + 100 * (desiredLevels - 1); // Dynamic spacing
     const verticalSpacing = 200;
 
     const generateTreeData = (
@@ -82,7 +86,7 @@ const BinaryTreeTraversal = () => {
       y = 0,
       parentId = null
     ) => {
-      if (level > levels) return { nodes: [], edges: [] };
+      if (level > desiredLevels) return { nodes: [], edges: [] };
 
       const horizontalSpacing = baseHorizontalSpacing / Math.pow(2, level);
       const nodeId = value.toString();
@@ -105,8 +109,6 @@ const BinaryTreeTraversal = () => {
           id: `e${parentId}-${nodeId}`,
           source: parentId,
           target: nodeId,
-          // animated: true,
-          // style: { stroke: "black", strokeWidth: 4, strokeDasharray: 5 },
           style: { stroke: "black", strokeWidth: 4 },
         });
       }
@@ -134,50 +136,64 @@ const BinaryTreeTraversal = () => {
 
     const treeData = generateTreeData(1, 1, 0, 0);
     let time;
-    if (levels === 1) {
+    if (desiredLevels === 1) {
       time = 400;
-    } else if (levels === 2) {
+    } else if (desiredLevels === 2) {
       time = 650;
-    } else if (levels === 3) {
+    } else if (desiredLevels === 3) {
       time = 950;
-    } else if (levels === 4) {
+    } else if (desiredLevels === 4) {
       time = 1250;
     } else {
       time = 1550;
     }
-    animateTreeConstruction(treeData.nodes, treeData.edges, levels);
+
+    animateTreeConstruction(treeData.nodes, treeData.edges, desiredLevels);
     setTimeout(() => {
       handleFitView();
     }, time);
   };
 
   const animateTreeConstruction = (nodesData, edgesData, levels = 1) => {
-    setNodes([]);
-    setEdges([]);
-    let currentLevel = 0;
-    const maxLevel = Math.max(
-      ...nodesData.map((node) => parseInt(node.id, 10).toString(2).length)
-    );
+    let currentLevel = 1;
+    const maxLevel = levels;
 
-    let time = 300;
+    const time = 300; // Time interval between levels
     const interval = setInterval(() => {
-      if (currentLevel >= maxLevel) {
+      if (currentLevel > maxLevel) {
         clearInterval(interval);
         return;
       }
 
       const newNodes = nodesData.filter(
         (node) =>
-          parseInt(node.id, 10).toString(2).length === currentLevel + 1
+          Math.floor(Math.log2(parseInt(node.id, 10)) + 1) === currentLevel
       );
       const newEdges = edgesData.filter(
         (edge) =>
-          parseInt(edge.source, 10).toString(2).length === currentLevel &&
-          parseInt(edge.target, 10).toString(2).length === currentLevel + 1
+          Math.floor(Math.log2(parseInt(edge.source, 10)) + 1) ===
+            currentLevel - 1 &&
+          Math.floor(Math.log2(parseInt(edge.target, 10)) + 1) ===
+            currentLevel
       );
 
-      setNodes((prev) => [...prev, ...newNodes]);
-      setEdges((prev) => [...prev, ...newEdges]);
+      setNodes((prev) => {
+        // Avoid adding duplicate nodes
+        const existingNodeIds = new Set(prev.map((node) => node.id));
+        const filteredNewNodes = newNodes.filter(
+          (node) => !existingNodeIds.has(node.id)
+        );
+        return [...prev, ...filteredNewNodes];
+      });
+
+      setEdges((prev) => {
+        // Avoid adding duplicate edges
+        const existingEdgeIds = new Set(prev.map((edge) => edge.id));
+        const filteredNewEdges = newEdges.filter(
+          (edge) => !existingEdgeIds.has(edge.id)
+        );
+        return [...prev, ...filteredNewEdges];
+      });
 
       currentLevel++;
     }, time);
@@ -190,9 +206,8 @@ const BinaryTreeTraversal = () => {
     setTraversalResult("");
   };
 
-  const nodeTypes = {
-    animatedNode: AnimatedNode,
-  };
+  // Memoizing nodeTypes to prevent React Flow warning
+  // nodeTypes is defined outside the component, so no need to memoize here
 
   // Helper function to build a tree structure from nodes
   const buildTree = () => {
@@ -241,27 +256,35 @@ const BinaryTreeTraversal = () => {
     return result;
   };
 
-
-
   const handleTraversalSelect = (type) => {
     clearTraversal();
     if (nodes.length === 0) {
       alert("Please generate a tree first!");
       return;
     }
-  
-    // Reset all node styles to default
+
+    // Reset all node styles to default without unnecessary updates
     setNodes((prev) =>
-      prev.map((node) => ({
-        ...node,
-        style: {
-          ...node.style,
-          background: "#FFE4BA", // Default color
-          color: "black",
-        },
-      }))
+      prev.map((node) => {
+        const defaultStyle = { background: "#FFE4BA", color: "black" };
+        const currentStyle = node.style || {};
+        const needsUpdate =
+          currentStyle.background !== defaultStyle.background ||
+          currentStyle.color !== defaultStyle.color;
+
+        if (needsUpdate) {
+          return {
+            ...node,
+            style: {
+              ...currentStyle,
+              ...defaultStyle,
+            },
+          };
+        }
+        return node;
+      })
     );
-  
+
     // Determine the traversal order
     const treeRoot = buildTree();
     let traversalOrder = [];
@@ -272,19 +295,19 @@ const BinaryTreeTraversal = () => {
     } else if (type === "Postorder") {
       traversalOrder = postorderTraversal(treeRoot);
     }
-  
+
     // Highlight nodes one by one based on traversal order
     let currentIndex = 0;
     traversalIntervalRef.current = setInterval(() => {
       if (currentIndex >= traversalOrder.length) {
-        clearTraversal()
+        clearTraversal();
         setTraversalResult(traversalOrder.join(" -> "));
         return;
       }
-  
+
       const prevNodeId = traversalOrder[currentIndex - 1]?.toString(); // Previous node
-      const currentNodeId = traversalOrder[currentIndex].toString();  // Current node
-  
+      const currentNodeId = traversalOrder[currentIndex].toString(); // Current node
+
       setNodes((prev) =>
         prev.map((node) => {
           if (node.id === prevNodeId) {
@@ -311,14 +334,15 @@ const BinaryTreeTraversal = () => {
           return node; // Leave other nodes unchanged
         })
       );
-  
-      setTraversalResult(traversalOrder.slice(0, currentIndex + 1).join(" -> "));
+
+      setTraversalResult(
+        traversalOrder.slice(0, currentIndex + 1).join(" -> ")
+      );
       currentIndex++;
     }, 1000);
-  
+
     setIsTraversalModalOpen(false);
   };
-  
 
   const handleChooseTraversal = () => {
     if (nodes.length === 0) {
@@ -329,18 +353,20 @@ const BinaryTreeTraversal = () => {
   };
 
   const handleLevelChange = (newLevel) => {
-    clearTraversal(); 
+    clearTraversal();
     setLevels(newLevel);
   };
 
-
   return (
-    <div style={{
-      backgroundImage: 'url(/images/binary-bg.png)', // Replace with your image path
-      backgroundSize: 'cover',
-      backgroundRepeat: 'no-repeat', // Prevents the image from repeating
-      backgroundPosition: 'center', // Centers the image
-    }} className="w-full h-screen relative py-[70px] px-[70px]">
+    <div
+      style={{
+        backgroundImage: 'url(/images/binary-bg.png)', // Replace with your image path
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat', // Prevents the image from repeating
+        backgroundPosition: 'center', // Centers the image
+      }}
+      className="w-full h-screen relative py-[70px] px-[70px]"
+    >
       {/* Modal for Levels */}
       {isModalOpen && (
         <div className="fixed inset-0 font-minecraftRegular bg-black bg-opacity-50 flex justify-center items-center z-30">
@@ -350,7 +376,9 @@ const BinaryTreeTraversal = () => {
               type="number"
               value={levels}
               onChange={(e) =>
-                handleLevelChange(Math.min(5, Math.max(1, +e.target.value)))
+                handleLevelChange(
+                  Math.min(5, Math.max(1, +e.target.value))
+                )
               }
               className="p-2 border border-dark bg-transparent rounded text-center w-24 mb-4 focus:outline-none focus:ring-2 focus:ring-red-600"
               min="1"
@@ -411,11 +439,6 @@ const BinaryTreeTraversal = () => {
         </div>
       )}
 
-      {/* Header */}
-      {/* <div className="text-center p-4 bg-secondary text-dark fixed top-0 z-10 w-full">
-        <h1 className="text-xl font-bold">Binary Tree Traversal</h1>
-      </div> */}
-
       {/* Tree */}
       <ReactFlow
         nodes={nodes}
@@ -426,10 +449,8 @@ const BinaryTreeTraversal = () => {
         ref={reactFlowWrapper}
         style={{
           backgroundColor: '#8B8B8B',
-          opacity:  '0.8',
+          opacity: '0.8',
           strokeWidth: "7px",
-          // stroke: "#000",
-          // opacity: "0.8",
           boxShadow: "-12px -12px 4px 0px #565656 inset, 12px 12px 4px 0px #FDFDFD inset"
         }}
         className="bg-url"
@@ -452,9 +473,9 @@ const BinaryTreeTraversal = () => {
         {!isModalOpen && (
           <div className="absolute z-10 top-10 right-52">
             <Button
-            variant="primary"
+              variant="primary"
               onClick={() => setIsModalOpen(true)}
-              className=" text-dark px-4 py-2 rounded shadow-md hover:bg-primary-light transition"
+              className="text-dark px-4 py-2 rounded shadow-md hover:bg-primary-light transition"
             >
               Edit Levels
             </Button>
@@ -464,7 +485,6 @@ const BinaryTreeTraversal = () => {
           <span className="block text-sm text-gray-800">
             {traversalResult || ""}
           </span>
-
         </div>
         <Controls showInteractive={false} />
       </ReactFlow>
