@@ -109,7 +109,9 @@ const BinaryTreeTraversal = () => {
           id: `e${parentId}-${nodeId}`,
           source: parentId,
           target: nodeId,
-          style: { stroke: "black", strokeWidth: 4 },
+          type: 'straight', 
+          style: { stroke: "#8B4513", strokeWidth: 4 },
+          arrowHeadType: 'arrowclosed', // Adds an arrowhead
         });
       }
 
