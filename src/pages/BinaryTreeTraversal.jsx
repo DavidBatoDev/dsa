@@ -266,7 +266,7 @@ const BinaryTreeTraversal = () => {
     // Reset all node styles to default without unnecessary updates
     setNodes((prev) =>
       prev.map((node) => {
-        const defaultStyle = { background: "#FFE4BA", color: "black" };
+        const defaultStyle = { background: "transparent", color: "black" };
         const currentStyle = node.style || {};
         const needsUpdate =
           currentStyle.background !== defaultStyle.background ||
@@ -316,7 +316,7 @@ const BinaryTreeTraversal = () => {
               ...node,
               style: {
                 ...node.style,
-                background: "#FFE4BA", // Default color
+                background: "transparent", // Default color
                 color: "black",
               },
             };
