@@ -446,8 +446,8 @@ const BinaryTreeTraversal = () => {
         onInit={setReactFlowInstance} // Capture the ReactFlow instance
         ref={reactFlowWrapper}
         style={{
-          backgroundColor: '#8B8B8B',
-          opacity: '0.8',
+          background: 'url(/images/rectangle.png)', // Replace with your image path
+          opacity: '1',
           strokeWidth: "7px",
           boxShadow: "-12px -12px 4px 0px #565656 inset, 12px 12px 4px 0px #FDFDFD inset"
         }}
