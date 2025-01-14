@@ -110,8 +110,9 @@ const BinaryTreeTraversal = () => {
           source: parentId,
           target: nodeId,
           type: 'straight', 
-          style: { stroke: "#8B4513", strokeWidth: 4 },
-          arrowHeadType: 'arrowclosed', // Adds an arrowhead
+          style: { stroke: "#8B4513", strokeWidth: 12 },
+          // arrowHeadType: 'arrowclosed', // Adds an arrowhead
+          strokeLinecap: 'round'
         });
       }
 
@@ -204,14 +205,9 @@ const BinaryTreeTraversal = () => {
   const handleGenerate = () => {
     createTree(levels);
     setIsModalOpen(false);
-    // Reset traversal result when a new tree is generated
     setTraversalResult("");
   };
 
-  // Memoizing nodeTypes to prevent React Flow warning
-  // nodeTypes is defined outside the component, so no need to memoize here
-
-  // Helper function to build a tree structure from nodes
   const buildTree = () => {
     if (nodes.length === 0) return null;
 
