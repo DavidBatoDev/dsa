@@ -156,7 +156,7 @@ const BinaryTreePage = () => {
     : null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white to-gray-100">
+    <div className="min-h-screen bg-green-600 from-white to-gray-100">
       <h1 className="text-4xl font-bold text-center py-6">Binary Tree</h1>
 
       {/* Modal */}

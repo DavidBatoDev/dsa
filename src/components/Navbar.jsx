@@ -45,7 +45,7 @@ const Navbar = () => {
         transition={{ type: 'tween', duration: 0.5, }}
         // transition={{ type: 'spring', stiffness: 70 }}
         // transition={{ type: 'keyframes', duration: 0.7, ease: 'easeInOut' }}
-        className="fixed top-0 left-0 h-full w-64 bg-secondary-light shadow-lg z-50 bg-opacity-20"
+        className="bg-minecraft-whiteSecondary font-minecraftRegular shadow-craftingInset text-black fixed top-0 left-0 h-full w-64 z-50"
       >
         <h2 className="text-2xl font-bold text-gray-800 p-6">Navigation</h2>
         <ul className="display flex flex-col">

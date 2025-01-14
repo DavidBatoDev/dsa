@@ -115,7 +115,7 @@ const Stack = () => {
 
       <div className="flex gap-5">
         {/* Form Section */}
-        <div className='w-[40%] bg-[#D9D9D9] flex justify-center items-center p-6 rounded-lg border-4 border-black shadow'>
+        <div className='w-[38%] bg-[#D9D9D9] flex justify-center items-center p-6 rounded-lg border-4 border-black shadow'>
           <div className="w-full h-full bg-minecraft-abyss bg-secondary-light text-black p-6 rounded-lg border border-[#1c1c1c] shadow-craftingBoard">
             <h2 className="text-2xl font-bold mb-4 font-minecraftRegular text-center text-[#C28340]">Car Arrival/Departure</h2>
             <form
@@ -170,7 +170,7 @@ const Stack = () => {
         </div>
 
         {/* Garage Section */}
-        <div className="w-[60%] h-[550px] flex py-6 px-5 bg-minecraft-whiteSecondary border-black border-4 rounded-lg shadow-whiteinset">
+        <div className="w-[62%] h-[550px] flex py-6 px-5 bg-minecraft-whiteSecondary border-black border-4 rounded-lg shadow-whiteinset">
           {/*  */}
           <div className='flex flex-col justify-center items-center h-full w-full'>
             <div className="border border-black w-[97%] bg-[#BBB] rounded-lg shadow-whiteinset">
@@ -199,7 +199,7 @@ const Stack = () => {
                     <InventoryTable
                       data={paddedCarData} // Pass the padded array with exactly 10 cells
                       className="bg-[#BBB] p-[2px] rounded shadow-md border border-[#8B8B8B]"
-                      cellClassName="text-white font-pressStart text-sm w-[50px] h-[2.40rem]"
+                      cellClassName="text-white font-pressStart text-sm w-[50px] h-[2.37rem]"
                     />
                   </motion.div>
                 );
@@ -239,7 +239,7 @@ const Stack = () => {
                       <InventoryTable
                         data={isCartChest ? [<img src={CartChest} alt="Cart Chest" className="w-[40px] h-[40px]" />] : ['']}
                         className="bg-[#BBB] p-[2px] rounded shadow-md border border-[#8B8B8B]"
-                        cellClassName="text-white font-pressStart text-sm w-[50px] h-[2.40rem]"
+                        cellClassName="text-white font-pressStart text-sm w-[50px] h-[2.37rem]"
                       />
                     </motion.div>
                   );

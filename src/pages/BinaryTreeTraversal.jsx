@@ -8,24 +8,7 @@ import ReactFlow, {
 import { motion } from "framer-motion";
 import "reactflow/dist/style.css";
 import Button from "../components/Button";
-
-const AnimatedNode = ({ id, data, position, style }) => {
-  return (
-    <motion.div
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      style={{
-        ...style,
-        position: "absolute",
-        transform: `translate(${position.x}px, ${position.y}px)`,
-      }}
-      className="flex items-center justify-center rounded-full bg-red-800 text-white w-15 h-15"
-    >
-      {data.label}
-    </motion.div>
-  );
-};
+import AnimatedNode from "../components/AnimatedNode";
 
 const BinaryTreeTraversal = () => {
   const [levels, setLevels] = useState(0);
@@ -108,16 +91,10 @@ const BinaryTreeTraversal = () => {
         id: nodeId,
         data: { label: `Node ${value}` },
         position: { x, y },
+        type: 'animatedNode',
         style: {
-          background: "#FFE4BA",
-          color: "black",
-          borderRadius: "50%",
-          width: 60,
-          height: 60,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontFamily: "Cabin",
+          width: 100,
+          height: 100,
         }, 
         rightOrLeft: parentId ? (value % 2 === 0 ? "left" : "right") : "root",
       };
@@ -128,8 +105,9 @@ const BinaryTreeTraversal = () => {
           id: `e${parentId}-${nodeId}`,
           source: parentId,
           target: nodeId,
-          animated: true,
-          style: { stroke: "black", strokeWidth: 4, strokeDasharray: 5 },
+          // animated: true,
+          // style: { stroke: "black", strokeWidth: 4, strokeDasharray: 5 },
+          style: { stroke: "black", strokeWidth: 4 },
         });
       }
 
@@ -263,66 +241,7 @@ const BinaryTreeTraversal = () => {
     return result;
   };
 
-  // if I change my mind
-  // const handleTraversalSelect = (type) => {
-  // clearTraversal();
-  //   if (nodes.length === 0) {
-  //     alert("Please generate a tree first!");
-  //     return;
-  //   }
-  
-  //   // Reset all node styles to default
-  //   setNodes((prev) =>
-  //     prev.map((node) => ({
-  //       ...node,
-  //       style: {
-  //         ...node.style,
-  //         background: "#b71c1c",
-  //         color: "white",
-  //       },
-  //     }))
-  //   );
-  
-  //   // Determine the traversal order
-  //   const treeRoot = buildTree();
-  //   let traversalOrder = [];
-  //   if (type === "Preorder") {
-  //     traversalOrder = preorderTraversal(treeRoot);
-  //   } else if (type === "Inorder") {
-  //     traversalOrder = inorderTraversal(treeRoot);
-  //   } else if (type === "Postorder") {
-  //     traversalOrder = postorderTraversal(treeRoot);
-  //   }
-  
-  //   // Highlight nodes one by one based on traversal order
-  //   let currentIndex = 0;
-  //   traversalIntervalRef.current = setInterval(() => {
-  //     if (currentIndex >= traversalOrder.length) {
-  //       clearTraversal()
-  //       return;
-  //     }
-  //     // change the previous node back to default color
-  //     const prevNodeId = traversalOrder[currentIndex - 1]?.toString();
-  //     const currentNodeId = traversalOrder[currentIndex].toString();
-  
-  //     setNodes((prev) =>
-  //       prev.map((node) =>
-  //         node.id === currentNodeId
-  //           ? {
-  //               ...node,
-  //               style: {
-  //                 ...node.style,
-  //                 background: "#ff5722", // Highlight color
-  //               },
-  //             }
-  //           : node
-  //       )
-  //     );
-  //     setTraversalResult(traversalOrder.slice(0, currentIndex + 1).join(" -> "));
-  //     currentIndex++;
-  //   }, 1000);
-  //   setIsTraversalModalOpen(false);
-  // };
+
 
   const handleTraversalSelect = (type) => {
     clearTraversal();
@@ -416,11 +335,16 @@ const BinaryTreeTraversal = () => {
 
 
   return (
-    <div className="w-full h-screen relative">
+    <div style={{
+      backgroundImage: 'url(/images/binary-bg.png)', // Replace with your image path
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat', // Prevents the image from repeating
+      backgroundPosition: 'center', // Centers the image
+    }} className="w-full h-screen relative py-[70px] px-[70px]">
       {/* Modal for Levels */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-30">
-          <div className="bg-secondary-light p-6 rounded-lg shadow-lg w-96 text-center z-10">
+        <div className="fixed inset-0 font-minecraftRegular bg-black bg-opacity-50 flex justify-center items-center z-30">
+          <div className="bg-minecraft-whiteSecondary shadow-craftingInset p-6 rounded-lg w-96 text-center z-10">
             <h2 className="text-2xl font-bold mb-4">Enter Levels (1-5)</h2>
             <input
               type="number"
@@ -488,9 +412,9 @@ const BinaryTreeTraversal = () => {
       )}
 
       {/* Header */}
-      <div className="text-center p-4 bg-secondary text-dark fixed top-0 z-10 w-full">
+      {/* <div className="text-center p-4 bg-secondary text-dark fixed top-0 z-10 w-full">
         <h1 className="text-xl font-bold">Binary Tree Traversal</h1>
-      </div>
+      </div> */}
 
       {/* Tree */}
       <ReactFlow
@@ -500,14 +424,22 @@ const BinaryTreeTraversal = () => {
         fitView
         onInit={setReactFlowInstance} // Capture the ReactFlow instance
         ref={reactFlowWrapper}
-        className="w-full h-full bg-secondary-light"
+        style={{
+          backgroundColor: '#8B8B8B',
+          opacity:  '0.8',
+          strokeWidth: "7px",
+          // stroke: "#000",
+          // opacity: "0.8",
+          boxShadow: "-12px -12px 4px 0px #565656 inset, 12px 12px 4px 0px #FDFDFD inset"
+        }}
+        className="bg-url"
         panOnDrag={false} // Disables panning by dragging the canvas
         zoomOnScroll={false} // Disables zooming with the scroll wheel or touchpad
         zoomOnPinch={false} // Disables zooming with pinch gestures on touch devices
         panOnScroll={false} // Disables panning with the scroll wheel or touchpad
       >
-        <Background color="#800000" gap={16} />
-        <div className="absolute top-20 right-4">
+        <Background color="#800000" gap={100} />
+        <div className="absolute top-10 right-4">
           <Button
             onClick={handleChooseTraversal}
             variant="danger"
@@ -516,6 +448,18 @@ const BinaryTreeTraversal = () => {
             Choose Traversal
           </Button>
         </div>
+        {/* Reopen Modal Button */}
+        {!isModalOpen && (
+          <div className="absolute z-10 top-10 right-52">
+            <Button
+            variant="primary"
+              onClick={() => setIsModalOpen(true)}
+              className=" text-dark px-4 py-2 rounded shadow-md hover:bg-primary-light transition"
+            >
+              Edit Levels
+            </Button>
+          </div>
+        )}
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-secondary-light bg-opacity-80 py-2 flex justify-center min-w-[800px] w-[1400px]">
           <span className="block text-sm text-gray-800">
             {traversalResult || ""}
@@ -524,19 +468,6 @@ const BinaryTreeTraversal = () => {
         </div>
         <Controls showInteractive={false} />
       </ReactFlow>
-
-      {/* Reopen Modal Button */}
-      {!isModalOpen && (
-        <div className="absolute z-10 top-20 right-44">
-          <Button
-          variant="primary"
-            onClick={() => setIsModalOpen(true)}
-            className=" text-dark px-4 py-2 rounded shadow-md hover:bg-primary-light transition"
-          >
-            Edit Levels
-          </Button>
-        </div>
-      )}
     </div>
   );
 };
