@@ -363,7 +363,7 @@ const BinaryTreeTraversal = () => {
         backgroundRepeat: 'no-repeat', // Prevents the image from repeating
         backgroundPosition: 'center', // Centers the image
       }}
-      className="w-full h-screen relative py-[70px] px-[70px]"
+      className="w-full h-screen relative py-[50px] px-[50px]"
     >
       {/* Modal for Levels */}
       {isModalOpen && (

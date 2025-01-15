@@ -7,6 +7,7 @@ import ReactFlow, {
 } from "reactflow";
 import dagre from "dagre";
 import "reactflow/dist/style.css";
+import CustomButton from "../components/CustomButton";
 import Button from "../components/Button";
 
 /** 1) DAGRE LAYOUT HELPER */
@@ -375,31 +376,46 @@ const BinarySearchTree = () => {
   };
 
   return (
-    <div className="w-full h-screen flex">
+    <div 
+    style={{
+      backgroundImage: 'url(/images/bst-bg.png)',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+    }}
+    className="w-full h-screen flex gap-8 py-[70px] px-[70px]">
       {/* LEFT: input form */}
-      <div className="bg-secondary w-1/4 p-4 border-r border-gray-300 flex flex-col gap-4">
-        <h2 className="text-xl font-bold mb-2 ml-14">BST Input</h2>
+      <div className="bg-minecraft-white w-[730px] p-4 border-r border-gray-300 flex flex-col gap-4">
         <form onSubmit={handleInsert} className="flex flex-row gap-2">
-          <input
-            type="number"
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-            placeholder="Enter integer"
-            className="p-2 border border-black bg-transparent rounded focus:outline-none w-full"
-          />
-          <Button
-            variant="primary"
-            type="submit"
-            className="text-dark px-4 py-2 rounded hover:bg-red-600"
-          >
-            Insert
-          </Button>
-        </form>
+          <div className="flex flex-col gap-5">
+            <input
+              type="number"
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
+              placeholder="Enter integer"
+              className="p-2 border border-black bg-transparent rounded focus:outline-none w-full"
+            />
+            <div className="text-sm">
+              <p className="font-semibold">Values in BST:</p>
+              <p>{values.join(", ") || "No values inserted yet."}</p>
+            </div>
+          </div>
 
-        <div className="text-sm">
-          <p className="font-semibold">Values in BST:</p>
-          <p>{values.join(", ") || "No values inserted yet."}</p>
-        </div>
+          <div className="flex flex-col gap-2">
+            <CustomButton
+              variant="primary"
+              type="submit"
+            >
+              Insert
+            </CustomButton>
+            <CustomButton
+              variant="danger"
+              onClick={handleClear}
+            >
+              Clear All
+            </CustomButton>
+          </div>
+        </form>
 
         <div className="flex flex-row gap-2 mt-auto">
           <Button
@@ -408,13 +424,6 @@ const BinarySearchTree = () => {
             className="text-dark px-4 py-2 rounded hover:bg-red-600"
           >
             Choose Traversal
-          </Button>
-          <Button
-          variant="danger"
-            onClick={handleClear}
-            className="bg-gray-500 text-dark px-4 py-2 rounded hover:bg-gray-600"
-          >
-            Clear All
           </Button>
         </div>
       </div>
@@ -464,6 +473,12 @@ const BinarySearchTree = () => {
         )}
 
         <ReactFlow
+        style={{
+            fill: 'rgba(217, 217, 217, 0.80)',
+            strokeWidth: '7px',
+            stroke: '#000',
+            boxShadow: '-12px -12px 4px 0px #565656 inset, 12px 12px 4px 0px #FDFDFD inset'
+        }}
           nodes={nodes}
           edges={edges}
           onNodesChange={onNodesChange}
@@ -475,9 +490,9 @@ const BinarySearchTree = () => {
           panOnScroll
           zoomOnScroll
           zoomOnPinch
-          className="w-full h-full bg-secondary-light"
+          className="w-full rounded-xl h-full bg-minecraft-white opacity-75"
         >
-          <Background color="#800000" gap={16} />
+          <Background color="#800000" gap={1000} />
           <Controls />
         </ReactFlow>
       </div>

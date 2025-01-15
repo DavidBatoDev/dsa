@@ -115,12 +115,12 @@ const Stack = () => {
 
       <div className="flex gap-5">
         {/* Form Section */}
-        <div className='w-[38%] bg-[#D9D9D9] flex justify-center items-center p-6 rounded-lg border-4 border-black shadow'>
+        <div className='w-[38%] h-[445px] bg-[#D9D9D9] flex justify-center items-center p-6 rounded-lg border-4 border-black shadow'>
           <div className="w-full h-full bg-minecraft-abyss bg-secondary-light text-black p-6 rounded-lg border border-[#1c1c1c] shadow-craftingBoard">
-            <h2 className="text-2xl font-bold mb-4 font-minecraftRegular text-center text-[#C28340]">Car Arrival/Departure</h2>
+            <h2 className="text-2xl font-bold mb-1 font-minecraftRegular text-center text-[#C28340]">Car Arrival/Departure</h2>
             <form
               onSubmit={(e) => e.preventDefault()}
-              className="flex flex-col space-y-4"
+              className="flex flex-col space-y-2"
             >
               <label className="text-lg font-minecraftRegular text-white text-center">Car Plate Number:</label>
               <input
@@ -132,7 +132,7 @@ const Stack = () => {
               />
               <CustomButton
                 variant="arrival"
-                icon={() => <FaCar className="text-xl" />}
+                icon={() => <FaCar className="text-xl h-[10px]" />}
                 onClick={handleArrival}
               >
                 Arrival
@@ -152,7 +152,7 @@ const Stack = () => {
                 Depart Last Car
               </CustomButton>
             </form>
-            <div className="mt-6">
+            <div className="mt-2">
               <p className="text-lg font-minecraftRegular text-white text-center">Total Arrivals: {arrivals}</p>
               <p className="text-lg font-minecraftRegular text-white text-center">Total Departures: {departures}</p>
             </div>
@@ -170,7 +170,7 @@ const Stack = () => {
         </div>
 
         {/* Garage Section */}
-        <div className="w-[62%] h-[550px] flex py-6 px-5 bg-minecraft-whiteSecondary border-black border-4 rounded-lg shadow-whiteinset">
+        <div className="w-[62%] h-[445px] flex py-6 px-5 bg-minecraft-whiteSecondary border-black border-4 rounded-lg shadow-whiteinset">
           {/*  */}
           <div className='flex flex-col justify-center items-center h-full w-full'>
             <div className="border border-black w-[97%] bg-[#BBB] rounded-lg shadow-whiteinset">
@@ -199,7 +199,7 @@ const Stack = () => {
                     <InventoryTable
                       data={paddedCarData} // Pass the padded array with exactly 10 cells
                       className="bg-[#BBB] p-[2px] rounded shadow-md border border-[#8B8B8B]"
-                      cellClassName="text-white font-pressStart text-sm w-[50px] h-[2.37rem]"
+                      cellClassName="text-white font-pressStart text-sm w-[50px] h-[1.80rem]"
                     />
                   </motion.div>
                 );
@@ -237,9 +237,9 @@ const Stack = () => {
                       className="bg-[#D9D9D9] rounded-lg shadow-md"
                     >
                       <InventoryTable
-                        data={isCartChest ? [<img src={CartChest} alt="Cart Chest" className="w-[40px] h-[40px]" />] : ['']}
+                        data={isCartChest ? [<img src={CartChest} alt="Cart Chest" className="w-[28px] h-[28px]" />] : ['']}
                         className="bg-[#BBB] p-[2px] rounded shadow-md border border-[#8B8B8B]"
-                        cellClassName="text-white font-pressStart text-sm w-[50px] h-[2.37rem]"
+                        cellClassName="text-white font-pressStart text-sm w-[50px] h-[1.80rem]"
                       />
                     </motion.div>
                   );
