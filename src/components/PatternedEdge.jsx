@@ -16,19 +16,6 @@ const PatternedEdge = ({
         pointerEvents: 'none',
       }}
     >
-      {/* Define the pixelated pattern */}
-      <defs>
-        <pattern
-          id="pixelPattern"
-          width="4"
-          height="4"
-          patternUnits="userSpaceOnUse"
-        >
-          <rect width="2" height="2" fill="#8B4513" />
-          <rect x="2" y="2" width="2" height="2" fill="#8B4513" />
-        </pattern>
-      </defs>
-
       {/* Outer border line */}
       <line
         x1={sourceX}
@@ -36,15 +23,14 @@ const PatternedEdge = ({
         x2={targetX}
         y2={targetY}
         style={{
-          stroke: '#000000', // Black border for contrast
-          stroke: '#8B4513',
-          strokeWidth: '15', // Thicker width for the border
-          strokeLinecap: 'square', // Square ends
-          shapeRendering: 'crispEdges', // Ensures pixel alignment
+          stroke: '#000000', // Black border
+          strokeWidth: '18', // Thicker width for the border
+          strokeLinecap: 'square',
+          shapeRendering: 'crispEdges',
         }}
       />
 
-      {/* Inner pixelated line */}
+      {/* Inner solid pixelated line */}
       <line
         x1={sourceX}
         y1={sourceY}
@@ -52,10 +38,10 @@ const PatternedEdge = ({
         y2={targetY}
         style={{
           ...style,
-          stroke: '#8B4513', // Use pixel pattern
-          strokeWidth: '12', // Inner line width
-          strokeLinecap: 'square', // Square ends
-          shapeRendering: 'crispEdges', // Ensures pixel alignment
+          stroke: '#8B4513', // Solid brown color
+          strokeWidth: '15', // Inner line slightly thinner than border
+          strokeLinecap: 'square', // Square edges for blocky look
+          shapeRendering: 'crispEdges', // Ensure pixel-perfect rendering
         }}
       />
     </svg>

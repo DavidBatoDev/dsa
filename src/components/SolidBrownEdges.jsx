@@ -24,7 +24,7 @@ const PatternedEdge = ({
         y2={targetY}
         style={{
           stroke: '#000000', // Black border
-          strokeWidth: '18', // Thicker width for the border
+          strokeWidth: '12', // Thicker width for the border
           strokeLinecap: 'square',
           shapeRendering: 'crispEdges',
         }}
@@ -39,7 +39,7 @@ const PatternedEdge = ({
         style={{
           ...style,
           stroke: '#8B4513', // Solid brown color
-          strokeWidth: '14', // Inner line slightly thinner than border
+          strokeWidth: '8', // Inner line slightly thinner than border
           strokeLinecap: 'square', // Square edges for blocky look
           shapeRendering: 'crispEdges', // Ensure pixel-perfect rendering
         }}
