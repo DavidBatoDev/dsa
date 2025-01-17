@@ -15,7 +15,7 @@ const InventoryTable = ({ data = [], className, cellClassName }) => {
         <div
           key={index}
           className={clsx(
-            "flex justify-center items-center w-[54.472px] h-[54.472px] flex-shrink-0 bg-[#6E6E6E] border border-[#BBB]",
+            "flex justify-center items-center flex-shrink-0 bg-[#6E6E6E] border border-[#BBB]",
             cellClassName // Custom styles for each rectangle
           )}
         >

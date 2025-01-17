@@ -156,8 +156,8 @@ const TicTacToe = () => {
             className="w-[30px] h-[30px]"
           />,
         ]}
-          className="bg-minecraft-whiteSecondary p-1 rounded shadow-md border border-[#8B8B8B]"
-          cellClassName="text-white font-pressStart text-sm"
+          className="bg-minecraft-whiteSecondary p-1 rounded shadow-craftingInset border border-[#8B8B8B]"
+          cellClassName="text-white font-pressStart text-sm w-[54.472px] h-[54.472px]"
         />
       </div>
     </div>

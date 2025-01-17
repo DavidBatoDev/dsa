@@ -183,7 +183,7 @@ const Stack = () => {
             <div className="rounded-lg w-full h-full flex flex-col-reverse items-center overflow-hidden">
               {garage.map((car, index) => {
                 // Ensure 10 cells by padding with empty strings
-                const paddedCarData = [...car.split(''), ...Array(11 - car.length).fill('')];
+                const paddedCarData = [...car.split(''), ...Array(12 - car.length).fill('')];
                 return (
                   <motion.div
                     key={index}
