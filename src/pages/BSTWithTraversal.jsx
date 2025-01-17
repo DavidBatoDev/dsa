@@ -72,9 +72,13 @@ const getLayoutedElements = (nodes, edges, direction = "TB") => {
   return { nodes: layoutedNodes, edges };
 };
 
+
+// let nodeIdCounter = 1;
+
 /** BST Node Structure */
 class BSTNode {
-  constructor(val) {
+  constructor(val,id) {
+    this.id = id;
     this.val = val;
     this.left = null;
     this.right = null;
@@ -87,23 +91,25 @@ class BST {
     this.root = null;
   }
 
-  insert(val) {
+  insert(val, id = "1") {
     if (!this.root) {
-      this.root = new BSTNode(val);
+      this.root = new BSTNode(val, id);
       return;
     }
-    this._insertNode(this.root, val);
+    this._insertNode(this.root, val, id);
   }
 
-  _insertNode(node, val) {
+  _insertNode(node, val, id) {
     if (val < node.val) {
-      // go left
-      if (!node.left) node.left = new BSTNode(val);
-      else this._insertNode(node.left, val);
+      // Go left
+      const leftId = `${id}L`; // Generate left child ID
+      if (!node.left) node.left = new BSTNode(val, leftId);
+      else this._insertNode(node.left, val, leftId);
     } else {
-      // go right
-      if (!node.right) node.right = new BSTNode(val);
-      else this._insertNode(node.right, val);
+      // Go right
+      const rightId = `${id}R`; // Generate right child ID
+      if (!node.right) node.right = new BSTNode(val, rightId);
+      else this._insertNode(node.right, val, rightId);
     }
   }
 }
@@ -175,6 +181,7 @@ const BinarySearchTree = () => {
   const handleClear = () => {
     clearTraversal();
     setValues([]);
+    nodeIdCounter = 1; 
     setTree(new BST());
     setNodes([]);
     setEdges([]);
@@ -187,76 +194,49 @@ const BinarySearchTree = () => {
   const buildFlowFromBST = (root) => {
     const newNodes = [];
     const newEdges = [];
-
+  
     if (!root) return { newNodes, newEdges };
-
-    // We'll do BFS with a queue item = { node, id, side }
-    // "side" can be "root", "left", or "right"
+  
     const queue = [{ node: root, id: "1", side: "root" }];
-
+  
     while (queue.length > 0) {
       const { node, id, side } = queue.shift();
-
-      // Create this node with side info
-      // Inside buildFlowFromBST function
+  
       newNodes.push({
-        id,
+        id: node.id,
         data: { label: node.val, side },
-        position: { x: 0, y: 0 }, // placeholder
-        type: 'dirt' // Ensure you're using the default type
-        // style: {
-        //   backgroundImage: 'url(/images/dirt.png)', // Path to your dirt image
-        //   backgroundSize: 'cover',
-        //   backgroundPosition: 'center',
-        //   width: 60,
-        //   height: 60,
-        //   display: 'flex',
-        //   alignItems: 'center',
-        //   justifyContent: 'center',
-        // },
+        position: { x: 0, y: 0 }, 
+        type: "dirt",
       });
-
-
-      // If left child, push queue with side = "left"
+  
       if (node.left) {
         const leftId = `${id}L`;
         newEdges.push({
           id: `e${id}-${leftId}`,
           source: id,
           target: leftId,
-          // animated: true,
           type: "patterned",
           style: { stroke: "#8B4513", strokeWidth: 12 },
         });
-        queue.push({
-          node: node.left,
-          id: leftId,
-          side: "left",
-        });
+        queue.push({ node: node.left, id: leftId, side: "left" });
       }
-
-      // If right child, push queue with side = "right"
+  
       if (node.right) {
         const rightId = `${id}R`;
         newEdges.push({
           id: `e${id}-${rightId}`,
           source: id,
           target: rightId,
-          // animated: true,
           type: "patterned",
           style: { stroke: "#8B4513", strokeWidth: 12 },
         });
-        queue.push({
-          node: node.right,
-          id: rightId,
-          side: "right",
-        });
+        queue.push({ node: node.right, id: rightId, side: "right" });
       }
     }
-
+  
     return { newNodes, newEdges };
   };
-
+  
   // Rebuild tree when values changes
   useEffect(() => {
     const newTree = rebuildBST(values);
@@ -291,7 +271,7 @@ const BinarySearchTree = () => {
   // Traversal helpers
   const preorder = (node, list = []) => {
     if (!node) return list;
-    list.push(node.val);
+    list.push({ id: node.id, val: node.val });
     preorder(node.left, list);
     preorder(node.right, list);
     return list;
@@ -299,7 +279,7 @@ const BinarySearchTree = () => {
   const inorder = (node, list = []) => {
     if (!node) return list;
     inorder(node.left, list);
-    list.push(node.val);
+    list.push({ id: node.id, val: node.val });
     inorder(node.right, list);
     return list;
   };
@@ -307,7 +287,7 @@ const BinarySearchTree = () => {
     if (!node) return list;
     postorder(node.left, list);
     postorder(node.right, list);
-    list.push(node.val);
+    list.push({ id: node.id, val: node.val });
     return list;
   };
 
@@ -319,7 +299,7 @@ const BinarySearchTree = () => {
         style: {
           ...node.style,
           background: "#b71c1c",
-          color: "white",
+          color: "transparent",
         },
       }))
     );
@@ -332,63 +312,47 @@ const BinarySearchTree = () => {
       alert("Please insert at least one value to build a BST!");
       return;
     }
-
+  
     resetNodeColors();
-
+  
     let order = [];
     if (type === "Preorder") {
-      // TLR
       order = preorder(tree.root);
     } else if (type === "Inorder") {
-      // LTR
       order = inorder(tree.root);
     } else {
-      // Postorder (LRT)
       order = postorder(tree.root);
     }
-
+  
     let current = 0;
     traversalIntervalRef.current = setInterval(() => {
       if (current >= order.length) {
         clearTraversal();
-        setTraversalResult(order.join(" -> "));
+        setTraversalResult(order.map((n) => n.val).join(" -> "));
         return;
       }
-
-      const prevVal = order[current - 1];
-      const currentVal = order[current];
-
-      // Animate highlight
-      setNodes((prev) =>
-        prev.map((n) => {
-          if (prevVal !== undefined && n.data.label === prevVal) {
-            return {
-              ...n,
-              style: {
-                ...n.style,
-                background: "#b71c1c",
-              },
-            };
-          }
-          if (currentVal !== undefined && n.data.label === currentVal) {
-            return {
-              ...n,
-              style: {
-                ...n.style,
-                background: "#ff5722",
-              },
-            };
-          }
-          return n;
-        })
-      );
-
-      setTraversalResult(order.slice(0, current + 1).join(" -> "));
+    
+      const currentNode = order[current]; // Get current { id, val }
+      setNodes((prev) => {
+        console.log("Updating nodes", prev);
+        console.log("Current node", currentNode.id);
+        return prev.map((n) => ({
+          ...n,
+          style: {
+            ...n.style,
+            background: n.id == currentNode.id ? "#ff5722" : "transparent",
+          },
+        }));
+      });      
+    
+      setTraversalResult(order.slice(0, current + 1).map((n) => n.val).join(" -> "));
       current++;
     }, 1000);
-
+    
+  
     setIsTraversalModalOpen(false);
   };
+  
 
   return (
     <div 
