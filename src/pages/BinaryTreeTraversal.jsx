@@ -9,10 +9,16 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 import Button from "../components/Button";
 import AnimatedNode from "../components/AnimatedNode";
+// import PatternedEdge from "../components/PatternedEdge";
+import SolidBrownEdges from "../components/SolidBrownEdges";
 
 // Define nodeTypes outside the component to prevent React Flow warning
 const nodeTypes = {
   animatedNode: AnimatedNode,
+};
+
+const edgeTypes = {
+  brown: SolidBrownEdges,
 };
 
 const BinaryTreeTraversal = () => {
@@ -91,6 +97,8 @@ const BinaryTreeTraversal = () => {
       const horizontalSpacing = baseHorizontalSpacing / Math.pow(2, level);
       const nodeId = value.toString();
 
+
+
       const node = {
         id: nodeId,
         data: { label: `Node ${value}` },
@@ -109,10 +117,9 @@ const BinaryTreeTraversal = () => {
           id: `e${parentId}-${nodeId}`,
           source: parentId,
           target: nodeId,
-          type: 'straight', 
-          style: { stroke: "#8B4513", strokeWidth: 12 },
-          // arrowHeadType: 'arrowclosed', // Adds an arrowhead
-          strokeLinecap: 'round'
+          type: 'brown',
+          style: { strokeWidth: 12 },
+          strokeLinecap: 'butt'
         });
       }
 
@@ -442,10 +449,13 @@ const BinaryTreeTraversal = () => {
         nodes={nodes}
         edges={edges}
         nodeTypes={nodeTypes} // Register animated node type
+        edgeTypes={edgeTypes}
         fitView
         onInit={setReactFlowInstance} // Capture the ReactFlow instance
         ref={reactFlowWrapper}
         style={{
+          imageRendering: "pixelated",
+          imageRendering: "crisp-edges",
           background: 'url(/images/rectangle.png)', // Replace with your image path
           opacity: '1',
           strokeWidth: "7px",
@@ -456,8 +466,9 @@ const BinaryTreeTraversal = () => {
         zoomOnScroll={false} // Disables zooming with the scroll wheel or touchpad
         zoomOnPinch={false} // Disables zooming with pinch gestures on touch devices
         panOnScroll={false} // Disables panning with the scroll wheel or touchpad
+        
       >
-        <Background color="#800000" gap={100} />
+        <Background color="#800000" gap={100} style={{ shapeRendering: 'crispEdges' }}/>
         <div className="absolute top-10 right-4">
           <Button
             onClick={handleChooseTraversal}

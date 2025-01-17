@@ -9,6 +9,16 @@ import dagre from "dagre";
 import "reactflow/dist/style.css";
 import CustomButton from "../components/CustomButton";
 import Button from "../components/Button";
+import DirtNode from "../components/DirtNode";
+import PatternedEdge from "../components/PatternedEdge";
+
+const nodeTypes = {
+  dirt: DirtNode,
+};
+
+const edgeTypes = {
+  patterned: PatternedEdge,
+};
 
 /** 1) DAGRE LAYOUT HELPER */
 const getLayoutedElements = (nodes, edges, direction = "TB") => {
@@ -188,21 +198,24 @@ const BinarySearchTree = () => {
       const { node, id, side } = queue.shift();
 
       // Create this node with side info
+      // Inside buildFlowFromBST function
       newNodes.push({
         id,
         data: { label: node.val, side },
         position: { x: 0, y: 0 }, // placeholder
-        style: {
-          background: "#FFE4BA",
-          color: "black",
-          borderRadius: "50%",
-          width: 60,
-          height: 60,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        },
+        type: 'dirt' // Ensure you're using the default type
+        // style: {
+        //   backgroundImage: 'url(/images/dirt.png)', // Path to your dirt image
+        //   backgroundSize: 'cover',
+        //   backgroundPosition: 'center',
+        //   width: 60,
+        //   height: 60,
+        //   display: 'flex',
+        //   alignItems: 'center',
+        //   justifyContent: 'center',
+        // },
       });
+
 
       // If left child, push queue with side = "left"
       if (node.left) {
@@ -211,8 +224,9 @@ const BinarySearchTree = () => {
           id: `e${id}-${leftId}`,
           source: id,
           target: leftId,
-          animated: true,
-          style: { stroke: "black", strokeWidth: 4, strokeDasharray: 5 },
+          // animated: true,
+          type: "patterned",
+          style: { stroke: "#8B4513", strokeWidth: 12 },
         });
         queue.push({
           node: node.left,
@@ -228,8 +242,9 @@ const BinarySearchTree = () => {
           id: `e${id}-${rightId}`,
           source: id,
           target: rightId,
-          animated: true,
-          style: { stroke: "black", strokeWidth: 4, strokeDasharray: 5 },
+          // animated: true,
+          type: "patterned",
+          style: { stroke: "#8B4513", strokeWidth: 12 },
         });
         queue.push({
           node: node.right,
@@ -385,8 +400,16 @@ const BinarySearchTree = () => {
     }}
     className="w-full h-screen flex gap-8 py-[70px] px-[70px]">
       {/* LEFT: input form */}
-      <div className="bg-minecraft-white w-[730px] p-4 border-r border-gray-300 flex flex-col gap-4">
-        <form onSubmit={handleInsert} className="flex flex-row gap-2">
+      
+      <div className="w-[730px] gap-7 flex flex-col">
+        <form 
+        style={{
+          fill: 'rgba(217, 217, 217, 0.80)',
+          strokeWidth: '7px',
+          stroke: '#000',
+          boxShadow: '-12px -12px 4px 0px #565656 inset, 12px 12px 4px 0px #FDFDFD inset'
+        }}
+        onSubmit={handleInsert} className="bg-minecraft-white border-4 border-black rounded-xl opacity-80 flex flex-row gap-2 p-5">
           <div className="flex flex-col gap-5">
             <input
               type="number"
@@ -417,7 +440,14 @@ const BinarySearchTree = () => {
           </div>
         </form>
 
-        <div className="flex flex-row gap-2 mt-auto">
+        <div 
+          style={{
+            fill: 'rgba(217, 217, 217, 0.80)',
+            strokeWidth: '7px',
+            stroke: '#000',
+            boxShadow: '-12px -12px 4px 0px #565656 inset, 12px 12px 4px 0px #FDFDFD inset'
+        }}
+        className="flex flex-row gap-2 opacity-80 bg-minecraft-white rounded-xl border-4 border-black p-5">
           <Button
             variant="danger"
             onClick={() => setIsTraversalModalOpen(true)}
@@ -473,11 +503,15 @@ const BinarySearchTree = () => {
         )}
 
         <ReactFlow
+        nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         style={{
-            fill: 'rgba(217, 217, 217, 0.80)',
-            strokeWidth: '7px',
-            stroke: '#000',
-            boxShadow: '-12px -12px 4px 0px #565656 inset, 12px 12px 4px 0px #FDFDFD inset'
+          imageRendering: "pixelated",
+          imageRendering: "crisp-edges",
+          fill: 'rgba(217, 217, 217, 0.80)',
+          strokeWidth: '7px',
+          stroke: '#000',
+          boxShadow: '-12px -12px 4px 0px #565656 inset, 12px 12px 4px 0px #FDFDFD inset'
         }}
           nodes={nodes}
           edges={edges}
@@ -490,7 +524,7 @@ const BinarySearchTree = () => {
           panOnScroll
           zoomOnScroll
           zoomOnPinch
-          className="w-full rounded-xl h-full bg-minecraft-white opacity-75"
+          className="w-full rounded-xl h-full bg-minecraft-white opacity-80"
         >
           <Background color="#800000" gap={1000} />
           <Controls />

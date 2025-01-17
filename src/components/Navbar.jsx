@@ -42,7 +42,7 @@ const Navbar = () => {
         // transition={{ duration: 0.5, ease: 'linear' }}
         // transition={{ duration: 0.5, ease: 'easeOut' }}
         // transition={{ duration: 0.5, ease: 'easeIn' }}
-        transition={{ type: 'tween', duration: 0.5, }}
+        transition={{ type: 'tween', duration: 0.2, }}
         // transition={{ type: 'spring', stiffness: 70 }}
         // transition={{ type: 'keyframes', duration: 0.7, ease: 'easeInOut' }}
         className="bg-minecraft-whiteSecondary font-minecraftRegular shadow-craftingInset text-black fixed top-0 left-0 h-full w-64 z-50"
