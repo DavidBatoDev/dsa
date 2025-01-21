@@ -7,6 +7,7 @@ import Queue from './pages/Queue';
 import BinaryTreeTraversal from './pages/BinaryTreeTraversal';
 import BSTWithTraversals from './pages/BSTWithTraversal';
 import TowersOfHanoi from './pages/TowersOfHanoi';
+import Selection from './pages/Selection';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Navbar />
         <Routes>
           <Route path="/" element={<Homepage />} />
+          <Route path='/selection' element={<Selection />} />
           <Route path="/case1" element={<TicTacToe />} />
           <Route path="/case2" element={<Stack />} />
           <Route path="/case3" element={<Queue />} />

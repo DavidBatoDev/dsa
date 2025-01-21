@@ -7,11 +7,19 @@ const DirtNode = ({ data }) => {
   return (
     <div className="dirt-node">
       {/* Optional: Handles for connections */}
-      <Handle type="target" position="top" />
+      <Handle style={{
+        background: 'transparent', // Dark gray color
+        border: 'none',// Optional: Add border for handles
+      }} type="target" position="top" />
       <div className="node-content">
         {data.label}
       </div>
-      <Handle type="source" position="bottom" />
+      <Handle 
+      style={{
+        background: 'transparent', // Dark gray color
+        border: 'none',// Optional: Add border for handles
+      }}
+      type="source" position="bottom" />
     </div>
   );
 };
