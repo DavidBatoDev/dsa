@@ -8,6 +8,7 @@ import BinaryTreeTraversal from './pages/BinaryTreeTraversal';
 import BSTWithTraversals from './pages/BSTWithTraversal';
 import TowersOfHanoi from './pages/TowersOfHanoi';
 import Selection from './pages/Selection';
+import Sorting from './pages/Sorting';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path='/case4' element={<BinaryTreeTraversal />} />
           <Route path='/case5' element={<BSTWithTraversals />} />
           <Route path="/case6" element={<TowersOfHanoi />} />
+          <Route path="/case7" element={<Sorting />} />
         </Routes>
     </Router>
   );

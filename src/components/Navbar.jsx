@@ -17,7 +17,8 @@ const Navbar = () => {
     {path: '/case3', name: 'Queue'},
     { path: '/case4', name: 'Binary Tree' },
     {path: '/case5', name: 'BST with Traversal'},
-    {path: '/case6', name: 'Towers of Hanoi'}
+    {path: '/case6', name: 'Towers of Hanoi'},
+    {path: '/case7', name: 'Sorting'}
   ];
 
   return (
