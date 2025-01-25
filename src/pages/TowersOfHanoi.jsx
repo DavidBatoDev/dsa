@@ -10,7 +10,7 @@ const TowerOfHanoi = () => {
     [],
   ]);
   const [moves, setMoves] = useState(0);
-  const [isSolved, setIsSolved] = useState(false);
+  const [isSolved, setIsSolved] = useState(true);
   const [exceededMoves, setExceededMoves] = useState(false);
   const [draggedDisk, setDraggedDisk] = useState(null);
   const [timer, setTimer] = useState(0);
@@ -18,10 +18,9 @@ const TowerOfHanoi = () => {
 
   const minMoves = Math.pow(2, disks) - 1;
 
-
-    useEffect(() => {
-      document.title = 'Towers of Hanoi';
-    }, []);
+  useEffect(() => {
+    document.title = 'Towers of Hanoi';
+  }, []);
 
   useEffect(() => {
     const isComplete = towers[2].length === disks;
@@ -84,107 +83,115 @@ const TowerOfHanoi = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-secondary-light text-black px-6">
-      <h1 className="text-4xl font-extrabold mb-6">Tower of Hanoi</h1>
+    <div
+      className="min-h-screen flex flex-col items-center justify-center 
+        bg-[url('/images/toh-bg.png')] bg-cover md:bg-[length:150%] lg:bg-[length:150%] bg-center 
+        animate-panBackground p-6 relative"
+    >
+      <div className="flex items-center flex-col h-[500px] w-[90%] relative p-3 rounded-md border-4 border-gray-500 overflow-hidden">
+      <div className="absolute h-full top-0 w-full items-center justify-center opacity-90 bg-[#D9D9D9] z-[1]">
+      </div>
+        <div className="text-center mb-4 z-10">
+          <h1 className="font-minecraftBold text-3xl">Towers of Hanoi</h1>
+          <input
+            type="number"
+            value={disks}
+            min={3}
+            max={5}
+            onChange={(e) => {
+              const num = parseInt(e.target.value);
+              setDisks(num);
+              setTowers([Array.from({ length: num }, (_, i) => num - i), [], []]);
+              setMoves(0);
+              setIsSolved(false);
+              setExceededMoves(false);
+              setTimer(0);
+              setIsTimerRunning(false);
+            }}
+            className="text-center border border-black rounded-md p-2 font-pressStart bg-[#DFDF61] text-black"
+          />
+        </div>
+        <div className="z-10 flex justify-center items-start gap-32 w-full max-w-4xl border-b-[30px] border-[#6B4226] opacity-100 rounded">
+          {towers.map((tower, i) => (
+            <div
+              key={i}
+              className="flex flex-col items-center justify-end relative h-64 w-[30px] bg-[#6B4226] rounded-t-lg"
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={() => handleDrop(i)}
+            >
+              {tower.map((disk, index) => (
+                <motion.div
+                  key={disk}
+                  className={`absolute bg-white text-black font-bold text-center border border-black rounded-md cursor-grab ${
+                    draggedDisk === disk ? "opacity-50" : "opacity-100"
+                  }`}
+                  draggable={index === tower.length - 1}
+                  onDragStart={() => handleDragStart(disk)}
+                  style={{
+                    width: `${40 + disk * 20}px`,
+                    height: "24px",
+                    bottom: `${index * 26}px`,
+                    left: `calc(50% - ${(40 + disk * 20) / 2}px)`,
+                  }}
+                  initial={{ y: -50, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: 50, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  
+                </motion.div>
+              ))}
+            </div>
+          ))}
+        </div>
+        <div className="z-10 flex mt-4">
+          <button
+            onClick={resetGame}
+            className="text-dark font-minecraftRegular rounded-lg p-1 border-2 border-black bg-[#DFDF61] hover:bg-gray-700"
+          >
+            Reset
+          </button>
+        </div>
+
+        <div className="z-10 flex items-center gap-8 font-pressStart mt-1">
+          <p className={`text-lg font-bold ${exceededMoves ? "text-red-500" : "text-black"}`}>
+            Moves: {moves}
+          </p>
+          <p className="text-lg font-bold text-black">Time: {timer}s</p>
+        </div>
+
+        <AnimatePresence>
+          {isSolved && (
+            <motion.p
+              className="z-20 absolute top-10 right-5 mt-6 text-lg text-green-600 font-bold"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              transition={{ duration: 0.5 }}
+            >
+              Congratulations! You solved it!
+            </motion.p>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {exceededMoves && !isSolved && (
+            <motion.p
+              className="mt-6 text-lg text-red-500 font-bold"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              transition={{ duration: 0.5 }}
+            >
+              Exceeded optimal moves!
+            </motion.p>
+          )}
+        </AnimatePresence>
+
+      </div>
       
-      <div className="flex flex-col items-center bg-secondary p-6 rounded-lg shadow-md border border-gray-300 mb-6 w-full max-w-xl">
-        <label className="text-lg font-medium mb-2">Number of Disks:</label>
-        <input
-          type="number"
-          value={disks}
-          min={3}
-          max={5}
-          onChange={(e) => {
-            const num = parseInt(e.target.value);
-            setDisks(num);
-            setTowers([Array.from({ length: num }, (_, i) => num - i), [], []]);
-            setMoves(0);
-            setIsSolved(false);
-            setExceededMoves(false);
-            setTimer(0);
-            setIsTimerRunning(false);
-          }}
-          className="w-20 text-center border border-black rounded-md py-2 px-4 bg-white text-black"
-        />
-      </div>
 
-      <div className="flex justify-center items-start gap-32 w-full max-w-4xl">
-        {towers.map((tower, i) => (
-          <div
-            key={i}
-            className="flex flex-col items-center justify-end relative h-80 w-5 bg-[#6B4226] rounded-t-lg"
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={() => handleDrop(i)}
-          >
-            {tower.map((disk, index) => (
-              <motion.div
-                key={disk}
-                className={`absolute bg-yellow-400 text-black font-bold text-center border border-black rounded-md cursor-grab ${
-                  draggedDisk === disk ? "opacity-50" : "opacity-100"
-                }`}
-                draggable={index === tower.length - 1}
-                onDragStart={() => handleDragStart(disk)}
-                style={{
-                  width: `${40 + disk * 20}px`,
-                  height: "24px",
-                  bottom: `${index * 26}px`,
-                  left: `calc(50% - ${(40 + disk * 20) / 2}px)`,
-                }}
-                initial={{ y: -50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: 50, opacity: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                {disk}
-              </motion.div>
-            ))}
-          </div>
-        ))}
-      </div>
 
-      <div className="flex gap-6 mt-8">
-        <Button
-          onClick={resetGame}
-          className="text-dark font-bold rounded-lg hover:bg-gray-700"
-        >
-          Reset
-        </Button>
-      </div>
-
-      <div className="flex items-center gap-8 mt-6">
-        <p className={`text-lg font-bold ${exceededMoves ? "text-red-500" : "text-black"}`}>
-          Moves: {moves}
-        </p>
-        <p className="text-lg font-bold text-black">Time: {timer}s</p>
-      </div>
-
-      <AnimatePresence>
-        {isSolved && (
-          <motion.p
-            className="mt-6 text-lg text-green-600 font-bold"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.5 }}
-          >
-            Congratulations! You solved it!
-          </motion.p>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {exceededMoves && !isSolved && (
-          <motion.p
-            className="mt-6 text-lg text-red-500 font-bold"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.5 }}
-          >
-            Exceeded optimal moves!
-          </motion.p>
-        )}
-      </AnimatePresence>
     </div>
   );
 };

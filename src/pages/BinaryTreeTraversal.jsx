@@ -365,149 +365,155 @@ const BinaryTreeTraversal = () => {
 
   return (
     <div
-      style={{
-        backgroundImage: 'url(/images/binary-bg.png)', // Replace with your image path
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat', // Prevents the image from repeating
-        backgroundPosition: 'center', // Centers the image
-      }}
-      className="w-full h-screen relative py-[50px] px-[50px] pt-[60px]"
+      className="min-h-screen flex flex-col items-center justify-center 
+        bg-[url('/images/binary-bg.png')] bg-cover md:bg-[length:150%] lg:bg-[length:150%] bg-center 
+        animate-panBackground"
     >
-      {/* Modal for Levels */}
-      {isModalOpen && (
-        <div className="fixed inset-0 font-minecraftRegular bg-black bg-opacity-50 flex justify-center items-center z-30">
-          <div className="bg-minecraft-whiteSecondary shadow-craftingInset p-6 rounded-lg w-96 text-center z-10">
-            <h2 className="text-2xl font-bold mb-4">Enter Levels (1-5)</h2>
-            <input
-              type="number"
-              value={levels}
-              onChange={(e) =>
-                handleLevelChange(
-                  Math.min(5, Math.max(1, +e.target.value))
-                )
-              }
-              className="p-2 border border-dark bg-transparent rounded text-center w-24 mb-4 focus:outline-none focus:ring-2 focus:ring-red-600"
-              min="1"
-              max="5"
-            />
-            <div className="flex justify-center space-x-4">
-              <CustomButtom
-                variant="generateTree"
-                onClick={handleGenerate}
-                className="text-dark px-4 py-2 rounded shadow-md transition"
-              >
-                Generate Tree
-              </CustomButtom>
-              <CustomButtom
-                variant="clear"
-                onClick={() => setIsModalOpen(false)}
-                className="text-dark px-4 py-2 rounded shadow-md hover:bg-red-400 transition"
-              >
-                Close
-              </CustomButtom>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Modal for Traversal Selection */}
-      {isTraversalModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-
-          <div className="bg-minecraft-whiteSecondary border-4 border-black p-6 rounded-lg shadow-lg w-96 text-center">
-            <div className="h-full bg-minecraft-abyss bg-secondary-light text-black rounded-lg border border-[#1c1c1c] shadow-craftingBoard p-6">
-              <h2 className="text-2xl text-white font-bold mb-4 font-minecraftRegular">Choose Traversal Type</h2>
-              <div className="flex flex-col space-y-4">
+      <div
+        style={{
+          // backgroundImage: 'url(/images/binary-bg.png)', // Replace with your image path
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat', // Prevents the image from repeating
+          backgroundPosition: 'center', // Centers the image
+        }}
+        className="w-full h-screen relative py-[50px] px-[50px] pt-[60px] "
+      >
+        {/* Modal for Levels */}
+        {isModalOpen && (
+          <div className="fixed inset-0 font-minecraftRegular bg-black bg-opacity-50 flex justify-center items-center z-30">
+            <div className="bg-minecraft-whiteSecondary shadow-craftingInset p-6 rounded-lg w-96 text-center z-10">
+              <h2 className="text-2xl font-bold mb-4">Enter Levels (1-5)</h2>
+              <input
+                type="number"
+                value={levels}
+                onChange={(e) =>
+                  handleLevelChange(
+                    Math.min(5, Math.max(1, +e.target.value))
+                  )
+                }
+                className="p-2 border border-dark bg-transparent rounded text-center w-24 mb-4 focus:outline-none focus:ring-2 focus:ring-red-600"
+                min="1"
+                max="5"
+              />
+              <div className="flex justify-center space-x-4">
                 <CustomButtom
                   variant="generateTree"
-                  onClick={() => handleTraversalSelect("Preorder")}
-                  className="bg-primary text-dark px-4 py-2 rounded shadow-md hover:bg-primary-light transition"
+                  onClick={handleGenerate}
+                  className="text-dark px-4 py-2 rounded shadow-md transition"
                 >
-                  Preorder (TLR)
+                  Generate Tree
                 </CustomButtom>
                 <CustomButtom
-                  variant="generateTree"
-                  onClick={() => handleTraversalSelect("Inorder")}
-                  className="bg-primary text-dark px-4 py-2 rounded shadow-md hover:bg-primary-light transition"
+                  variant="clear"
+                  onClick={() => setIsModalOpen(false)}
+                  className="text-dark px-4 py-2 rounded shadow-md hover:bg-red-400 transition"
                 >
-                  Inorder (LTR)
-                </CustomButtom>
-                <CustomButtom
-                  variant="generateTree"
-                  onClick={() => handleTraversalSelect("Postorder")}
-                  className="text-dark px-4 py-2 rounded shadow-md hover:bg-primary-light transition"
-                >
-                  Postorder (LRT)
+                  Close
                 </CustomButtom>
               </div>
             </div>
-            <div className="w-full flex justify-center mt-4">
-              <CustomButtom
-                variant="clear"
-                onClick={() => setIsTraversalModalOpen(false)}
-                className="text-dark px-4 py-2 rounded shadow-md hover:bg-red-400 transition"
-              >
-                Close
-              </CustomButtom>
-
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Tree */}
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        nodeTypes={nodeTypes} // Register animated node type
-        edgeTypes={edgeTypes}
-        fitView
-        onInit={setReactFlowInstance} // Capture the ReactFlow instance
-        ref={reactFlowWrapper}
-        style={{
-          imageRendering: "pixelated",
-          imageRendering: "crisp-edges",
-          background: 'url(/images/rectangle.png)', // Replace with your image path
-          opacity: '1',
-          strokeWidth: "7px",
-          boxShadow: "-12px -12px 4px 0px #565656 inset, 12px 12px 4px 0px #FDFDFD inset"
-        }}
-        className="bg-url"
-        panOnDrag={false} // Disables panning by dragging the canvas
-        zoomOnScroll={false} // Disables zooming with the scroll wheel or touchpad
-        zoomOnPinch={false} // Disables zooming with pinch gestures on touch devices
-        panOnScroll={false} // Disables panning with the scroll wheel or touchpad
-        
-      >
-        <Background color="#800000" gap={100} style={{ shapeRendering: 'crispEdges' }}/>
-        <div className="absolute z-10 top-10 right-4">
-          <CustomButtom
-            onClick={() => handleChooseTraversal()}
-            variant="generateTree"
-            className="text-dark px-4 py-2 rounded shadow-md cursor-pointer transition z-30"
-          >
-            Choose Traversal
-          </CustomButtom>
-        </div>
-        {/* Reopen Modal Button */}
-        {!isModalOpen && (
-          <div className="absolute z-10 top-10 left-10">
-            <CustomButtom
-              variant="gray"
-              onClick={() => setIsModalOpen(true)}
-              className="text-dark px-4 py-2 rounded shadow-md hover:bg-primary-light transition"
-            >
-              Edit Levels
-            </CustomButtom>
           </div>
         )}
-        <Controls showInteractive={false} />
-      </ReactFlow>
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-secondary-light bg-opacity-80 py-2 flex justify-center min-w-[800px] w-[1200px]">
-          <span className="block text-[13px] font-minecraftRegular text-white">
-            {traversalResult || ""}
-          </span>
-        </div>
+
+        {/* Modal for Traversal Selection */}
+        {isTraversalModalOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+
+            <div className="bg-minecraft-whiteSecondary border-4 border-black p-6 rounded-lg shadow-lg w-96 text-center">
+              <div className="h-full bg-minecraft-abyss bg-secondary-light text-black rounded-lg border border-[#1c1c1c] shadow-craftingBoard p-6">
+                <h2 className="text-2xl text-white font-bold mb-4 font-minecraftRegular">Choose Traversal Type</h2>
+                <div className="flex flex-col space-y-4">
+                  <CustomButtom
+                    variant="generateTree"
+                    onClick={() => handleTraversalSelect("Preorder")}
+                    className="bg-primary text-dark px-4 py-2 rounded shadow-md hover:bg-primary-light transition"
+                  >
+                    Preorder (TLR)
+                  </CustomButtom>
+                  <CustomButtom
+                    variant="generateTree"
+                    onClick={() => handleTraversalSelect("Inorder")}
+                    className="bg-primary text-dark px-4 py-2 rounded shadow-md hover:bg-primary-light transition"
+                  >
+                    Inorder (LTR)
+                  </CustomButtom>
+                  <CustomButtom
+                    variant="generateTree"
+                    onClick={() => handleTraversalSelect("Postorder")}
+                    className="text-dark px-4 py-2 rounded shadow-md hover:bg-primary-light transition"
+                  >
+                    Postorder (LRT)
+                  </CustomButtom>
+                </div>
+              </div>
+              <div className="w-full flex justify-center mt-4">
+                <CustomButtom
+                  variant="clear"
+                  onClick={() => setIsTraversalModalOpen(false)}
+                  className="text-dark px-4 py-2 rounded shadow-md hover:bg-red-400 transition"
+                >
+                  Close
+                </CustomButtom>
+
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Tree */}
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          nodeTypes={nodeTypes} // Register animated node type
+          edgeTypes={edgeTypes}
+          fitView
+          onInit={setReactFlowInstance} // Capture the ReactFlow instance
+          ref={reactFlowWrapper}
+          style={{
+            imageRendering: "pixelated",
+            imageRendering: "crisp-edges",
+            background: 'url(/images/rectangle.png)', // Replace with your image path
+            opacity: '1',
+            strokeWidth: "7px",
+            boxShadow: "-12px -12px 4px 0px #565656 inset, 12px 12px 4px 0px #FDFDFD inset"
+          }}
+          className="bg-url"
+          panOnDrag={false} // Disables panning by dragging the canvas
+          zoomOnScroll={false} // Disables zooming with the scroll wheel or touchpad
+          zoomOnPinch={false} // Disables zooming with pinch gestures on touch devices
+          panOnScroll={false} // Disables panning with the scroll wheel or touchpad
+          
+        >
+          <Background color="#800000" gap={100} style={{ shapeRendering: 'crispEdges' }}/>
+          <div className="absolute z-10 top-10 right-4">
+            <CustomButtom
+              onClick={() => handleChooseTraversal()}
+              variant="generateTree"
+              className="text-dark px-4 py-2 rounded shadow-md cursor-pointer transition z-30"
+            >
+              Choose Traversal
+            </CustomButtom>
+          </div>
+          {/* Reopen Modal Button */}
+          {!isModalOpen && (
+            <div className="absolute z-10 top-10 left-10">
+              <CustomButtom
+                variant="gray"
+                onClick={() => setIsModalOpen(true)}
+                className="text-dark px-4 py-2 rounded shadow-md hover:bg-primary-light transition"
+              >
+                Edit Levels
+              </CustomButtom>
+            </div>
+          )}
+          <Controls showInteractive={false} />
+        </ReactFlow>
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-secondary-light bg-opacity-80 py-2 flex justify-center min-w-[800px] w-[1200px]">
+            <span className="block text-[13px] font-minecraftRegular text-white">
+              {traversalResult || ""}
+            </span>
+          </div>
+      </div>
     </div>
   );
 };
