@@ -13,6 +13,11 @@ const CustomButton = ({ variant = "default", children, icon: Icon, onClick, clas
           "bg-[#C28340] text-white hover:bg-brown-600 active:bg-brown-700 shadow-[0_4px_0_#1a1a1a]": variant === "arrival",
           "bg-gray-500 text-white hover:bg-gray-600 active:bg-gray-700 shadow-[0_4px_0_#1a1a1a]": variant === "departure",
           "bg-green-500 text-white hover:bg-green-600 active:bg-green-700 shadow-[0_4px_0_#1a1a1a]": variant === "departLastCar",
+          "bg-yellow-500 text-white hover:bg-yellow-600 active:bg-yellow-700 shadow-[0_4px_0_#1a1a1a]": variant === "generateTree",
+          "bg-red-500 text-white hover:bg-red-600 active:bg-red-700 shadow-[0_4px_0_#1a1a1a]": variant === "clear",
+          "bg-minecraft-white text-black hover:bg-minecraft-whiteSecondary active:bg-white shadow-[0_4px_0_#1a1a1a]": variant === "white",
+          // gray
+          "bg-minecraft-gray text-white hover:bg-gray-600 active:bg-gray-700 shadow-[0_4px_0_#1a1a1a]": variant === "gray",
         },
         // Add rounded shadow to all buttons
         "border-2 border-black rounded-md",

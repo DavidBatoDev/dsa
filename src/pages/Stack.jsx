@@ -14,7 +14,7 @@ const Stack = () => {
   const [message, setMessage] = useState(null);
   const [notification, setNotification] = useState(null);
   const [departingCar, setDepartingCar] = useState(null);
-  const [isDeparting, setIsDeparting] = useState(false); // Track departure state
+  const [isDeparting, setIsDeparting] = useState(false); 
 
   useEffect(() => {
     document.title = "Stack";
@@ -52,19 +52,19 @@ const Stack = () => {
 
   const handleArrival = () => {
     if (!plateNumber.trim()) {
-      showMessage('Plate number cannot be empty!');
+      setNotification('Plate number cannot be empty!');
       return;
     }
     if (plateNumber.length > 11) {
-      showMessage('Plate number must be 11 characters or less!');
+      setNotification('Plate number must be 11 characters or less!');
       return;
     }
     if (garage.includes(plateNumber)) {
-      showMessage('Plate number must be unique!');
+      setNotification('Plate number must be unique!');
       return;
     }
     if (garage.length >= 10) {
-      showMessage('Garage is full!');
+      setNotification('Garage is full!');
       return;
     }
     setGarage([...garage, plateNumber]);
@@ -75,15 +75,15 @@ const Stack = () => {
 
   const handleDeparture = () => {
     if (!plateNumber.trim()) {
-      showMessage('Plate number cannot be empty!');
+      showNotification('Plate number cannot be empty!');
       return;
     }
     if (!garage.includes(plateNumber)) {
-      showMessage('Car not found in the garage!');
+      showNotification('Car not found in the garage!');
       return;
     }
     if (garage[garage.length - 1] !== plateNumber) {
-      showMessage('Car must be at the top of the stack to depart!');
+      showNotification('Car must be at the top of the stack to depart!');
       return;
     }
     departLastCar(); // Use the same logic as departLastCar
@@ -107,7 +107,7 @@ const Stack = () => {
           initial={{ x: -300, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: -300, opacity: 0 }}
-          className="fixed top-4 right-4 bg-green-500 text-white py-2 px-8 rounded shadow-lg z-50"
+          className="fixed top-4 right-4 bg-minecraft-whiteSecondary text-black font-minecraftItalic border-2 border-black shadow-craftingBoard py-2 px-8 rounded z-50"
         >
           {notification}
         </motion.div>
@@ -132,7 +132,7 @@ const Stack = () => {
               />
               <CustomButton
                 variant="arrival"
-                icon={() => <FaCar className="text-xl h-[10px]" />}
+                icon={() => <FaCar className="text-xl" />}
                 onClick={handleArrival}
               >
                 Arrival
@@ -247,8 +247,6 @@ const Stack = () => {
               </div>
             </div>
           </div>
-
-
         </div>
 
       </div>

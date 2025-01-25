@@ -48,7 +48,7 @@ const Navbar = () => {
         // transition={{ type: 'keyframes', duration: 0.7, ease: 'easeInOut' }}
         className="bg-minecraft-whiteSecondary font-minecraftRegular shadow-craftingInset text-black fixed top-0 left-0 h-full w-64 z-50"
       >
-        <h2 className="text-2xl font-bold text-gray-800 p-6">Navigation</h2>
+        <h2 className="text-2xl font-bold text-gray-800 p-6">Seeds</h2>
         <ul className="display flex flex-col">
           {navLinks.map((link) => (
             <li key={link.path} className='hover:bg-primary-light p-3'>

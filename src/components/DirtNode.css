@@ -15,6 +15,6 @@
     color: white; /* Adjust text color for visibility */
     font-weight: bold;
     z-index: 1; /* Ensure text is above the background */
-    font: 'MinecraftRegular';
+    font: 'minecraftRegular';
   }
   

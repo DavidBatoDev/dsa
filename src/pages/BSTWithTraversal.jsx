@@ -11,6 +11,7 @@ import CustomButton from "../components/CustomButton";
 import Button from "../components/Button";
 import DirtNode from "../components/DirtNode";
 import PatternedEdge from "../components/PatternedEdge";
+import CustomButtom  from "../components/CustomButton";
 
 const nodeTypes = {
   dirt: DirtNode,
@@ -373,30 +374,30 @@ const BinarySearchTree = () => {
           stroke: '#000',
           boxShadow: '-12px -12px 4px 0px #565656 inset, 12px 12px 4px 0px #FDFDFD inset'
         }}
-        onSubmit={handleInsert} className="bg-minecraft-white border-4 border-black rounded-xl opacity-80 flex flex-row gap-2 p-5">
-          <div className="flex flex-col gap-5">
+        onSubmit={handleInsert} className="bg-minecraft-white  border-4 border-black rounded-xl opacity-90 flex flex-row justify-between gap-2 p-5">
+          <div className="flex flex-col flex-1 justify-between gap-5">
             <input
               type="number"
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
               placeholder="Enter integer"
-              className="p-2 border border-black bg-transparent rounded focus:outline-none w-full"
+              className="p-2 bg-minecraft-white shadow-craftingInset font-minecraftRegular border border-black rounded focus:outline-none w-full"
             />
-            <div className="text-sm">
-              <p className="font-semibold">Values in BST:</p>
-              <p>{values.join(", ") || "No values inserted yet."}</p>
+            <div className="text-sm h-[130px] overflow-auto">
+              <p className="font-minecraftRegular">Values in BST:</p>
+              <p className="font-minecraftRegular">{values.join(", ") || "No values inserted yet."}</p>
             </div>
           </div>
 
           <div className="flex flex-col gap-2">
             <CustomButton
-              variant="primary"
+              variant="departLastCar"
               type="submit"
             >
               Insert
             </CustomButton>
             <CustomButton
-              variant="danger"
+              variant="departure"
               onClick={handleClear}
             >
               Clear All
@@ -411,60 +412,70 @@ const BinarySearchTree = () => {
             stroke: '#000',
             boxShadow: '-12px -12px 4px 0px #565656 inset, 12px 12px 4px 0px #FDFDFD inset'
         }}
-        className="flex flex-row gap-2 opacity-80 bg-minecraft-white rounded-xl border-4 border-black p-5">
-          <Button
-            variant="danger"
+        className="flex flex-row gap-2 opacity-90 bg-minecraft-white rounded-xl border-4 border-black p-5">
+          <CustomButton
+            variant="arrival"
             onClick={() => setIsTraversalModalOpen(true)}
             className="text-dark px-4 py-2 rounded hover:bg-red-600"
           >
             Choose Traversal
-          </Button>
+          </CustomButton>
         </div>
       </div>
 
       {/* RIGHT: ReactFlow visualization */}
       <div className="w-3/4 h-full relative">
         {/* Traversal result display */}
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-80 py-2 px-4 rounded shadow z-10">
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-90 py-2 px-4 rounded shadow z-10">
           <span className="block text-sm text-gray-800">
             {traversalResult || ""}
           </span>
         </div>
 
-        {/* Modal for Traversal Type */}
-        {isTraversalModalOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-96 text-center">
-              <h2 className="text-2xl font-bold mb-4">Choose Traversal Type</h2>
+      {/* Modal for Traversal Selection */}
+      {isTraversalModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+
+          <div className="bg-minecraft-whiteSecondary border-4 border-black p-6 rounded-lg shadow-lg w-96 text-center">
+            <div className="h-full bg-minecraft-abyss bg-secondary-light text-black rounded-lg border border-[#1c1c1c] shadow-craftingBoard p-6">
+              <h2 className="text-2xl text-white font-bold mb-4 font-minecraftRegular">Choose Traversal Type</h2>
               <div className="flex flex-col space-y-4">
-                <button
+                <CustomButtom
+                  variant="arrival"
                   onClick={() => handleTraversalSelect("Preorder")}
-                  className="bg-red-800 text-white px-4 py-2 rounded shadow-md hover:bg-red-600 transition"
+                  className="bg-primary text-dark px-4 py-2 rounded shadow-md hover:bg-primary-light transition"
                 >
                   Preorder (TLR)
-                </button>
-                <button
+                </CustomButtom>
+                <CustomButtom
+                  variant="arrival"
                   onClick={() => handleTraversalSelect("Inorder")}
-                  className="bg-red-800 text-white px-4 py-2 rounded shadow-md hover:bg-red-600 transition"
+                  className="bg-primary text-dark px-4 py-2 rounded shadow-md hover:bg-primary-light transition"
                 >
                   Inorder (LTR)
-                </button>
-                <button
+                </CustomButtom>
+                <CustomButtom
+                  variant="arrival"
                   onClick={() => handleTraversalSelect("Postorder")}
-                  className="bg-red-800 text-white px-4 py-2 rounded shadow-md hover:bg-red-600 transition"
+                  className="text-dark px-4 py-2 rounded shadow-md hover:bg-primary-light transition"
                 >
                   Postorder (LRT)
-                </button>
-                <button
-                  onClick={() => setIsTraversalModalOpen(false)}
-                  className="bg-gray-500 text-white px-4 py-2 rounded shadow-md hover:bg-gray-600 transition"
-                >
-                  Close
-                </button>
+                </CustomButtom>
               </div>
             </div>
+            <div className="w-full flex justify-center mt-4">
+              <CustomButtom
+                variant="clear"
+                onClick={() => setIsTraversalModalOpen(false)}
+                className="text-dark px-4 py-2 rounded shadow-md hover:bg-red-400 transition"
+              >
+                Close
+              </CustomButtom>
+
+            </div>
           </div>
-        )}
+        </div>
+      )}
 
         <ReactFlow
         nodeTypes={nodeTypes}
@@ -488,7 +499,7 @@ const BinarySearchTree = () => {
           panOnScroll
           zoomOnScroll
           zoomOnPinch
-          className="w-full rounded-xl h-full bg-minecraft-white opacity-80"
+          className="w-full rounded-xl h-full bg-minecraft-white opacity-90"
         >
           <Background color="#800000" gap={1000} />
           <Controls />

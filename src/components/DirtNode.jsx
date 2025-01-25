@@ -11,7 +11,7 @@ const DirtNode = ({ data }) => {
         background: 'transparent', // Dark gray color
         border: 'none',// Optional: Add border for handles
       }} type="target" position="top" />
-      <div className="node-content">
+      <div className="node-content font-minecraftRegular">
         {data.label}
       </div>
       <Handle 
