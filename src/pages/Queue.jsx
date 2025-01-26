@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaCar } from "react-icons/fa";
 import Button from "../components/Button";
+import CustomButton from "../components/CustomButton";
+import MinecraftBtn from "../components/MinecraftBtn";
+import CartIcon from '/images/cart-icon.png';
+import Cart from '/images/cart.png';
 
 const Queue = () => {
   const [garage, setGarage] = useState([]);
@@ -41,15 +45,15 @@ const Queue = () => {
   // Enqueue / Arrival
   const handleArrival = () => {
     if (!plateNumber.trim()) {
-      showMessage("Plate number cannot be empty!");
+      showNotification("Plate number cannot be empty!");
       return;
     }
     if (garage.includes(plateNumber)) {
-      showMessage("Plate number must be unique!");
+      showNotification("Plate number must be unique!");
       return;
     }
     if (garage.length >= 10) {
-      showMessage("Garage is full!");
+      showNotification("Garage is full!");
       return;
     }
     setGarage((prev) => [...prev, plateNumber]);
@@ -73,21 +77,21 @@ const Queue = () => {
   
   const departCar = (plateNumber) => {
     if (garage.length === 0) {
-      showMessage("Garage is empty!");
+      showNotification("Garage is empty!");
       return;
     }
     if (!plateNumber.trim()) {
-      showMessage("Plate number cannot be empty!");
+      showNotification("Plate number cannot be empty!");
       return;
     }
 
     if (!garage.includes(plateNumber)) {
-      showMessage("Car is not in the garage!");
+      showNotification("Car is not in the garage!");
       return;
     }
 
     if (garage.indexOf(plateNumber) !== 0) {
-      showMessage("Car is not in front!");
+      showNotification("Car is not in front!");
       return;
     }
     const departingCar = garage[garage.indexOf(plateNumber)];
@@ -98,8 +102,20 @@ const Queue = () => {
   };
 
   return (
-    <div className="min-h-screen bg-secondary p-10 text-gray-800 relative">
-      <h1 className="text-4xl font-bold mb-6 text-center">PUP-CEA Parking Garage</h1>
+    <div
+      className="min-h-screen flex flex-col
+        bg-[url('/images/old-stone-bg.jpg')] bg-cover md:bg-[length:150%] lg:bg-[length:150%] bg-center 
+        relative animate-scroll"
+    >
+      <div className="mt-5">
+        Nav
+      </div>
+  
+      <div className='flex justify-center items-center gap-2'>
+        <div className='bg-[#7f7f7f] p-2 rounded-lg border-4 border-black mb-2'>
+          <h1 className="z-30 text-4xl font-bold text-center text-white font-minecraftBold">PUP-CEA Parking Garage</h1>
+        </div>
+      </div>
 
       {/* Notification (Animated Slide-In) */}
       {notification && (
@@ -107,61 +123,65 @@ const Queue = () => {
           initial={{ x: -300, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: -300, opacity: 0 }}
-          className="fixed top-4 right-4 bg-green-500 text-white py-2 px-8 rounded shadow-lg z-50"
+          className="fixed top-4 right-4 bg-minecraft-whiteSecondary text-black font-minecraftItalic border-2 border-black shadow-craftingBoard py-2 px-8 rounded z-50"
         >
           {notification}
         </motion.div>
       )}
 
       {/* Form Section */}
-      <div className="flex justify-center mb-8">
-        <div className="bg-secondary-light text-black p-6 rounded-lg shadow-lg border border-gray-200 w-[1300px] max-w-7xl min-h-64">
-          <h2 className="text-2xl font-bold mb-4 text-center">Car Arrival/Departure</h2>
+      <div className="z-10 flex justify-center">
+        <div className="w-screen text-black max-w-7xl min-h-64">
+          <h2 className="text-xl font-pressStart my-2 text-center">Car Arrival/Departure</h2>
           <form
             onSubmit={(e) => e.preventDefault()}
             className="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4 justify-center"
           >
-            <input
-              type="text"
-              value={plateNumber}
-              onChange={(e) => setPlateNumber(e.target.value)}
-              placeholder="Enter Plate Number"
-              className="p-2 rounded border text-black border-dark bg-transparent w-full md:w-auto"
-            />
-            <Button
-              variant="success"
-              size="md"
-              onClick={handleArrival}
-              className="flex items-center justify-center gap-2"
-            >
-              <FaCar className="text-xl" />
-              <span>Arrival</span>
-            </Button>
-            <Button
-              variant="danger"
-              size="md"
-              className="flex items-center justify-center gap-2"
-              onClick={() => departCar(plateNumber)}
+            <div className="flex flex-col gap-4 justify-center items-center">
+              <div>
+                <input
+                  type="text"
+                  value={plateNumber}
+                  onChange={(e) => setPlateNumber(e.target.value)}
+                  placeholder="ENTER PLATE NUMBER..."
+                  className="p-2 font-minecraftRegular placeholder:text-gray-600 bg-minecraft-whiteSecondary rounded border text-black border-black w-full md:w-auto"
+                />
+              </div>
+              <div className="flex gap-2">
+                <MinecraftBtn
+                  variant="success"
+                  size="md"
+                  onClick={handleArrival}
+                  className="flex items-center justify-center gap-2"
+                >
+                  <img src={CartIcon} className="w-5 h-5" />
+                  <span>Arrival</span>
+                </MinecraftBtn>
+                <MinecraftBtn
+                  variant="danger"
+                  size="md"
+                  className="flex items-center justify-center gap-2"
+                  onClick={() => departCar(plateNumber)}
+                >
+                  <img src={CartIcon} className="w-5 h-5" />
+                  <span>Departure</span>
+                </MinecraftBtn>
+                <MinecraftBtn
+                  type="primary"
+                  onClick={handleDepartureLastCar}
+                  className="flex items-center justify-center gap-2"
+                >
+                <img src={CartIcon} className="w-5 h-5" />
+                  <span>Depart Front Car</span>
+                </MinecraftBtn>
 
-            >
-              <FaCar className="text-xl" />
-              <span>Departure</span>
-            </Button>
-
-
-            <Button
-              type="primary"
-              onClick={handleDepartureLastCar}
-              className="flex items-center justify-center gap-2"
-            >
-              <FaCar className="text-xl" />
-              <span>Depart Front Car</span>
-            </Button>
+              </div>
+            </div>
           </form>
           <div className="mt-6 w-full flex justify-around">
             <div className="flex gap-10">
-              <p className="text-lg">Total Arrivals: {arrivals}</p>
-              <p className="text-lg">Total Departures: {departures}</p>
+              <p className="text-lg font-minecraftRegular">Total Arrivals: {arrivals}</p>
+              <p className="text-lg font-minecraftRegular">Total Departures: {departures}</p>
             </div>
           </div>
           {message && (
@@ -178,8 +198,9 @@ const Queue = () => {
       </div>
 
       {/* Garage Section */}
-      <div className="bg-secondary-light p-4 rounded-lg shadow-lg border border-gray-200 w-full max-w-7xl mx-auto flex justify-center items-center overflow-x-auto space-x-4">
-        <div className="flex gap-2 justify-start items-center w-full mx-auto">
+      <div className="relative py-4 shadow-inner border border-gray-900 w-full min-h-40 flex justify-center items-center overflow-x-auto bg-minecraft-abyss overflow-y-hidden">
+        <div className="absolute h-20 bottom-[-20px] w-full bg-[url('/images/rail.png')] bg-contain animate-seamlessScroll" />
+        <div className="flex gap-2 justify-center items-center w-full z-10 overflow-x-hidden overflow-y-hidden py-4 ">
           <AnimatePresence>
             {garage.map((car, index) => {
               // Is this car the front or rear of the queue?
@@ -192,34 +213,57 @@ const Queue = () => {
               let borderClass = "";
               if (isFront && isRear) {
                 // Both front and rear
-                borderClass = "border-4 border-primary"; 
+                // borderClass = "border-4 border-primary"; 
+                borderClass = "" 
               } else if (highlightedCar === car) {
-                borderClass = "border-4 border-delete";
+                // borderClass = "border-4 border-delete";
+                borderClass = "";
               } else if (isFront) {
-                borderClass = "border-4 border-primary";
+                // borderClass = "border-4 border-primary";
+                borderClass = "";
               } else if (isRear) {
-                borderClass = "border-4 border-green-500";
+                // borderClass = "border-4 border-green-500";
+                borderClass = "";
               }
 
               return (
                 <motion.div
                   key={car}
                   layout
-                  initial={{ x: 50, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  exit={{ x: -300, opacity: 0 }}
+                  initial={{ x: 1000, opacity: 1 }}
+                  animate={{ x: 1, opacity: 1 }}
+                  exit={{ x: -1000, opacity: 1 }}
                   transition={{
+                    duration: 0.9,
                     layout: {
                       type: "spring",
-                      stiffness: 300,
+                      stiffness: 20, // 300
                       damping: 20,
                     },
                   }}
-                  className={`relative bg-gray-100 text-gray-800 p-2 rounded-lg flex items-center justify-between flex-col shadow-md border border-gray-300 min-w-[100px] ${borderClass}`}
+                  className={`z-50 relative h-[90px] text-gray-800 rounded-lg flex items-center justify-between flex-col min-w-[100px] ${borderClass}`}
                 >
                   {/* Car icon and plate number */}
-                  <FaCar className="text-3xl text-gray-600" />
-                  <span className="text-sm font-bold">{car}</span>
+                  <div className="w-28 h-14 absolute bottom-0 mb-[-10px]">
+                    <img src={Cart} className="absolute bottom-0 w-full h-full" />
+                    <p className="absolute bottom-0 text-center w-full text-xs font-minecraftRegular font-bold text-dark">{car}</p>
+                  </div>
+
+                  {isRear && isFront && (
+                    <motion.div
+                      initial={{ scale: 0, opacity: 0, y: 10 }}
+                      animate={{ scale: 1, opacity: 1, y: 0 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 200,
+                        damping: 12,
+                        delay: 0.1,
+                      }}
+                      className="absolute z-40 -top-4 left-1/2 transform font-minecraftRegular font-bold -translate-x-1/2 bg-[#D8B589] border border-orange-200 px-2 py-1 text-dark text-xs shadow-inner"
+                    >
+                      FRONTREAR
+                    </motion.div>
+                  )}
 
                   {/* If front car => show the "Front" arrow */}
                   {isFront && (
@@ -232,7 +276,7 @@ const Queue = () => {
                         damping: 12,
                         delay: 0.1,
                       }}
-                      className="absolute -top-4 left-1/2 transform font-primary font-bold -translate-x-1/2 bg-primary px-2 py-1 rounded-full text-dark text-xs shadow"
+                      className="z-30 absolute -top-4 left-1/2 transform font-minecraftRegular font-bold -translate-x-1/2 bg-[#D8B589] border border-orange-200 px-2 py-1 text-dark text-xs shadow-inner"
                     >
                       FRONT
                     </motion.div>
@@ -249,7 +293,7 @@ const Queue = () => {
                         damping: 12,
                         delay: 0.1,
                       }}
-                      className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-dark px-2 py-1 rounded-full text-xs font-bold shadow"
+                      className="absolute -top-4 left-1/2 transform font-minecraftRegular font-bold -translate-x-1/2 bg-[#D8B589] border border-orange-200 px-2 py-1 text-dark text-xs shadow-inner"
                     >
                       REAR
                     </motion.div>
@@ -262,9 +306,9 @@ const Queue = () => {
                       animate={{ scale: 1, opacity: 1 }}
                       exit={{ scale: 0, opacity: 0 }}
                       transition={{ type: "spring", stiffness: 100, duration: 1 }}
-                      className="absolute -top-4 right-1/2 transform translate-x-1/2 bg-delete px-2 py-1 rounded-full text-dark text-xs font-bold shadow"
+                      className="z-10 absolute -top-4 left-1/2 transform font-minecraftRegular font-bold w-16 -translate-x-1/2 bg-[#D8B589] border border-orange-200 px-2 py-1 text-dark text-[9px] shadow-inner"
                     >
-                      SELECTED
+                      THAT'S ME!
                     </motion.div>
                   )}
 
@@ -277,8 +321,8 @@ const Queue = () => {
           {garage.length === 0 && (
             <div className="w-full flex items-center justify-center">
               <div className="flex gap-5 items-center space-y-4">
-                <FaCar className="text-6xl text-gray-300" />
-                <p className="text-2xl font-bold text-gray-400">Garage is Empty</p>
+                {/* <FaCar className="text-6xl text-gray-300" />
+                <p className="text-2xl font-bold text-gray-400">Garage is Empty</p> */}
               </div>
             </div>
           )}

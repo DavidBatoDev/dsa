@@ -371,7 +371,6 @@ const BinarySearchTree = () => {
       className="w-full h-screen flex gap-8 py-[70px] px-[70px]">
         {/* LEFT: input form */}
 
-        
         <div className="w-[730px] gap-7 flex flex-col">
           <form 
           style={{
@@ -380,8 +379,9 @@ const BinarySearchTree = () => {
             stroke: '#000',
             boxShadow: '-12px -12px 4px 0px #565656 inset, 12px 12px 4px 0px #FDFDFD inset'
           }}
-          onSubmit={handleInsert} className="bg-minecraft-white  border-4 border-black rounded-xl opacity-90 flex flex-row justify-between gap-2 p-5">
-            <div className="flex flex-col flex-1 justify-between gap-5">
+          onSubmit={handleInsert} className="relative border-4 border-black rounded-xl flex flex-row justify-between gap-2 p-5">
+            <div className="top-0 left-0 absolute w-full h-full bg-minecraft-white rounded-xl opacity-80"/>
+            <div className="z-10 flex flex-col flex-1 justify-between gap-5">
               <input
                 type="number"
                 value={userInput}
@@ -395,7 +395,7 @@ const BinarySearchTree = () => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 z-10">
               <CustomButton
                 variant="departLastCar"
                 type="submit"
@@ -418,15 +418,16 @@ const BinarySearchTree = () => {
               stroke: '#000',
               boxShadow: '-12px -12px 4px 0px #565656 inset, 12px 12px 4px 0px #FDFDFD inset'
           }}
-          className="flex flex-col gap-2 opacity-90 h-80 bg-minecraft-white rounded-xl border-4 border-black p-5">
+          className="relative flex flex-col gap-2 h-80 rounded-xl border-4 border-black p-5">
+          <div className="top-0 left-0 absolute w-full h-full bg-minecraft-white rounded-xl opacity-80"/>
             <CustomButton
               variant="arrival"
               onClick={() => setIsTraversalModalOpen(true)}
-              className="text-dark font-minecraftRegular px-4 py-2 rounded hover:bg-red-600"
+              className="z-10 text-dark font-minecraftRegular px-4 py-2 rounded hover:bg-red-600"
             >
               Choose Traversal
             </CustomButton>
-            <div className="">
+            <div className="z-10 flex flex-col gap-2">
               <span className="font-minecraftRegular text-sm text-gray-800">
                 {traversalResult || ""}
               </span>
@@ -507,9 +508,15 @@ const BinarySearchTree = () => {
             panOnScroll
             zoomOnScroll
             zoomOnPinch
-            className="w-full rounded-xl h-full bg-minecraft-white opacity-90"
+            className="w-full rounded-xl h-full bg-minecraft-white opacity-90 border-4 border-black"
           >
-            <Background color="#0000" gap={100} />
+            {/* <Background color="#0000" gap={100} /> */}
+            {values.length === 0 && (
+            <div className="w-full h-full flex flex-col justify-center items-center">
+              <img className="w-60 6-40" src="https://piskel-imgstore-b.appspot.com/img/a1f1cb4a-db66-11ef-8efa-7363dbb1d942.gif" alt="" />
+              <p className="font-minecraftRegular">Insert a block to start...</p>
+            </div>
+            )}
             <Controls />
           </ReactFlow>
         </div>

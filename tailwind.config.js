@@ -26,10 +26,20 @@ export default {
           '0%': { backgroundPosition: '0% 50%' },
           '100%': { backgroundPosition: '100% 50%' },
         },
+        scroll: {
+          "0%": { backgroundPosition: "0% 0%" },
+          "100%": { backgroundPosition: "-100% 0%" },
+        },
+        seamlessScroll: {
+          "0%": { backgroundPosition: "0% 0%" },
+          "100%": { backgroundPosition: "100% -100%" }, // Scroll left
+        },
       },
       animation: {
         // 20s linear infinite = it’ll smoothly pan forever
         // alternate = it’ll pan from left to right, then right to left
+        scroll: "scroll 6s linear infinite",
+        seamlessScroll: "seamlessScroll 4s linear infinite",
         panBackground: 'panBackground 20s linear infinite alternate',
       },
       // insets shadow

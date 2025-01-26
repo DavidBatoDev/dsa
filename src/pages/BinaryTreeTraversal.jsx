@@ -7,7 +7,6 @@ import ReactFlow, {
   useEdgesState,
 } from "reactflow";
 import "reactflow/dist/style.css";
-import Button from "../components/Button";
 import AnimatedNode from "../components/AnimatedNode";
 // import PatternedEdge from "../components/PatternedEdge";
 import SolidBrownEdges from "../components/SolidBrownEdges";
@@ -22,12 +21,15 @@ const edgeTypes = {
   brown: SolidBrownEdges,
 };
 
+
 const BinaryTreeTraversal = () => {
   const [levels, setLevels] = useState(1); // Initialize to 1 for better UX
   const [isModalOpen, setIsModalOpen] = useState(true);
 
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+
+  const [showSkipTraversal, setShowSkipTraversal] = useState(false);
 
   const reactFlowWrapper = useRef(null);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
@@ -51,6 +53,20 @@ const BinaryTreeTraversal = () => {
     }
   }, [nodes, reactFlowInstance]);
 
+  const unhiglightNodes = () => {
+    setNodes((prev) =>
+      prev.map((node) => ({
+        ...node,
+        style: {
+          ...node.style,
+          background: "transparent", // Reset background
+          color: "black", // Reset text color
+        },
+      }))
+    );
+  };
+
+
   const clearTraversal = () => {
     if (traversalIntervalRef.current) {
       clearInterval(traversalIntervalRef.current);
@@ -73,6 +89,7 @@ const BinaryTreeTraversal = () => {
 
   const createTree = (desiredLevels) => {
     clearTraversal();
+    setTraversalType("");
 
     if (desiredLevels < 1 || desiredLevels > 5) {
       alert("Levels must be between 1 and 5!");
@@ -268,6 +285,8 @@ const BinaryTreeTraversal = () => {
       alert("Please generate a tree first!");
       return;
     }
+    setShowSkipTraversal(true);
+    setTraversalType(type);
 
     // Reset all node styles to default without unnecessary updates
     setNodes((prev) =>
@@ -308,8 +327,15 @@ const BinaryTreeTraversal = () => {
       if (currentIndex >= traversalOrder.length) {
         clearTraversal();
         setTraversalResult(traversalOrder.join(" -> "));
+        setShowSkipTraversal(false);
+        unhiglightNodes();
         return;
       }
+      if (!traversalOrder[currentIndex]) {
+        clearTraversal();
+        return;
+      }
+    
 
       const prevNodeId = traversalOrder[currentIndex - 1]?.toString(); // Previous node
       const currentNodeId = traversalOrder[currentIndex].toString(); // Current node
@@ -363,6 +389,35 @@ const BinaryTreeTraversal = () => {
     setLevels(newLevel);
   };
 
+  // skip traversal
+  const skipTraversal = () => {
+    console.log('Traversal Type', traversalType)
+
+    if (traversalIntervalRef.current) {
+      clearInterval(traversalIntervalRef.current);
+      traversalIntervalRef.current = null;
+    }
+    unhiglightNodes(); // Reset all node styles
+
+    // Compute the full traversal result immediately
+    if (traversalType) {
+      const treeRoot = buildTree();
+      let fullTraversal = [];
+      if (traversalType === "Preorder") {
+        fullTraversal = preorderTraversal(treeRoot);
+      } else if (traversalType === "Inorder") {
+        fullTraversal = inorderTraversal(treeRoot);
+      } else if (traversalType === "Postorder") {
+        fullTraversal = postorderTraversal(treeRoot);
+      }
+  
+      // Set the full traversal result directly
+      setTraversalResult(fullTraversal.join(" -> "));
+      setShowSkipTraversal(false);
+    }
+  };
+  
+
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center 
@@ -376,7 +431,7 @@ const BinaryTreeTraversal = () => {
           backgroundRepeat: 'no-repeat', // Prevents the image from repeating
           backgroundPosition: 'center', // Centers the image
         }}
-        className="w-full h-screen relative py-[50px] px-[50px] pt-[60px] "
+        className="w-full h-screen relative px-[50px] pt-[60px] pb-[60px] "
       >
         {/* Modal for Levels */}
         {isModalOpen && (
@@ -482,7 +537,8 @@ const BinaryTreeTraversal = () => {
           zoomOnScroll={false} // Disables zooming with the scroll wheel or touchpad
           zoomOnPinch={false} // Disables zooming with pinch gestures on touch devices
           panOnScroll={false} // Disables panning with the scroll wheel or touchpad
-          
+          minZoom={0.3}
+
         >
           <Background color="#800000" gap={100} style={{ shapeRendering: 'crispEdges' }}/>
           <div className="absolute z-10 top-10 right-4">
@@ -496,6 +552,7 @@ const BinaryTreeTraversal = () => {
           </div>
           {/* Reopen Modal Button */}
           {!isModalOpen && (
+            <>
             <div className="absolute z-10 top-10 left-10">
               <CustomButtom
                 variant="gray"
@@ -505,14 +562,29 @@ const BinaryTreeTraversal = () => {
                 Edit Levels
               </CustomButtom>
             </div>
+            <div className={`absolute z-10 top-24 ml-10 ${showSkipTraversal ? 'flex' : 'hidden'} `}>
+              <CustomButtom
+                variant="arrival"
+                onClick={() => skipTraversal()}
+                className="bg-primary text-dark px-4 py-2 rounded shadow-md hover:bg-primary-light transition"
+              >
+                Skip Traversal
+              </CustomButtom>
+            </div>
+              </>
           )}
           <Controls showInteractive={false} />
         </ReactFlow>
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-secondary-light bg-opacity-80 py-2 flex justify-center min-w-[800px] w-[1200px]">
-            <span className="block text-[13px] font-minecraftRegular text-white">
-              {traversalResult || ""}
+        {traversalResult && (
+          <div className="bg-gray-700 w-max max-w-[1180px] absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-secondary-light bg-opacity-80 py-2 flex justify-center items-center gap-2 p-3 border rounded">
+            <span className="text-[13px] font-minecraftBold text-white">
+              
             </span>
+              <span className="text-center text-[13px] font-minecraftBold text-white">
+                {traversalType + ": " + traversalResult || ""}
+              </span>
           </div>
+        )}
       </div>
     </div>
   );
