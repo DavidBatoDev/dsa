@@ -107,17 +107,29 @@ const SortingVisualizer = () => {
     for (let i = 1; i < n; i++) {
       let key = arr[i];
       let j = i - 1;
+      let insertPosition = j + 1;
 
       while (j >= 0 && arr[j] > key) {
         setComparing([j, j + 1]);
         await delay(animationSpeed);
 
+        // Shift elements to the right
         arr[j + 1] = arr[j];
+        insertPosition = j;
         j--;
-        setArray([...arr]);
+        
+        // Create a temporary array showing the current state with the key value "floating"
+        const tempArr = [...arr];
+        tempArr[insertPosition] = key;
+        setArray(tempArr);
       }
-      arr[j + 1] = key;
+
+      // Final placement of key
+      arr[insertPosition] = key;
+      setArray([...arr]);
+      await delay(animationSpeed);
     }
+    
     setComparing([]);
     setSorting(false);
   };
@@ -387,7 +399,7 @@ const SortingVisualizer = () => {
         <AnimatePresence>
           {array.map((value, index) => (
             <motion.div
-              key={value}
+              key={`${value}-${index}`}
               layout
               initial={{ scale: 0, opacity: 0 }}
               animate={{ 
@@ -395,14 +407,14 @@ const SortingVisualizer = () => {
                 opacity: 1,
                 backgroundColor: 
                   comparing.includes(index) ? '#EF4444' : 
-                  (currentMin === index ? '#10B981' : '#3B82F6')
+                  (currentMin === index ? '#10B981' : '#3B82F6'),
+                y: comparing.includes(index) ? -20 : 0
               }}
               exit={{ scale: 0, opacity: 0 }}
               transition={{ 
-                duration: 0.5,
                 type: "spring",
-                stiffness: 70,
-                damping: 10
+                stiffness: 120,
+                damping: 14
               }}
               className={`
                 w-12 h-12 flex items-center justify-center 
@@ -411,7 +423,8 @@ const SortingVisualizer = () => {
               style={{
                 left: `${index * 60}px`,
                 top: '50%',
-                transform: 'translateY(-50%)'
+                transform: 'translateY(-50%)',
+                // height: `${value * 2}px` 
               }}
             >
               {value}
