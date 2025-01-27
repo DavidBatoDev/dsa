@@ -9,30 +9,26 @@ const SortingVisualizer = () => {
   const [arrayLength, setArrayLength] = useState(8);
   const [animationSpeed, setAnimationSpeed] = useState(300);
   const [currentMin, setCurrentMin] = useState(null);
+  const [mergingGroups, setMergingGroups] = useState([]);
 
-  // Generate random array
   const generateArray = (length = arrayLength) => {
     const newArray = Array.from({ length }, () => Math.floor(Math.random() * 100) + 1);
     setArray(newArray);
   };
 
-  // Handle array length change
   const handleArrayLengthChange = (e) => {
     const newLength = parseInt(e.target.value);
     setArrayLength(newLength);
     generateArray(newLength);
   };
 
-  // Handle animation speed change
   const handleAnimationSpeedChange = (e) => {
     const newSpeed = parseInt(e.target.value);
     setAnimationSpeed(newSpeed);
   };
 
-  // Shared delay function
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-  // Bubble Sort
   const bubbleSort = async () => {
     setSorting(true);
     setCurrentAlgorithm('Bubble Sort');
@@ -54,7 +50,6 @@ const SortingVisualizer = () => {
     setSorting(false);
   };
 
-  // Selection Sort with Educational Visualization
   const selectionSort = async () => {
     setSorting(true);
     setCurrentAlgorithm('Selection Sort');
@@ -65,7 +60,6 @@ const SortingVisualizer = () => {
       let minIndex = i;
       setCurrentMin(minIndex);
 
-      // Find the minimum element in unsorted part
       for (let j = i + 1; j < n; j++) {
         setComparing([minIndex, j]);
         await delay(animationSpeed);
@@ -75,21 +69,17 @@ const SortingVisualizer = () => {
         }
       }
 
-      // If a smaller element is found, swap
       if (minIndex !== i) {
-        // Visualize swap with a temporary state
         const tempArr = [...arr];
         tempArr[i] = arr[minIndex];
         tempArr[minIndex] = arr[i];
         setArray(tempArr);
         await delay(animationSpeed);
 
-        // Actual swap
         [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
         setArray([...arr]);
       }
 
-      // Reset current min after each iteration
       setCurrentMin(null);
     }
 
@@ -97,7 +87,6 @@ const SortingVisualizer = () => {
     setSorting(false);
   };
 
-  // Insertion Sort
   const insertionSort = async () => {
     setSorting(true);
     setCurrentAlgorithm('Insertion Sort');
@@ -113,18 +102,15 @@ const SortingVisualizer = () => {
         setComparing([j, j + 1]);
         await delay(animationSpeed);
 
-        // Shift elements to the right
         arr[j + 1] = arr[j];
         insertPosition = j;
         j--;
         
-        // Create a temporary array showing the current state with the key value "floating"
         const tempArr = [...arr];
         tempArr[insertPosition] = key;
         setArray(tempArr);
       }
 
-      // Final placement of key
       arr[insertPosition] = key;
       setArray([...arr]);
       await delay(animationSpeed);
@@ -134,54 +120,70 @@ const SortingVisualizer = () => {
     setSorting(false);
   };
 
-  // Merge Sort
   const mergeSort = async () => {
     setSorting(true);
     setCurrentAlgorithm('Merge Sort');
+    const arr = [...array];
 
-    const merge = async (left, right) => {
-      let result = [];
-      let leftIndex = 0;
-      let rightIndex = 0;
+    const merge = async (start, mid, end) => {
+      const leftArray = arr.slice(start, mid + 1);
+      const rightArray = arr.slice(mid + 1, end + 1);
+      
+      setMergingGroups([
+        { start, end: mid },
+        { start: mid + 1, end }
+      ]);
+      await delay(animationSpeed);
 
-      while (leftIndex < left.length && rightIndex < right.length) {
-        setComparing([leftIndex, rightIndex]);
+      let i = 0, j = 0, k = start;
+      
+      while (i < leftArray.length && j < rightArray.length) {
+        setComparing([start + i, mid + 1 + j]);
         await delay(animationSpeed);
 
-        if (left[leftIndex] < right[rightIndex]) {
-          result.push(left[leftIndex]);
-          leftIndex++;
+        if (leftArray[i] <= rightArray[j]) {
+          arr[k] = leftArray[i];
+          i++;
         } else {
-          result.push(right[rightIndex]);
-          rightIndex++;
+          arr[k] = rightArray[j];
+          j++;
         }
-        setArray([...result, ...left.slice(leftIndex), ...right.slice(rightIndex)]);
+        setArray([...arr]);
+        k++;
       }
 
-      return [...result, ...left.slice(leftIndex), ...right.slice(rightIndex)];
+      while (i < leftArray.length) {
+        arr[k] = leftArray[i];
+        setArray([...arr]);
+        i++;
+        k++;
+        await delay(animationSpeed);
+      }
+
+      while (j < rightArray.length) {
+        arr[k] = rightArray[j];
+        setArray([...arr]);
+        j++;
+        k++;
+        await delay(animationSpeed);
+      }
     };
 
-    const mergeSortRecursive = async (arr) => {
-      if (arr.length <= 1) return arr;
+    const mergeSortRecursive = async (start, end) => {
+      if (start >= end) return;
 
-      const mid = Math.floor(arr.length / 2);
-      const left = arr.slice(0, mid);
-      const right = arr.slice(mid);
-
-      return await merge(
-        await mergeSortRecursive(left),
-        await mergeSortRecursive(right)
-      );
+      const mid = Math.floor((start + end) / 2);
+      await mergeSortRecursive(start, mid);
+      await mergeSortRecursive(mid + 1, end);
+      await merge(start, mid, end);
     };
 
-    const arr = [...array];
-    const sortedArr = await mergeSortRecursive(arr);
-    setArray(sortedArr);
+    await mergeSortRecursive(0, arr.length - 1);
+    setMergingGroups([]);
     setComparing([]);
     setSorting(false);
   };
 
-  // Quick Sort
   const quickSort = async () => {
     setSorting(true);
     setCurrentAlgorithm('Quick Sort');
@@ -221,7 +223,6 @@ const SortingVisualizer = () => {
     setSorting(false);
   };
 
-  // Heap Sort
   const heapSort = async () => {
     setSorting(true);
     setCurrentAlgorithm('Heap Sort');
@@ -258,12 +259,10 @@ const SortingVisualizer = () => {
     const heapSortAlgorithm = async () => {
       let n = arr.length;
 
-      // Build max heap
       for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
         await heapify(arr, n, i);
       }
 
-      // Extract elements from heap one by one
       for (let i = n - 1; i > 0; i--) {
         [arr[0], arr[i]] = [arr[i], arr[0]];
         setArray([...arr]);
@@ -276,7 +275,6 @@ const SortingVisualizer = () => {
     setSorting(false);
   };
 
-  // Shell Sort
   const shellSort = async () => {
     setSorting(true);
     setCurrentAlgorithm('Shell Sort');
@@ -306,12 +304,10 @@ const SortingVisualizer = () => {
     setSorting(false);
   };
 
-  // Initialize array on component mount
   useEffect(() => {
     generateArray();
   }, []);
 
-  // Render sorting algorithms buttons
   const sortingAlgorithms = [
     { name: 'Bubble Sort', algorithm: bubbleSort },
     { name: 'Selection Sort', algorithm: selectionSort },
@@ -397,39 +393,42 @@ const SortingVisualizer = () => {
 
       <div className="flex flex-wrap gap-2 justify-center relative h-64">
         <AnimatePresence>
-          {array.map((value, index) => (
-            <motion.div
-              key={`${value}-${index}`}
-              layout
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ 
-                scale: 1, 
-                opacity: 1,
-                backgroundColor: 
-                  comparing.includes(index) ? '#EF4444' : 
-                  (currentMin === index ? '#10B981' : '#3B82F6'),
-                y: comparing.includes(index) ? -20 : 0
-              }}
-              exit={{ scale: 0, opacity: 0 }}
-              transition={{ 
-                type: "spring",
-                stiffness: 120,
-                damping: 14
-              }}
-              className={`
-                w-12 h-12 flex items-center justify-center 
-                text-white font-bold rounded-lg absolute
-              `}
-              style={{
-                left: `${index * 60}px`,
-                top: '50%',
-                transform: 'translateY(-50%)',
-                // height: `${value * 2}px` 
-              }}
-            >
-              {value}
-            </motion.div>
-          ))}
+          {array.map((value, index) => {
+            const isInMergingGroup = mergingGroups.some(
+              group => index >= group.start && index <= group.end
+            );
+            
+            return (
+              <motion.div
+                key={`${value}-${index}`}
+                layout
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ 
+                  scale: 1, 
+                  opacity: 1,
+                  backgroundColor: 
+                    comparing.includes(index) ? '#EF4444' : 
+                    isInMergingGroup ? '#8B5CF6' :
+                    (currentMin === index ? '#10B981' : '#3B82F6'),
+                  y: comparing.includes(index) ? -20 : 0
+                }}
+                exit={{ scale: 0, opacity: 0 }}
+                transition={{ 
+                  type: "spring",
+                  stiffness: 120,
+                  damping: 14
+                }}
+                className="w-12 h-12 flex items-center justify-center text-white font-bold rounded-lg absolute"
+                style={{
+                  left: `${index * 60}px`,
+                  top: '50%',
+                  transform: 'translateY(-50%)'
+                }}
+              >
+                {value}
+              </motion.div>
+            );
+          })}
         </AnimatePresence>
       </div>
 
