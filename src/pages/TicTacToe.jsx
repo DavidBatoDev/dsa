@@ -129,7 +129,7 @@ const TicTacToe = () => {
       </div>
 
       {/* Game Board */}
-      <div className="bg-minecraft-whiteSecondary border-0 border-black rounded-xl shadow-craftingBoard p-6">
+      <div className="pixel-corners bg-minecraft-whiteSecondary border-0 border-black rounded-xl shadow-craftingBoard p-6">
         <h2 className="text-2xl font-minecraftRegular text-black text-center mb-4">Tic Tac Toe</h2>
         <div className="grid grid-cols-3 gap-2">
           {board.map((_, index) => renderSquare(index))}
