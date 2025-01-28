@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import Confetti from 'react-confetti';
 import MinecraftBtn from '../components/MinecraftBtn';
 import InventoryTable from '../components/InventoryTable';
+import MinecraftModal from '../components/MinecraftModal';
 
 // Import the SVGs
 import RedApple from '/svg/red-apple.svg';
@@ -104,63 +105,71 @@ const TicTacToe = () => {
   };
 
   return (
-    <div
-      className="min-h-screen flex flex-col items-center justify-center 
-        bg-[url('/images/tictactoe-bg.png')] bg-cover md:bg-[length:150%] lg:bg-[length:150%] bg-center 
-        animate-panBackground"
-    >
-      {winner && <Confetti />}
-
-      {/* Header */}
-      <div className="flex items-center justify-center space-x-4 mb-4">
-        <MinecraftBtn onClick={resetGame} className="w-10 h-10 rounded shadow-md">
-          <span className="font-minecraftRegular">↻</span>
-        </MinecraftBtn>
-        {/* Restart Button */}
-        <MinecraftBtn
-          onClick={resetGame}
-          className="px-6 py-2 text-white rounded-lg shadow-md transition"
+    <>
+        {/* <MinecraftModal>
+          <div className='text-white'>
+          </div>
+        </MinecraftModal> */}
+        <div
+          className="min-h-screen flex flex-col items-center justify-center 
+            bg-[url('/images/tictactoe-bg.png')] bg-cover md:bg-[length:150%] lg:bg-[length:150%] bg-center 
+            animate-panBackground"
         >
-          Another Round?
-        </MinecraftBtn>
-        <MinecraftBtn onClick={() => window.location.reload()} className="w-10 h-10 rounded shadow-md">
-          <span className="font-minecraftRegular">✕</span>
-        </MinecraftBtn>
-      </div>
 
-      {/* Game Board */}
-      <div className="pixel-corners bg-minecraft-whiteSecondary border-0 border-black rounded-xl shadow-craftingBoard p-6">
-        <h2 className="text-2xl font-minecraftRegular text-black text-center mb-4">Tic Tac Toe</h2>
-        <div className="grid grid-cols-3 gap-2">
-          {board.map((_, index) => renderSquare(index))}
+        
+          {winner && <Confetti />}
+
+          {/* Header */}
+          <div className="flex items-center justify-center space-x-4 mb-4">
+            <MinecraftBtn onClick={resetGame} className="w-10 h-10 rounded shadow-md">
+              <span className="font-minecraftRegular">↻</span>
+            </MinecraftBtn>
+            {/* Restart Button */}
+            <MinecraftBtn
+              onClick={resetGame}
+              className="px-6 py-2 text-white rounded-lg shadow-md transition"
+            >
+              Another Round?
+            </MinecraftBtn>
+            <MinecraftBtn onClick={() => window.location.reload()} className="w-10 h-10 rounded shadow-md">
+              <span className="font-minecraftRegular">✕</span>
+            </MinecraftBtn>
+          </div>
+
+          {/* Game Board */}
+          <div className="pixel-corners bg-minecraft-whiteSecondary border-0 border-black rounded-xl shadow-craftingBoard p-6">
+            <h2 className="text-2xl font-minecraftRegular text-black text-center mb-4">Tic Tac Toe</h2>
+            <div className="grid grid-cols-3 gap-2">
+              {board.map((_, index) => renderSquare(index))}
+            </div>
+          </div>
+
+          {/* Next Move */}
+          <div className="flex items-center mt-6">
+            <InventoryTable
+            data={[
+              "N",
+              "E",
+              "X",
+              "T",
+              " ",
+              "M",
+              "O",
+              "V",
+              "E",
+              ":",
+              <img
+                src={isXNext ? RedApple : GoldenApple}
+                alt="Next Move"
+                className="w-[30px] h-[30px]"
+              />,
+            ]}
+              className="bg-minecraft-whiteSecondary p-1 rounded shadow-craftingInset border border-[#8B8B8B]"
+              cellClassName="text-white font-pressStart text-sm w-[54.472px] h-[54.472px]"
+            />
+          </div>
         </div>
-      </div>
-
-      {/* Next Move */}
-      <div className="flex items-center mt-6">
-        <InventoryTable
-        data={[
-          "N",
-          "E",
-          "X",
-          "T",
-          " ",
-          "M",
-          "O",
-          "V",
-          "E",
-          ":",
-          <img
-            src={isXNext ? RedApple : GoldenApple}
-            alt="Next Move"
-            className="w-[30px] h-[30px]"
-          />,
-        ]}
-          className="bg-minecraft-whiteSecondary p-1 rounded shadow-craftingInset border border-[#8B8B8B]"
-          cellClassName="text-white font-pressStart text-sm w-[54.472px] h-[54.472px]"
-        />
-      </div>
-    </div>
+    </>
   );
 };
 

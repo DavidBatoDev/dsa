@@ -2,8 +2,10 @@ import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import MinecraftBtn from "../components/MinecraftBtn";
 import { FaVolumeUp, FaVolumeMute } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function Homepage() {
+  const navigate = useNavigate();
   // Ref for the <audio> element
   const audioRef = useRef(null);
 
@@ -13,6 +15,8 @@ function Homepage() {
   // Toggle audio playback
   const handleSoundToggle = () => {
     if (!audioRef.current) return;
+
+    audioRef.current.volume = 0.7;
 
     if (!isPlaying) {
       // Start playing
@@ -32,7 +36,9 @@ function Homepage() {
   return (
     <div className="h-screen w-screen flex justify-center items-center">
       {/* Audio element (no autoPlay) */}
-      <audio ref={audioRef} src="/audio/minecraft-bg-music.mp3" loop />
+      {/* how to lower volume here */}
+
+      <audio ref={audioRef} src="/audio/homepage-bg.mp3" loop />
 
       {/* This is our main container with the background */}
       <div
@@ -98,14 +104,14 @@ function Homepage() {
                 ease: "easeInOut",
               }}
             >
-              Bruh
+              Ivy cute
             </motion.span>
           </div>
         </div>
 
         {/* Buttons */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-5 w-80">
-          <MinecraftBtn className="w-full">Play</MinecraftBtn>
+          <MinecraftBtn onClick={() => navigate('/selection')} className="w-full">Play</MinecraftBtn>
           <MinecraftBtn className="w-full">About</MinecraftBtn>
         </div>
 

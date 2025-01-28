@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaCar } from "react-icons/fa";
-import Button from "../components/Button";
-import CustomButton from "../components/CustomButton";
 import MinecraftBtn from "../components/MinecraftBtn";
 import CartIcon from '/images/cart-icon.png';
 import Cart from '/images/cart.png';
@@ -104,7 +101,7 @@ const Queue = () => {
   return (
     <div
       className="min-h-screen flex flex-col
-        bg-[url('/images/old-stone-bg.jpg')] bg-cover md:bg-[length:150%] lg:bg-[length:150%] bg-center 
+        bg-[url('/images/green-field-bg.png')] bg-cover md:bg-[length:130%] lg:bg-[length:130%] bg-center 
         relative animate-scroll"
     >
       <div className="mt-5">
@@ -112,8 +109,8 @@ const Queue = () => {
       </div>
   
       <div className='flex justify-center items-center gap-2'>
-        <div className='bg-[#7f7f7f] p-2 rounded-lg border-4 border-black mb-2'>
-          <h1 className="z-30 text-4xl font-bold text-center text-white font-minecraftBold">PUP-CEA Parking Garage</h1>
+        <div className='pixel-corners bg-[#7f7f7f] p-2 rounded-lg border-4 border-black mb-2'>
+          <h1 className=" z-30 text-4xl font-bold text-center text-white font-minecraftBold">PUP-CEA Parking Garage</h1>
         </div>
       </div>
 
@@ -198,7 +195,7 @@ const Queue = () => {
       </div>
 
       {/* Garage Section */}
-      <div className="relative py-4 shadow-inner border border-gray-900 w-full min-h-40 flex justify-center items-center overflow-x-auto bg-minecraft-abyss overflow-y-hidden">
+      <div className="relative py-4 w-full min-h-40 flex justify-center items-center overflow-x-auto overflow-y-hidden">
         <div className="absolute h-20 bottom-[-20px] w-full bg-[url('/images/rail.png')] bg-contain animate-seamlessScroll" />
         <div className="flex gap-2 justify-center items-center w-full z-10 overflow-x-hidden overflow-y-hidden py-4 ">
           <AnimatePresence>

@@ -28,7 +28,7 @@ const Navbar = () => {
         <div className="fixed top-4 left-4 z-50">
           <button
             onClick={toggleDrawer}
-            className="p-2 bg-primary text-dark rounded-full shadow-md hover:bg-primary-light transition"
+            className="pixel-corners p-2 bg-minecraft-gray text-white  shadow-md hover:bg-primary-light transition"
           >
             <FiMenu size={24} />
           </button>

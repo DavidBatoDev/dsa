@@ -6,7 +6,7 @@ const InventoryTable = ({ data = [], className, cellClassName }) => {
   return (
     <div
       className={clsx(
-        "flex justify-center items-center bg-[#BBB] border border- rounded shadow-craftingInset p-2",
+        "pixel-corners flex justify-center items-center bg-[#BBB] border border- rounded shadow-craftingInset p-2",
         className // Custom styles for the entire table
       )}
     >

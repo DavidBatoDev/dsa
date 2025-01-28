@@ -379,7 +379,7 @@ const BinarySearchTree = () => {
             stroke: '#000',
             boxShadow: '-12px -12px 4px 0px #565656 inset, 12px 12px 4px 0px #FDFDFD inset'
           }}
-          onSubmit={handleInsert} className="relative border-4 border-black rounded-xl flex flex-row justify-between gap-2 p-5">
+          onSubmit={handleInsert} className="pixel-corners relative border-4 border-black rounded-xl flex flex-row justify-between gap-2 p-5">
             <div className="top-0 left-0 absolute w-full h-full bg-minecraft-white rounded-xl opacity-80"/>
             <div className="z-10 flex flex-col flex-1 justify-between gap-5">
               <input
@@ -418,7 +418,7 @@ const BinarySearchTree = () => {
               stroke: '#000',
               boxShadow: '-12px -12px 4px 0px #565656 inset, 12px 12px 4px 0px #FDFDFD inset'
           }}
-          className="relative flex flex-col gap-2 h-80 rounded-xl border-4 border-black p-5">
+          className="pixel-corners relative flex flex-col gap-2 h-80 rounded-xl border-4 border-black p-5">
           <div className="top-0 left-0 absolute w-full h-full bg-minecraft-white rounded-xl opacity-80"/>
             <CustomButton
               variant="arrival"
@@ -512,7 +512,7 @@ const BinarySearchTree = () => {
           >
             {/* <Background color="#0000" gap={100} /> */}
             {values.length === 0 && (
-            <div className="w-full h-full flex flex-col justify-center items-center">
+            <div className="w-full h-full flex flex-col justify-center items-center ">
               <img className="w-60 6-40" src="https://piskel-imgstore-b.appspot.com/img/a1f1cb4a-db66-11ef-8efa-7363dbb1d942.gif" alt="" />
               <p className="font-minecraftRegular">Insert a block to start...</p>
             </div>

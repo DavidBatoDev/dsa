@@ -96,7 +96,7 @@ const Stack = () => {
           animate-panBackground
     ">
       <div className='flex justify-center items-center gap-2'>
-        <div className='bg-[#7f7f7f] p-2 rounded-lg border-4 border-black mb-2'>
+        <div className='pixel-corners bg-[#7f7f7f] p-2 rounded-lg border-4 border-black mb-2'>
           <h1 className="text-4xl font-bold text-center text-white font-minecraftBold">PUP-CEA Parking Garage</h1>
         </div>
       </div>
@@ -115,7 +115,7 @@ const Stack = () => {
 
       <div className="flex gap-5">
         {/* Form Section */}
-        <div className='w-[38%] h-[445px] bg-[#D9D9D9] flex justify-center items-center p-6 rounded-lg border-4 border-black shadow'>
+        <div className='pixel-corners w-[38%] h-[445px] bg-[#D9D9D9] flex justify-center items-center p-6 rounded-lg border-4 border-black shadow'>
           <div className="w-full h-full bg-minecraft-abyss bg-secondary-light text-black p-6 rounded-lg border border-[#1c1c1c] shadow-craftingBoard">
             <h2 className="text-2xl font-bold mb-1 font-minecraftRegular text-center text-[#C28340]">Car Arrival/Departure</h2>
             <form
@@ -170,12 +170,12 @@ const Stack = () => {
         </div>
 
         {/* Garage Section */}
-        <div className="w-[62%] h-[445px] flex py-6 px-5 bg-minecraft-whiteSecondary border-black border-4 rounded-lg shadow-whiteinset">
+        <div className="pixel-corners w-[62%] h-[455px] flex py-6 px-5 bg-minecraft-whiteSecondary border-black border-4 rounded-lg shadow-whiteinset">
           {/*  */}
           <div className='flex flex-col justify-center items-center h-full w-full'>
-            <div className="border border-black w-[97%] bg-[#BBB] rounded-lg shadow-whiteinset">
+            <div className="border border-black w-[97%] bg-[#BBB] rounded-lg shadow-whiteinset pixel-corners">
               <div className="text-white">
-                <h2 className="text-[15px] p-2 font-pressStart text-[#C28340] text-stroke">
+                <h2 className="text-[18px] p-2 font-minecraftRegular text-[#C28340]">
                   Car Information
                 </h2>
               </div>
@@ -199,7 +199,7 @@ const Stack = () => {
                     <InventoryTable
                       data={paddedCarData} // Pass the padded array with exactly 10 cells
                       className="bg-[#BBB] p-[2px] rounded shadow-md border border-[#8B8B8B]"
-                      cellClassName="text-white font-pressStart text-sm w-[50px] h-[1.80rem]"
+                      cellClassName="text-white font-minecraftRegular text-sm w-[50px] h-[1.80rem]"
                     />
                   </motion.div>
                 );
@@ -208,7 +208,7 @@ const Stack = () => {
                 <div className="w-full h-full flex items-center justify-center">
                   <div className="flex justify-center flex-col items-center space-y-4">
                     <img src={CartEmpty} alt="Garage Empty" />
-                    <p className="text-2xl font-pressStart text-stroke text-[#C28340]">
+                    <p className="text-2xl font-minecraftRegular  text-[#C28340]">
                       Garage is Empty ...
                     </p>
                   </div>

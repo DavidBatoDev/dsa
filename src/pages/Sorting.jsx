@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { div } from 'framer-motion/client';
+import CustomButton from '../components/CustomButton';
 
 const SortingVisualizer = () => {
   const [array, setArray] = useState([]);
@@ -319,124 +321,137 @@ const SortingVisualizer = () => {
   ];
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Sorting Visualizer</h1>
-      
-      <div className="flex flex-wrap items-center space-x-4 mb-4">
-        <div className="flex items-center space-x-2">
-          <label htmlFor="arrayLength" className="mr-2">Array Length:</label>
-          <input 
-            type="number" 
-            id="arrayLength"
-            min="5" 
-            max="20" 
-            value={arrayLength} 
-            onChange={handleArrayLengthChange}
-            disabled={sorting}
-            className="w-20 p-1 border rounded"
-          />
-          <input 
-            type="range" 
-            min="5" 
-            max="20" 
-            value={arrayLength} 
-            onChange={handleArrayLengthChange}
-            disabled={sorting}
-            className="w-40"
-          />
-        </div>
+    <div className='flex justify-center bg-[#D9D9D9] '>
+      <div className=" h-screen mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-4 text-center font-mono">Sorting Visualizer</h1>
         
-        <div className="flex items-center space-x-2">
-          <label htmlFor="animationSpeed" className="mr-2">Animation Speed (ms):</label>
-          <input 
-            type="number" 
-            id="animationSpeed"
-            min="50" 
-            max="1000" 
-            value={animationSpeed} 
-            onChange={handleAnimationSpeedChange}
+        <div className="flex flex-wrap items-center space-x-4 mb-4">
+          <div className="flex items-center space-x-2">
+            <label htmlFor="arrayLength" className="mr-2">Array Length:</label>
+            <input 
+              type="number" 
+              id="arrayLength"
+              min="5" 
+              max="18" 
+              value={arrayLength} 
+              onChange={handleArrayLengthChange}
+              disabled={sorting}
+              className="w-20 p-1 border rounded"
+            />
+            <input 
+              type="range" 
+              min="5" 
+              max="18" 
+              value={arrayLength} 
+              onChange={handleArrayLengthChange}
+              disabled={sorting}
+              className="w-40"
+            />
+          </div>
+          
+          <div className="flex items-center space-x-2">
+            <label htmlFor="animationSpeed" className="mr-2">Animation Speed (ms):</label>
+            <input 
+              type="number" 
+              id="animationSpeed"
+              min="50" 
+              max="2000" 
+              value={animationSpeed} 
+              onChange={handleAnimationSpeedChange}
+              disabled={sorting}
+              className="w-20 p-1 border rounded"
+            />
+            <input 
+              type="range" 
+              min="50" 
+              max="2000" 
+              value={animationSpeed} 
+              onChange={handleAnimationSpeedChange}
+              disabled={sorting}
+              className="w-40"
+            />
+          </div>
+          
+          <button 
+            onClick={() => generateArray(arrayLength)} 
             disabled={sorting}
-            className="w-20 p-1 border rounded"
-          />
-          <input 
-            type="range" 
-            min="50" 
-            max="1000" 
-            value={animationSpeed} 
-            onChange={handleAnimationSpeedChange}
-            disabled={sorting}
-            className="w-40"
-          />
-        </div>
-        
-        <button 
-          onClick={() => generateArray(arrayLength)} 
-          disabled={sorting}
-          className="bg-blue-500 text-white hover:bg-blue-600 p-2 rounded"
-        >
-          Generate New Array
-        </button>
-      </div>
-
-      <div className="flex space-x-2 mb-4 flex-wrap">
-        {sortingAlgorithms.map(({ name, algorithm }) => (
-          <button
-            key={name}
-            onClick={algorithm}
-            disabled={sorting}
-            className="bg-green-500 p-3 text-white hover:bg-green-600 m-1 rounded"
+            className="bg-[#D9D9D9] text-black border-2 border-black hover:bg-slate-400 p-2 rounded"
           >
-            {name}
+            Generate New Array
           </button>
-        ))}
-      </div>
-
-      <div className="flex flex-wrap gap-2 justify-center relative h-64">
-        <AnimatePresence>
-          {array.map((value, index) => {
-            const isInMergingGroup = mergingGroups.some(
-              group => index >= group.start && index <= group.end
-            );
-            
-            return (
-              <motion.div
-                key={`${value}-${index}`}
-                layout
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ 
-                  scale: 1, 
-                  opacity: 1,
-                  backgroundColor: 
-                    comparing.includes(index) ? '#EF4444' : 
-                    isInMergingGroup ? '#8B5CF6' :
-                    (currentMin === index ? '#10B981' : '#3B82F6'),
-                  y: comparing.includes(index) ? -20 : 0
-                }}
-                exit={{ scale: 0, opacity: 0 }}
-                transition={{ 
-                  type: "spring",
-                  stiffness: 120,
-                  damping: 14
-                }}
-                className="w-12 h-12 flex items-center justify-center text-white font-bold rounded-lg absolute"
-                style={{
-                  left: `${index * 60}px`,
-                  top: '50%',
-                  transform: 'translateY(-50%)'
-                }}
-              >
-                {value}
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
-      </div>
-
-      {currentAlgorithm && (
-        <div className="mt-4 text-center">
-          <p className="text-lg">Current Algorithm: {currentAlgorithm}</p>
         </div>
-      )}
+
+        <div className="flex justify-center space-x-2 mb-4 flex-wrap">
+          {sortingAlgorithms.map(({ name, algorithm }) => (
+            <CustomButton
+              key={name}
+              onClick={algorithm}
+              disabled={sorting}
+              className="bg-[#D9D9D9] p-3 text-black hover:bg-slate-300 m-1 rounded"
+            >
+              {name}
+            </CustomButton>
+          ))}
+        </div>
+
+        <div className="relative h-64 mx-auto" style={{ width: `${array.length * 64}px` }}>
+          <AnimatePresence mode="popLayout">
+            {array.map((value, index) => {
+              const isInMergingGroup = mergingGroups.some(
+                group => index >= group.start && index <= group.end
+              );
+              
+              return (
+                <motion.div
+                  key={`${index}-${value}`}
+                  layout
+                  initial={{ 
+                    scale: 0.8,
+                    opacity: 0,
+                  }}
+                  animate={{ 
+                    scale: 1,
+                    opacity: 1,
+                    height: `${value * 2}px`,
+                    backgroundColor: 
+                      comparing.includes(index) ? '#EF4444' : 
+                      isInMergingGroup ? '#8B5CF6' :
+                      (currentMin === index ? '#10B981' : '#D9D9D9'),
+                    border: comparing.includes(index) ? '2px solid black' : '2px solid black',
+                    transition: {
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 20,
+                      mass: 0.8,
+                    }
+                  }}
+                  exit={{ 
+                    scale: 0.8,
+                    opacity: 0
+                  }}
+                  style={{
+                    position: 'absolute',
+                    left: `${index * 64}px`,
+                    bottom: 0,
+                    width: '48px',
+                  }}
+                  className="rounded-lg flex items-center justify-center text-black font-bold"
+                >
+                  {value}
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+        </div>
+
+        {currentAlgorithm && (
+          <div className="mt-4 text-center">
+            <p className="text-lg">Current Algorithm: {currentAlgorithm}</p>
+          </div>
+        )}
+      </div>
+
+
     </div>
   );
 };

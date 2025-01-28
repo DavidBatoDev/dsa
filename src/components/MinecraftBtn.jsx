@@ -25,7 +25,7 @@ const MinecraftBtn = ({ children, onClick, className }) => {
     <button
       onClick={handleClick}
       className={clsx(
-        // 'pixel-corners',
+        'pixel-corners',
         "relative inline-flex items-center justify-center",
         "font-minecraftRegular text-white",
         "bg-[#7f7f7f]",

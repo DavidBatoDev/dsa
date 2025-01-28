@@ -61,6 +61,8 @@ const BinaryTreeTraversal = () => {
           ...node.style,
           background: "transparent", // Reset background
           color: "black", // Reset text color
+          border: 'none',
+          boxShadow: 'none',
         },
       }))
     );
@@ -348,8 +350,11 @@ const BinaryTreeTraversal = () => {
               ...node,
               style: {
                 ...node.style,
-                background: "#FFDE00", // Default color
+                background: "#964F3E", // Default color
                 color: "black",
+                borderRadius: '10px',
+                border: '1px solid black',
+                // boxShadow: '0 0 0 10px #964F3E inset',
               },
             };
           } else if (node.id === currentNodeId) {
@@ -358,8 +363,11 @@ const BinaryTreeTraversal = () => {
               ...node,
               style: {
                 ...node.style,
-                background: "#FFDE00", // Highlight color
+                background: "#964F3E", // Highlight color
                 color: "black",
+                borderRadius: '10px',
+                border: '1px solid black',
+                // boxShadow: '0 0 0 10px #964F3E', troubleshoot
               },
             };
           }
@@ -422,7 +430,7 @@ const BinaryTreeTraversal = () => {
     <div
       className="min-h-screen flex flex-col items-center justify-center 
         bg-[url('/images/binary-bg.png')] bg-cover md:bg-[length:150%] lg:bg-[length:150%] bg-center 
-        animate-panBackground"
+        animate-panBackground shadow-lg"
     >
       <div
         style={{
