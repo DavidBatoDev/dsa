@@ -143,6 +143,17 @@ const BinarySearchTree = () => {
     document.title = "BST with Traversal";
   }, []);
 
+      useEffect(() => {
+        const audio = new Audio('/audio/bst.mp3');
+        audio.volume = 0.1
+        audio.loop = true; 
+        audio.play();
+    
+        return () => {
+          audio.pause();
+        };
+      }, []);
+
   // Clear any traversal highlight
   const clearTraversal = () => {
     if (traversalIntervalRef.current) {

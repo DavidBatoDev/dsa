@@ -8,6 +8,7 @@ import MinecraftModal from '../components/MinecraftModal';
 // Import the SVGs
 import RedApple from '/svg/red-apple.svg';
 import GoldenApple from '/svg/golden-apple.svg';
+import MinecraftAnimations from '../components/MinecraftAnimations';
 
 const TicTacToe = () => {
   const [board, setBoard] = useState(Array(9).fill(null));
@@ -20,6 +21,17 @@ const TicTacToe = () => {
   useEffect(() => {
     document.title = 'Tic-Tac-Toe';
   }, []);
+
+      useEffect(() => {
+        const audio = new Audio('/audio/tictactoe.mp3');
+        audio.volume = 0.1
+        audio.loop = true; 
+        audio.play();
+    
+        return () => {
+          audio.pause();
+        };
+      }, []);
 
   const checkWinner = (board) => {
     const lines = [
@@ -106,21 +118,23 @@ const TicTacToe = () => {
 
   return (
     <>
-        {/* <MinecraftModal>
-          <div className='text-white'>
-          </div>
-        </MinecraftModal> */}
+
         <div
           className="min-h-screen flex flex-col items-center justify-center 
             bg-[url('/images/tictactoe-bg.png')] bg-cover md:bg-[length:150%] lg:bg-[length:150%] bg-center 
             animate-panBackground"
         >
+        <div className='absolute top-0 left-0 h-screen w-1/4'>
+            <div className='relative min-h-screen'>
+                <MinecraftAnimations />
+              </div>
+        </div>
 
-        
           {winner && <Confetti />}
 
           {/* Header */}
           <div className="flex items-center justify-center space-x-4 mb-4">
+            
             <MinecraftBtn onClick={resetGame} className="w-10 h-10 rounded shadow-md">
               <span className="font-minecraftRegular">↻</span>
             </MinecraftBtn>
@@ -143,6 +157,7 @@ const TicTacToe = () => {
               {board.map((_, index) => renderSquare(index))}
             </div>
           </div>
+
 
           {/* Next Move */}
           <div className="flex items-center mt-6">

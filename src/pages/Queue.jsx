@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import MinecraftBtn from "../components/MinecraftBtn";
 import CartIcon from '/images/cart-icon.png';
 import Cart from '/images/cart.png';
+import AnimatedClouds from "../components/AnimatedCloud";
 
 const Queue = () => {
   const [garage, setGarage] = useState([]);
@@ -22,6 +23,17 @@ const Queue = () => {
     setHighlightedCar(foundCar || null);
   }, [plateNumber, garage]);
   
+
+  useEffect(() => {
+    const audio = new Audio('/audio/queue.mp3');
+    audio.volume = 0.1
+    audio.loop = true; 
+    audio.play();
+
+    return () => {
+      audio.pause();
+    };
+  }, []);
 
 
   console.log(garage);
@@ -107,6 +119,8 @@ const Queue = () => {
       <div className="mt-5">
         Nav
       </div>
+
+      <AnimatedClouds/>
   
       <div className='flex justify-center items-center gap-2'>
         <div className='pixel-corners bg-[#7f7f7f] p-2 rounded-lg border-4 border-black mb-2'>
@@ -241,9 +255,9 @@ const Queue = () => {
                   className={`z-50 relative h-[90px] text-gray-800 rounded-lg flex items-center justify-between flex-col min-w-[100px] ${borderClass}`}
                 >
                   {/* Car icon and plate number */}
-                  <div className="w-28 h-14 absolute bottom-0 mb-[-10px]">
-                    <img src={Cart} className="absolute bottom-0 w-full h-full" />
-                    <p className="absolute bottom-0 text-center w-full text-xs font-minecraftRegular font-bold text-dark">{car}</p>
+                  <div className="w-28 h-14 absolute bottom-0 mb-[-24px]">
+                    <img src={`/images/cart${index + 1}.png`} className="absolute bottom-0 w-20 h-32" />
+                    <p className="absolute bottom-5 left-[-9px] text-center w-full text-xs font-minecraftRegular font-bold text-dark">{car}</p>
                   </div>
 
                   {isRear && isFront && (

@@ -53,6 +53,17 @@ const BinaryTreeTraversal = () => {
     }
   }, [nodes, reactFlowInstance]);
 
+    useEffect(() => {
+      const audio = new Audio('/audio/binary-tree.mp3');
+      audio.volume = 0.1
+      audio.loop = true; 
+      audio.play();
+  
+      return () => {
+        audio.pause();
+      };
+    }, []);
+
   const unhiglightNodes = () => {
     setNodes((prev) =>
       prev.map((node) => ({

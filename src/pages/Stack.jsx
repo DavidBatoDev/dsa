@@ -20,6 +20,17 @@ const Stack = () => {
     document.title = "Stack";
   }, []);
 
+    useEffect(() => {
+      const audio = new Audio('/audio/stack.mp3');
+      audio.volume = 0.1
+      audio.loop = true; 
+      audio.play();
+  
+      return () => {
+        audio.pause();
+      };
+    }, []);
+
   const showMessage = (msg) => {
     setMessage(msg);
     setTimeout(() => setMessage(null), 3000);
@@ -170,19 +181,16 @@ const Stack = () => {
         </div>
 
         {/* Garage Section */}
-        <div className="pixel-corners w-[62%] h-[455px] flex py-6 px-5 bg-minecraft-whiteSecondary border-black border-4 rounded-lg shadow-whiteinset">
-          {/*  */}
+        <motion.div 
+          className="pixel-corners w-[62%] h-[455px] flex py-6 px-5 bg-minecraft-whiteSecondary border-black border-4 rounded-lg shadow-whiteinset"
+          initial={{ x: 100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 100 }}
+        >
           <div className='flex flex-col justify-center items-center h-full w-full'>
-            <div className="border border-black w-[97%] bg-[#BBB] rounded-lg shadow-whiteinset pixel-corners">
-              <div className="text-white">
-                <h2 className="text-[18px] p-2 font-minecraftRegular text-[#C28340]">
-                  Car Information
-                </h2>
-              </div>
-            </div>
+            {/* Garage content... */}
             <div className="rounded-lg w-full h-full flex flex-col-reverse items-center overflow-hidden">
               {garage.map((car, index) => {
-                // Ensure 10 cells by padding with empty strings
                 const paddedCarData = [...car.split(''), ...Array(12 - car.length).fill('')];
                 return (
                   <motion.div
@@ -190,54 +198,103 @@ const Stack = () => {
                     initial={{ y: -50, opacity: 0 }}
                     animate={
                       departingCar === car
-                        ? { x: 300, opacity: 0 } // Animate departure
-                        : { y: 0, opacity: 1 }
+                        ? { 
+                            x: 300, 
+                            opacity: 0,
+                            rotate: 360,
+                            scale: 0.5 
+                          }
+                        : { 
+                            y: 0, 
+                            opacity: 1,
+                            scale: 1
+                          }
                     }
+                    whileHover={{
+                      scale: 1.02,
+                      transition: { duration: 0.2 }
+                    }}
                     transition={{ type: "spring", stiffness: 100, duration: 1 }}
                     className="bg-[#D9D9D9] rounded-lg shadow-md"
                   >
                     <InventoryTable
-                      data={paddedCarData} // Pass the padded array with exactly 10 cells
+                      data={paddedCarData}
                       className="bg-[#BBB] p-[2px] rounded shadow-md border border-[#8B8B8B]"
                       cellClassName="text-white font-minecraftRegular text-sm w-[50px] h-[1.80rem]"
                     />
                   </motion.div>
                 );
               })}
+              
               {garage.length === 0 && (
-                <div className="w-full h-full flex items-center justify-center">
+                <motion.div 
+                  className="w-full h-full flex items-center justify-center"
+                  animate={{ 
+                    y: [0, -10, 0],
+                    transition: {
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }
+                  }}
+                >
                   <div className="flex justify-center flex-col items-center space-y-4">
                     <img src={CartEmpty} alt="Garage Empty" />
-                    <p className="text-2xl font-minecraftRegular  text-[#C28340]">
+                    <motion.p
+                      className="text-2xl font-minecraftRegular text-[#C28340]"
+                      animate={{
+                        opacity: [1, 0.5, 1],
+                        transition: {
+                          duration: 2,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }
+                      }}
+                    >
                       Garage is Empty ...
-                    </p>
+                    </motion.p>
                   </div>
-                </div>
+                </motion.div>
               )}
             </div>
           </div>
 
-          {/* Cart Chest Section */}
+          {/* Cart Chest Section with animations */}
           <div className="flex flex-col justify-end items-center w-[70px] h-full">
             <div className="w-[97%] bg-[#BBB] rounded-lg shadow-whiteinset">
               <div className="rounded-lg w-full h-full flex flex-col-reverse items-center overflow-hidden">
                 {[...Array(10)].map((_, index) => {
-                  // Render the cart chest SVG if how many cars are in the garage, if the garage has 2 cars, render 2 cart chest SVGs
-                  const cartNumber = index + 1; // Numbers from 10 (bottom) to 1 (top)
-
-                  const isCartChest = garage.length >= cartNumber; 
-
+                  const cartNumber = index + 1;
+                  const isCartChest = garage.length >= cartNumber;
 
                   return (
                     <motion.div
                       key={index}
                       initial={{ y: -50, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
+                      whileHover={isCartChest ? {
+                        scale: 1.1,
+                        transition: { duration: 0.2 }
+                      } : {}}
                       transition={{ type: "spring", stiffness: 100, duration: 1 }}
                       className="bg-[#D9D9D9] rounded-lg shadow-md"
                     >
                       <InventoryTable
-                        data={isCartChest ? [<img src={CartChest} alt="Cart Chest" className="w-[28px] h-[28px]" />] : ['']}
+                        data={isCartChest ? [
+                          <motion.img 
+                            src={CartChest} 
+                            alt="Cart Chest" 
+                            className="w-[28px] h-[28px]"
+                            animate={{
+                              scale: [1, 1.1, 1],
+                              transition: {
+                                duration: 2,
+                                repeat: Infinity,
+                                ease: "easeInOut"
+                              }
+                            }}
+                          />
+                        ] : ['']}
                         className="bg-[#BBB] p-[2px] rounded shadow-md border border-[#8B8B8B]"
                         cellClassName="text-white font-pressStart text-sm w-[50px] h-[1.80rem]"
                       />
@@ -247,7 +304,7 @@ const Stack = () => {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
       </div>
     </div>

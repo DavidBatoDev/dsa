@@ -31,6 +31,17 @@ const TowerOfHanoi = () => {
   }, [towers, moves, disks]);
 
   useEffect(() => {
+    const audio = new Audio('/audio/towers.mp3');
+    audio.volume = 0.1
+    audio.loop = true; 
+    audio.play();
+
+    return () => {
+      audio.pause();
+    };
+  }, []);
+
+  useEffect(() => {
     let interval = null;
 
     if (isTimerRunning && !isSolved) {
@@ -97,7 +108,7 @@ const TowerOfHanoi = () => {
         bg-[url('/images/toh-bg.png')] bg-cover md:bg-[length:150%] lg:bg-[length:150%] bg-center 
         animate-panBackground p-6 relative"
     >
-      <div className="flex items-center flex-col h-[500px] w-[90%] relative p-3 rounded-md border-4 border-gray-500 overflow-hidden">
+      <div className="flex items-center flex-col h-[500px] w-[90%] relative p-3 rounded-xl border-4 border-black overflow-hidden">
         <div className="absolute h-full top-0 w-full items-center justify-center opacity-90 bg-[#D9D9D9] z-[1]"></div>
         <div className="text-center mb-4 z-10">
           <h1 className="font-minecraftBold text-3xl">Towers of Hanoi</h1>

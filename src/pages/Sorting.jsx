@@ -52,6 +52,17 @@ const SortingVisualizer = () => {
     setSorting(false);
   };
 
+  useEffect(() => {
+    const audio = new Audio('/audio/sorting.mp3');
+    audio.volume = 0.1
+    audio.loop = true; 
+    audio.play();
+
+    return () => {
+      audio.pause();
+    };
+  }, []);
+
   const selectionSort = async () => {
     setSorting(true);
     setCurrentAlgorithm('Selection Sort');
@@ -321,11 +332,12 @@ const SortingVisualizer = () => {
   ];
 
   return (
-    <div className='flex justify-center bg-[#D9D9D9] '>
-      <div className=" h-screen mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4 text-center font-mono">Sorting Visualizer</h1>
+    <div className='text-white flex justify-center bg-[#D9D9D9]'>
+      <div className='z-10 bg-[url(/images/sorting-bg.png)] fixed h-screen w-screen bg-contain blur-[3px]'/>
+      <div className="z-20 h-screen mx-auto p-4">
+        <h1 className="text-2xl font-bold font-minecraftRegular mb-4 text-center">Sorting Visualizer</h1>
         
-        <div className="flex flex-wrap items-center space-x-4 mb-4">
+        <div className="flex flex-wrap justify-center items-center space-x-4 mb-4">
           <div className="flex items-center space-x-2">
             <label htmlFor="arrayLength" className="mr-2">Array Length:</label>
             <input 
@@ -336,7 +348,7 @@ const SortingVisualizer = () => {
               value={arrayLength} 
               onChange={handleArrayLengthChange}
               disabled={sorting}
-              className="w-20 p-1 border rounded"
+              className="bg-transparent text-white font-minecraftRegular w-20 p-1"
             />
             <input 
               type="range" 
@@ -350,7 +362,7 @@ const SortingVisualizer = () => {
           </div>
           
           <div className="flex items-center space-x-2">
-            <label htmlFor="animationSpeed" className="mr-2">Animation Speed (ms):</label>
+            <label htmlFor="animationSpeed" className="mr-2 font-minecraftRegular">Animation Speed (ms):</label>
             <input 
               type="number" 
               id="animationSpeed"
@@ -359,7 +371,7 @@ const SortingVisualizer = () => {
               value={animationSpeed} 
               onChange={handleAnimationSpeedChange}
               disabled={sorting}
-              className="w-20 p-1 border rounded"
+              className="w-20 p-1 bg-transparent font-minecraftRegular text-white"
             />
             <input 
               type="range" 
@@ -375,7 +387,7 @@ const SortingVisualizer = () => {
           <button 
             onClick={() => generateArray(arrayLength)} 
             disabled={sorting}
-            className="bg-[#D9D9D9] text-black border-2 border-black hover:bg-slate-400 p-2 rounded"
+            className="bg-[#D9D9D9] text-black border-2 font-minecraftRegular opacity-70 border-black hover:bg-slate-400 p-2 rounded"
           >
             Generate New Array
           </button>
@@ -387,7 +399,7 @@ const SortingVisualizer = () => {
               key={name}
               onClick={algorithm}
               disabled={sorting}
-              className="bg-[#D9D9D9] p-3 text-black hover:bg-slate-300 m-1 rounded"
+              className="font-minecraftRegular bg-[#D9D9D9] p-3 text-black hover:bg-slate-300 m-1 rounded opacity-70 hover:opacity-100"
             >
               {name}
             </CustomButton>
@@ -414,10 +426,11 @@ const SortingVisualizer = () => {
                     opacity: 1,
                     height: `${value * 2}px`,
                     backgroundColor: 
-                      comparing.includes(index) ? '#EF4444' : 
-                      isInMergingGroup ? '#8B5CF6' :
-                      (currentMin === index ? '#10B981' : '#D9D9D9'),
+                      comparing.includes(index) ? '#7CA4CD' : 
+                      isInMergingGroup ? '#BB76D5' :
+                      (currentMin === index ? '#E17A5A' : '#D9D9D9'),
                     border: comparing.includes(index) ? '2px solid black' : '2px solid black',
+                    opacity: sorting ? 0.7 : 0.7,
                     transition: {
                       type: "spring",
                       stiffness: 300,
@@ -446,7 +459,7 @@ const SortingVisualizer = () => {
 
         {currentAlgorithm && (
           <div className="mt-4 text-center">
-            <p className="text-lg">Current Algorithm: {currentAlgorithm}</p>
+            <p className="text-lg font-minecraftRegular">Current Algorithm: {currentAlgorithm}</p>
           </div>
         )}
       </div>

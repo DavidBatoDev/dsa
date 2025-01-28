@@ -38,6 +38,7 @@ export default {
       animation: {
         // 20s linear infinite = it’ll smoothly pan forever
         // alternate = it’ll pan from left to right, then right to left
+        
         scroll: "scroll 3s linear infinite",
         seamlessScroll: "seamlessScroll 3s linear infinite",
         panBackground: 'panBackground 20s linear infinite alternate',
