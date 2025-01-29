@@ -12,17 +12,17 @@ const AboutPage = () => {
       image: "/images/ivy.skin.png"
     },
     {
-        name: "Kristine",
+        name: "Kristine Mae Villamarin",
         role: "Sworn Enemy",
         image: "/images/kristine.png"
     },
     {
-      name: "Clarice",
+      name: "Clarice David",
       role: "Sworn Enemy",
       image: "/images/clarice.png"
     },
     {
-      name: "Jacobe",
+      name: "Diana Mae Jacobe",
       role: "Sworn Enemy",
       image: "/images/jacobe.png"
     },
