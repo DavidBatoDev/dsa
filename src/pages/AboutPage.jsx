@@ -18,12 +18,12 @@ const AboutPage = () => {
     },
     {
       name: "Clarice David",
-      role: "Sworn Enemy",
+      role: "ShoCla on top",
       image: "/images/clarice.png"
     },
     {
       name: "Diana Mae Jacobe",
-      role: "Sworn Enemy",
+      role: "Masikip",
       image: "/images/jacobe.png"
     },
   ];
