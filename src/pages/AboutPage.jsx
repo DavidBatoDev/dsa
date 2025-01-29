@@ -13,7 +13,7 @@ const AboutPage = () => {
     },
     {
         name: "Kristine Mae Villamarin",
-        role: "Bading, Dyslexic, Lutang",
+        role: "tin",
         image: "/images/kristine.png"
     },
     {
