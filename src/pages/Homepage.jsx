@@ -10,7 +10,7 @@ function Homepage() {
   const audioRef = useRef(null);
 
   // State to track whether audio is playing
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   // Toggle audio playback
   const handleSoundToggle = () => {
