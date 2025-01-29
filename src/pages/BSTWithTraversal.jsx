@@ -135,6 +135,7 @@ const BinarySearchTree = () => {
 
   // Traversal state
   const [traversalResult, setTraversalResult] = useState("");
+  const [traversalType, setTraversalType] = useState("");
   const traversalIntervalRef = useRef(null);
 
   // Modal for traversal type
@@ -192,6 +193,7 @@ const BinarySearchTree = () => {
 
   /** Clear all integers */
   const handleClear = () => {
+    setTraversalType("");
     clearTraversal();
     setValues([]);
     nodeIdCounter = 1; 
@@ -325,6 +327,8 @@ const BinarySearchTree = () => {
       alert("Please insert at least one value to build a BST!");
       return;
     }
+
+    setTraversalType(type);
   
     resetNodeColors();
   
@@ -432,7 +436,7 @@ const BinarySearchTree = () => {
               stroke: '#000',
               boxShadow: '-12px -12px 4px 0px #565656 inset, 12px 12px 4px 0px #FDFDFD inset'
           }}
-          className="pixel-corners relative flex flex-col gap-2 h-80 rounded-xl border-4 border-black p-5">
+          className="pixel-corners relative flex flex-col gap-2 rounded-xl border-4 border-black p-5">
           <div className="top-0 left-0 absolute w-full h-full bg-minecraft-white rounded-xl opacity-80"/>
             <CustomButton
               variant="arrival"
@@ -441,12 +445,12 @@ const BinarySearchTree = () => {
             >
               Choose Traversal
             </CustomButton>
-            <div className="z-10 flex flex-col gap-2">
-              <span className="font-minecraftRegular text-sm text-gray-800">
-                {traversalResult || ""}
-              </span>
-            </div>
           </div>
+
+          
+
+          
+          
 
           {/* Traversal result display */}
         </div>
@@ -535,6 +539,16 @@ const BinarySearchTree = () => {
           </ReactFlow>
         </div>
       </div>
+      {traversalResult && (
+          <div className="bg-gray-700 w-max max-w-[1180px] absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-secondary-light bg-opacity-80 py-2 flex justify-center items-center gap-2 p-3 border rounded">
+            <span className="text-[13px] font-minecraftBold text-white">
+              
+            </span>
+              <span className="text-center text-[13px] font-minecraftBold text-white">
+                {traversalType + ": " + traversalResult || ""}
+              </span>
+          </div>
+        )}
 
     </div>
   );
