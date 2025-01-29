@@ -9,7 +9,7 @@ const AboutPage = () => {
     {
       name: "Jasmin Ivy Bato-bato",
       role: "Cute, Maganda, Mabait",
-      image: "/images/Ivy.png"
+      image: "/images/ivy.skin.png"
     },
     {
         name: "Kristine",
