@@ -33,7 +33,7 @@ const TowerOfHanoi = () => {
 
   useEffect(() => {
     const audio = new Audio('/audio/towers.mp3');
-    audio.volume = 0.1
+    audio.volume = 0.7
     audio.loop = true; 
     audio.play();
 
