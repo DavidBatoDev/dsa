@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCards, Navigation, Pagination } from 'swiper/modules';
@@ -9,20 +9,19 @@ import 'swiper/css/pagination';
 import { FiArrowLeft } from 'react-icons/fi';
 
 const Selection = () => {
+  const navigate = useNavigate();
+  const clickSound = new Audio('/audio/button-click.mp3');
 
-    useEffect(() => {
+  useEffect(() => {
     const audio = new Audio('/audio/homepage-bg.mp3');
-    audio.volume = 0.7
-    audio.loop = true; 
+    audio.volume = 0.1;
+    audio.loop = true;
     audio.play();
 
     return () => {
-        audio.pause();
+      audio.pause();
     };
-    }, []);
-
-
-  const navigate = useNavigate();
+  }, []);
 
   const cards = [
     {
@@ -69,6 +68,14 @@ const Selection = () => {
     }
   ];
 
+  const handleCardClick = (path) => {
+    clickSound.currentTime = 0; // Reset playback in case clicked repeatedly
+    clickSound.play().catch((err) => {
+      console.log('Audio play failed:', err);
+    });
+    navigate(path);
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center 
       bg-[url('/images/selection-bg.png')] bg-cover md:bg-[length:150%] lg:bg-[length:150%] bg-center 
@@ -97,7 +104,7 @@ const Selection = () => {
             {cards.map((card, index) => (
               <SwiperSlide key={index}>
                 <div 
-                  onClick={() => navigate(card.path)}
+                  onClick={() => handleCardClick(card.path)}
                   className={`cursor-pointer w-full rounded border-2 border-black text-white 
                     font-minecraftRegular ${card.color} h-[450px] flex flex-col items-center p-10
                     transition-transform hover:scale-[1.02] relative overflow-hidden`}
