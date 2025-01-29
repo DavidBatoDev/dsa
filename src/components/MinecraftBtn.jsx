@@ -2,9 +2,13 @@
 import React from "react";
 import clsx from "clsx";
 
-const MinecraftBtn = ({ children, onClick, className }) => {
+const MinecraftBtn = ({ children, onClick, className, sound }) => {
   // Preload the audio
-  const clickSound = new Audio("/audio/button-click.mp3");
+  if (sound) {
+    const clickSound = new Audio(sound);
+    clickSound.volume = 0.5;  // Default volume
+  }
+  const clickSound = new Audio('/audio/button-click.mp3');
 
   // Wrap the onClick handler to play the sound first
   const handleClick = (e) => {

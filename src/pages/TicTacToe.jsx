@@ -9,6 +9,7 @@ import MinecraftModal from '../components/MinecraftModal';
 import RedApple from '/svg/red-apple.svg';
 import GoldenApple from '/svg/golden-apple.svg';
 import MinecraftAnimations from '../components/MinecraftAnimations';
+import NavButtons from '../components/NavButtons';
 
 const TicTacToe = () => {
   const [board, setBoard] = useState(Array(9).fill(null));
@@ -22,16 +23,16 @@ const TicTacToe = () => {
     document.title = 'Tic-Tac-Toe';
   }, []);
 
-      useEffect(() => {
-        const audio = new Audio('/audio/tictactoe.mp3');
-        audio.volume = 0.1
-        audio.loop = true; 
-        audio.play();
-    
-        return () => {
-          audio.pause();
-        };
-      }, []);
+  useEffect(() => {
+    const audio = new Audio('/audio/tictactoe.mp3');
+    audio.volume = 0.7
+    audio.loop = true; 
+    audio.play();
+
+    return () => {
+      audio.pause();
+    };
+  }, []);
 
   const checkWinner = (board) => {
     const lines = [
@@ -118,50 +119,39 @@ const TicTacToe = () => {
 
   return (
     <>
-
-        <div
-          className="min-h-screen flex flex-col items-center justify-center 
-            bg-[url('/images/tictactoe-bg.png')] bg-cover md:bg-[length:150%] lg:bg-[length:150%] bg-center 
-            animate-panBackground"
-        >
+      <NavButtons onRestart={resetGame} />
+      <div
+        className="min-h-screen flex flex-col items-center justify-center 
+          bg-[url('/images/tictactoe-bg.png')] bg-cover md:bg-[length:150%] lg:bg-[length:150%] bg-center 
+          animate-panBackground"
+      >
         <div className='absolute top-0 left-0 h-screen w-1/4'>
-            <div className='relative min-h-screen'>
-                <MinecraftAnimations />
-              </div>
+          <div className='relative min-h-screen'>
+            <MinecraftAnimations />
+          </div>
         </div>
 
-          {winner && <Confetti />}
+        {winner && <Confetti />}
 
-          {/* Header */}
-          <div className="flex items-center justify-center space-x-4 mb-4">
-            
-            <MinecraftBtn onClick={resetGame} className="w-10 h-10 rounded shadow-md">
-              <span className="font-minecraftRegular">↻</span>
-            </MinecraftBtn>
-            {/* Restart Button */}
-            <MinecraftBtn
-              onClick={resetGame}
-              className="px-6 py-2 text-white rounded-lg shadow-md transition"
-            >
-              Another Round?
-            </MinecraftBtn>
-            <MinecraftBtn onClick={() => window.location.reload()} className="w-10 h-10 rounded shadow-md">
-              <span className="font-minecraftRegular">✕</span>
-            </MinecraftBtn>
+        {/* Game Board */}
+        <div className="pixel-corners mt-10 bg-minecraft-whiteSecondary border-0 border-black rounded-xl shadow-craftingBoard p-6">
+          <h2 className="text-2xl font-minecraftRegular text-black text-center mb-4">Tic Tac Toe</h2>
+          <div className="grid grid-cols-3 gap-2">
+            {board.map((_, index) => renderSquare(index))}
           </div>
+        </div>
 
-          {/* Game Board */}
-          <div className="pixel-corners bg-minecraft-whiteSecondary border-0 border-black rounded-xl shadow-craftingBoard p-6">
-            <h2 className="text-2xl font-minecraftRegular text-black text-center mb-4">Tic Tac Toe</h2>
-            <div className="grid grid-cols-3 gap-2">
-              {board.map((_, index) => renderSquare(index))}
-            </div>
+        {/* Display Winner */}
+        {winner && (
+          <div className={`absolute flex items-center gap-2 right-5 top-10 text-2xl font-minecraftRegular ${winner === 'X' ? 'text-red-500' : 'text-yellow-500'}`}>
+            <img src={winner === "X" ? '/svg/red-apple.svg' : '/svg/golden-apple.svg'} alt="" className='w-10 h-10' />
+            {winner === 'X' ? 'Red Apple' : 'Golden Apple'} wins!
           </div>
+        )}
 
-
-          {/* Next Move */}
-          <div className="flex items-center mt-6">
-            <InventoryTable
+        {/* Next Move */}
+        <div className="flex items-center mt-6">
+          <InventoryTable
             data={[
               "N",
               "E",
@@ -179,11 +169,11 @@ const TicTacToe = () => {
                 className="w-[30px] h-[30px]"
               />,
             ]}
-              className="bg-minecraft-whiteSecondary p-1 rounded shadow-craftingInset border border-[#8B8B8B]"
-              cellClassName="text-white font-pressStart text-sm w-[54.472px] h-[54.472px]"
-            />
-          </div>
+            className="bg-minecraft-whiteSecondary p-1 rounded shadow-craftingInset border border-[#8B8B8B]"
+            cellClassName="text-white font-pressStart text-sm w-[54.472px] h-[54.472px]"
+          />
         </div>
+      </div>
     </>
   );
 };

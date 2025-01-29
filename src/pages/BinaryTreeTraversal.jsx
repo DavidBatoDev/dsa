@@ -11,6 +11,7 @@ import AnimatedNode from "../components/AnimatedNode";
 // import PatternedEdge from "../components/PatternedEdge";
 import SolidBrownEdges from "../components/SolidBrownEdges";
 import CustomButtom from "../components/CustomButton";
+import NavButtons from "../components/NavButtons";
 
 // Define nodeTypes outside the component to prevent React Flow warning
 const nodeTypes = {
@@ -55,7 +56,7 @@ const BinaryTreeTraversal = () => {
 
     useEffect(() => {
       const audio = new Audio('/audio/binary-tree.mp3');
-      audio.volume = 0.1
+      audio.volume = 0.7
       audio.loop = true; 
       audio.play();
   
@@ -443,6 +444,7 @@ const BinaryTreeTraversal = () => {
         bg-[url('/images/binary-bg.png')] bg-cover md:bg-[length:150%] lg:bg-[length:150%] bg-center 
         animate-panBackground shadow-lg"
     >
+      <NavButtons />
       <div
         style={{
           // backgroundImage: 'url(/images/binary-bg.png)', // Replace with your image path
@@ -450,7 +452,7 @@ const BinaryTreeTraversal = () => {
           backgroundRepeat: 'no-repeat', // Prevents the image from repeating
           backgroundPosition: 'center', // Centers the image
         }}
-        className="w-full h-screen relative px-[50px] pt-[60px] pb-[60px] "
+        className="w-full h-screen relative px-[50px] pt-[69px] pb-[60px] "
       >
         {/* Modal for Levels */}
         {isModalOpen && (

@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Homepage from './pages/Homepage';
+import AboutPage from './pages/AboutPage';
 import TicTacToe from './pages/TicTacToe';
 import Stack from './pages/Stack';
 import Queue from './pages/Queue';
@@ -16,6 +17,7 @@ function App() {
       <Navbar />
         <Routes>
           <Route path="/" element={<Homepage />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path='/selection' element={<Selection />} />
           <Route path="/case1" element={<TicTacToe />} />
           <Route path="/case2" element={<Stack />} />

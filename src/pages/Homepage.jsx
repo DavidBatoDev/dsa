@@ -10,7 +10,7 @@ function Homepage() {
   const audioRef = useRef(null);
 
   // State to track whether audio is playing
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
 
   // Toggle audio playback
   const handleSoundToggle = () => {
@@ -112,7 +112,7 @@ function Homepage() {
         {/* Buttons */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-5 w-80">
           <MinecraftBtn onClick={() => navigate('/selection')} className="w-full">Play</MinecraftBtn>
-          <MinecraftBtn className="w-full">About</MinecraftBtn>
+          <MinecraftBtn onClick={() => navigate('/about')} className="w-full">About</MinecraftBtn>
         </div>
 
         {/* Footer text */}

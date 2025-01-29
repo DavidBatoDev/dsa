@@ -4,6 +4,7 @@ import MinecraftBtn from "../components/MinecraftBtn";
 import CartIcon from '/images/cart-icon.png';
 import Cart from '/images/cart.png';
 import AnimatedClouds from "../components/AnimatedCloud";
+import NavButtons from "../components/NavButtons";
 
 const Queue = () => {
   const [garage, setGarage] = useState([]);
@@ -13,6 +14,7 @@ const Queue = () => {
   const [message, setMessage] = useState(null);
   const [notification, setNotification] = useState(null);
   const [highlightedCar, setHighlightedCar] = useState(null);
+  const [carImages, setCarImages] = useState({});
 
   useEffect(() => {
     document.title = "Queue";
@@ -26,7 +28,7 @@ const Queue = () => {
 
   useEffect(() => {
     const audio = new Audio('/audio/queue.mp3');
-    audio.volume = 0.1
+    audio.volume = 0.7
     audio.loop = true; 
     audio.play();
 
@@ -65,6 +67,13 @@ const Queue = () => {
       showNotification("Garage is full!");
       return;
     }
+    
+    const imageNumber = (Object.keys(carImages).length % 10) + 1;
+    setCarImages(prev => ({
+      ...prev,
+      [plateNumber]: imageNumber
+    }));
+
     setGarage((prev) => [...prev, plateNumber]);
     setPlateNumber("");
     setArrivals((prev) => prev + 1);
@@ -78,9 +87,9 @@ const Queue = () => {
       return;
     }
     const departingCar = garage[0];
-    // Immediately remove the first car
-    setGarage((prev) => prev.slice(1));
-    setDepartures((prev) => prev + 1);
+    setGarage(prev => prev.slice(1));
+    // Don't remove the image mapping - it will be reused if the plate number returns
+    setDepartures(prev => prev + 1);
     showNotification(`Car ${departingCar} departed!`);
   };
   
@@ -93,22 +102,28 @@ const Queue = () => {
       showNotification("Plate number cannot be empty!");
       return;
     }
-
     if (!garage.includes(plateNumber)) {
       showNotification("Car is not in the garage!");
       return;
     }
-
     if (garage.indexOf(plateNumber) !== 0) {
       showNotification("Car is not in front!");
       return;
     }
-    const departingCar = garage[garage.indexOf(plateNumber)];
-    // Immediately remove the first car
-    setGarage((prev) => prev.filter((car) => car !== plateNumber));
-    setDepartures((prev) => prev + 1);
-    showNotification(`Car ${departingCar} departed!`);
+    
+    setGarage(prev => prev.filter(car => car !== plateNumber));
+    // Don't remove the image mapping - it will be reused if the plate number returns
+    setDepartures(prev => prev + 1);
+    showNotification(`Car ${plateNumber} departed!`);
   };
+
+  const clearGarage = () => {
+    setGarage([]);
+    setArrivals(0);
+    setDepartures(0);
+    setCarImages({});
+    showNotification("Garage cleared!");
+  }
 
   return (
     <div
@@ -116,13 +131,12 @@ const Queue = () => {
         bg-[url('/images/green-field-bg.png')] bg-cover md:bg-[length:130%] lg:bg-[length:130%] bg-center 
         relative animate-scroll"
     >
-      <div className="mt-5">
-        Nav
-      </div>
+
+      <NavButtons onRestart={clearGarage} />
 
       <AnimatedClouds/>
   
-      <div className='flex justify-center items-center gap-2'>
+      <div className='flex justify-center items-center gap-2 mt-[69px]'>
         <div className='pixel-corners bg-[#7f7f7f] p-2 rounded-lg border-4 border-black mb-2'>
           <h1 className=" z-30 text-4xl font-bold text-center text-white font-minecraftBold">PUP-CEA Parking Garage</h1>
         </div>
@@ -213,30 +227,11 @@ const Queue = () => {
         <div className="absolute h-20 bottom-[-20px] w-full bg-[url('/images/rail.png')] bg-contain animate-seamlessScroll" />
         <div className="flex gap-2 justify-center items-center w-full z-10 overflow-x-hidden overflow-y-hidden py-4 ">
           <AnimatePresence>
-            {garage.map((car, index) => {
-              // Is this car the front or rear of the queue?
-              const isFront = index === 0;
-              const isRear = index === garage.length - 1;
-
-              // If there's only one car, it's both front and rear
-              // You could add special styling if isFront && isRear
-              // For simplicity, we'll show both labels if there's only 1 car.
+          {garage.map((car) => {
+              const isFront = car === garage[0];
+              const isRear = car === garage[garage.length - 1];
               let borderClass = "";
-              if (isFront && isRear) {
-                // Both front and rear
-                // borderClass = "border-4 border-primary"; 
-                borderClass = "" 
-              } else if (highlightedCar === car) {
-                // borderClass = "border-4 border-delete";
-                borderClass = "";
-              } else if (isFront) {
-                // borderClass = "border-4 border-primary";
-                borderClass = "";
-              } else if (isRear) {
-                // borderClass = "border-4 border-green-500";
-                borderClass = "";
-              }
-
+              
               return (
                 <motion.div
                   key={car}
@@ -248,16 +243,20 @@ const Queue = () => {
                     duration: 0.9,
                     layout: {
                       type: "spring",
-                      stiffness: 20, // 300
+                      stiffness: 20,
                       damping: 20,
                     },
                   }}
                   className={`z-50 relative h-[90px] text-gray-800 rounded-lg flex items-center justify-between flex-col min-w-[100px] ${borderClass}`}
                 >
-                  {/* Car icon and plate number */}
                   <div className="w-28 h-14 absolute bottom-0 mb-[-24px]">
-                    <img src={`/images/cart${index + 1}.png`} className="absolute bottom-0 w-20 h-32" />
-                    <p className="absolute bottom-5 left-[-9px] text-center w-full text-xs font-minecraftRegular font-bold text-dark">{car}</p>
+                    <img 
+                      src={`/images/cart${carImages[car]}.png`} 
+                      className="absolute bottom-0 w-20 h-32" 
+                    />
+                    <p className="absolute bottom-5 left-[-9px] text-center w-full text-xs font-minecraftRegular font-bold text-dark">
+                      {car}
+                    </p>
                   </div>
 
                   {isRear && isFront && (

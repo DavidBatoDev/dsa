@@ -5,6 +5,7 @@ import CustomButton from '../components/CustomButton';
 import CartEmpty from '/svg/cart-empty.svg';
 import InventoryTable from '../components/InventoryTable';
 import CartChest from '/svg/cart-chest.svg';
+import NavButtons from '../components/NavButtons';
 
 const Stack = () => {
   const [garage, setGarage] = useState([]);
@@ -22,7 +23,7 @@ const Stack = () => {
 
     useEffect(() => {
       const audio = new Audio('/audio/stack.mp3');
-      audio.volume = 0.1
+      audio.volume = 0.7
       audio.loop = true; 
       audio.play();
   
@@ -84,6 +85,7 @@ const Stack = () => {
     showNotification(`Car ${plateNumber} arrived!`);
   };
 
+
   const handleDeparture = () => {
     if (!plateNumber.trim()) {
       showNotification('Plate number cannot be empty!');
@@ -101,14 +103,23 @@ const Stack = () => {
     setPlateNumber('');
   };
 
+  const handleClear = () => {
+    setGarage([]);
+    setArrivals(0);
+    setDepartures(0);
+    setPlateNumber('');
+    setNotification('Garage cleared!');
+  }
+
   return (
     <div className="min-h-screen bg-secondary p-8 text-gray-800 relative
             bg-[url('/images/stack-bg.png')] bg-cover md:bg-[length:150%] lg:bg-[length:150%] bg-center 
           animate-panBackground
     ">
-      <div className='flex justify-center items-center gap-2'>
-        <div className='pixel-corners bg-[#7f7f7f] p-2 rounded-lg border-4 border-black mb-2'>
-          <h1 className="text-4xl font-bold text-center text-white font-minecraftBold">PUP-CEA Parking Garage</h1>
+      <NavButtons onRestart={handleClear} />
+      <div className='flex justify-center items-center gap-2 mt-9'>
+        <div className='pixel-corners bg-[#7f7f7f] p-2 rounded-lg border-4 border-black mb-1'>
+          <h1 className="text-3xl font-bold text-center text-white font-minecraftBold">PUP-CEA Parking Garage</h1>
         </div>
       </div>
 
@@ -126,9 +137,9 @@ const Stack = () => {
 
       <div className="flex gap-5">
         {/* Form Section */}
-        <div className='pixel-corners w-[38%] h-[445px] bg-[#D9D9D9] flex justify-center items-center p-6 rounded-lg border-4 border-black shadow'>
-          <div className="w-full h-full bg-minecraft-abyss bg-secondary-light text-black p-6 rounded-lg border border-[#1c1c1c] shadow-craftingBoard">
-            <h2 className="text-2xl font-bold mb-1 font-minecraftRegular text-center text-[#C28340]">Car Arrival/Departure</h2>
+        <div className='pixel-corners w-[38%] h-[420px] bg-[#D9D9D9] flex justify-center items-center p-6 rounded-lg border-4 border-black shadow'>
+          <div className="w-full h-full bg-minecraft-abyss bg-secondary-light text-black p-4 rounded-lg border border-[#1c1c1c] shadow-craftingBoard">
+            <h2 className="text-xl font-bold mb-1 font-minecraftRegular text-center text-[#C28340]">Car Arrival/Departure</h2>
             <form
               onSubmit={(e) => e.preventDefault()}
               className="flex flex-col space-y-2"
@@ -164,8 +175,8 @@ const Stack = () => {
               </CustomButton>
             </form>
             <div className="mt-2">
-              <p className="text-lg font-minecraftRegular text-white text-center">Total Arrivals: {arrivals}</p>
-              <p className="text-lg font-minecraftRegular text-white text-center">Total Departures: {departures}</p>
+              <p className="text-md font-minecraftRegular text-white text-center">Total Arrivals: {arrivals}</p>
+              <p className="text-md font-minecraftRegular text-white text-center">Total Departures: {departures}</p>
             </div>
             {message && (
               <motion.div
@@ -182,7 +193,7 @@ const Stack = () => {
 
         {/* Garage Section */}
         <motion.div 
-          className="pixel-corners w-[62%] h-[455px] flex py-6 px-5 bg-minecraft-whiteSecondary border-black border-4 rounded-lg shadow-whiteinset"
+          className="pixel-corners w-[62%] h-[420px] flex py-6 px-5 bg-minecraft-whiteSecondary border-black border-4 rounded-lg shadow-whiteinset"
           initial={{ x: 100, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ type: "spring", stiffness: 100 }}
@@ -201,7 +212,7 @@ const Stack = () => {
                         ? { 
                             x: 300, 
                             opacity: 0,
-                            rotate: 360,
+                            // rotate: 360,
                             scale: 0.5 
                           }
                         : { 
@@ -220,7 +231,7 @@ const Stack = () => {
                     <InventoryTable
                       data={paddedCarData}
                       className="bg-[#BBB] p-[2px] rounded shadow-md border border-[#8B8B8B]"
-                      cellClassName="text-white font-minecraftRegular text-sm w-[50px] h-[1.80rem]"
+                      cellClassName="text-white font-minecraftRegular text-sm w-[50px] h-[1.60rem]"
                     />
                   </motion.div>
                 );
@@ -296,7 +307,7 @@ const Stack = () => {
                           />
                         ] : ['']}
                         className="bg-[#BBB] p-[2px] rounded shadow-md border border-[#8B8B8B]"
-                        cellClassName="text-white font-pressStart text-sm w-[50px] h-[1.80rem]"
+                        cellClassName="text-white font-pressStart text-sm w-[50px] h-[1.60rem]"
                       />
                     </motion.div>
                   );

@@ -12,6 +12,7 @@ import Button from "../components/Button";
 import DirtNode from "../components/DirtNode";
 import PatternedEdge from "../components/PatternedEdge";
 import CustomButtom  from "../components/CustomButton";
+import NavButtons from "../components/NavButtons";
 
 const nodeTypes = {
   dirt: DirtNode,
@@ -145,7 +146,7 @@ const BinarySearchTree = () => {
 
       useEffect(() => {
         const audio = new Audio('/audio/bst.mp3');
-        audio.volume = 0.1
+        audio.volume = 0.7
         audio.loop = true; 
         audio.play();
     
@@ -372,6 +373,8 @@ const BinarySearchTree = () => {
         bg-[url('/images/bst-bg.png')] bg-cover md:bg-[length:150%] lg:bg-[length:150%] bg-center 
         animate-panBackground"
     >
+
+      <NavButtons />
       <div 
       style={{
         // backgroundImage: 'url(/images/bst-bg.png)',

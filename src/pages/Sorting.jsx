@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { div } from 'framer-motion/client';
 import CustomButton from '../components/CustomButton';
+import NavButtons from '../components/NavButtons';
 
 const SortingVisualizer = () => {
   const [array, setArray] = useState([]);
@@ -54,7 +55,7 @@ const SortingVisualizer = () => {
 
   useEffect(() => {
     const audio = new Audio('/audio/sorting.mp3');
-    audio.volume = 0.1
+    audio.volume = 0.7
     audio.loop = true; 
     audio.play();
 
@@ -321,6 +322,13 @@ const SortingVisualizer = () => {
     generateArray();
   }, []);
 
+  const restartGame = () => {
+    generateArray();
+    // clear the current algorithm
+    setCurrentAlgorithm('');
+
+  };
+
   const sortingAlgorithms = [
     { name: 'Bubble Sort', algorithm: bubbleSort },
     { name: 'Selection Sort', algorithm: selectionSort },
@@ -333,8 +341,9 @@ const SortingVisualizer = () => {
 
   return (
     <div className='text-white flex justify-center bg-[#D9D9D9]'>
+      <NavButtons onRestart={restartGame} />
       <div className='z-10 bg-[url(/images/sorting-bg.png)] fixed h-screen w-screen bg-contain blur-[3px]'/>
-      <div className="z-20 h-screen mx-auto p-4">
+      <div className="z-20 h-screen mx-auto p-4 mt-14">
         <h1 className="text-2xl font-bold font-minecraftRegular mb-4 text-center">Sorting Visualizer</h1>
         
         <div className="flex flex-wrap justify-center items-center space-x-4 mb-4">
