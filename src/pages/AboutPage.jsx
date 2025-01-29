@@ -13,7 +13,7 @@ const AboutPage = () => {
     },
     {
         name: "Kristine Mae Villamarin",
-        role: "Sworn Enemy",
+        role: "Bading, Dyslexic, Lutang",
         image: "/images/kristine.png"
     },
     {
