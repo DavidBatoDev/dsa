@@ -7,23 +7,23 @@ const AboutPage = () => {
     const navigate = useNavigate();
   const teamMembers = [
     {
-      name: "Jasmin Ivy Bato-bato",
-      role: "Cute, Maganda, Mabait",
+      name: "Jasmin Fedilo",
+      role: "Loves everything blue <3",
       image: "/images/ivy.skin.png"
     },
     {
-        name: "Kristine Mae Villamarin",
-        role: "tin",
+        name: "Kristine Villamarin",
+        role: "Foodie, funny, explorer, and self-proclaimed oa",
         image: "/images/kristine.png"
     },
     {
       name: "Clarice David",
-      role: "ShoCla on top",
+      role: "Maganda, kamukha ni Jennie, mabait",
       image: "/images/clarice.png"
     },
     {
-      name: "Diana Mae Jacobe",
-      role: "Masikip",
+      name: "Diana Jacobe",
+      role: "Friendly, kind, and very considerate",
       image: "/images/jacobe.png"
     },
   ];

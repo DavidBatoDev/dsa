@@ -9,7 +9,7 @@ class Node {
     this.left = null;
     this.right = null;
   }
-
+ 
   insertLeft(value) {
     if (!this.left) {
       this.left = new Node(value);
