@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 const Cloud = ({ delay = 0, duration = 25, y = 0 }) => (
   <motion.div
-    initial={{ x: -1000 }}
+    initial={{ x: -500 }}
     animate={{ 
       x: "100vw",
     }}
