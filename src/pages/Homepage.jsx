@@ -104,7 +104,7 @@ function Homepage() {
                 ease: "easeInOut",
               }}
             >
-              Ivy cute
+              est. 2025
             </motion.span>
           </div>
         </div>
