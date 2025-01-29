@@ -118,7 +118,7 @@ function Homepage() {
         {/* Footer text */}
         <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex flex-col items-center">
           <p className="font-minecraftItalic text-lg text-white">
-            BSCPE 2-4 &nbsp;|&nbsp; Group 12
+            BSCPE 2-4 &nbsp;|&nbsp; Group 12 
           </p>
         </div>
       </div>
