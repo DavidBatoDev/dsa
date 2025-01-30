@@ -42,6 +42,8 @@ const BinaryTreeTraversal = () => {
 
   const traversalIntervalRef = useRef(null);
 
+  const swapSound = new Audio('/audio/swap.mp3')
+
   // Refit the view whenever nodes change using ReactFlow's fitView
   useEffect(() => {
     if (reactFlowInstance && nodes.length) {
@@ -371,6 +373,7 @@ const BinaryTreeTraversal = () => {
             };
           } else if (node.id === currentNodeId) {
             // Highlight the current node
+            swapSound.play()
             return {
               ...node,
               style: {
