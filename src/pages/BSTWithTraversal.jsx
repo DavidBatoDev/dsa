@@ -147,7 +147,7 @@ const BinarySearchTree = () => {
 
       useEffect(() => {
         const audio = new Audio('/audio/bst.mp3');
-        audio.volume = 0.7
+        audio.volume = 0.3
         audio.loop = true; 
         audio.play();
     
@@ -417,6 +417,7 @@ const BinarySearchTree = () => {
               <CustomButton
                 variant="departLastCar"
                 type="submit"
+                clickSound="/audio/mine.mp3"
               >
                 Insert
               </CustomButton>

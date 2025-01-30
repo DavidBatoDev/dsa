@@ -56,7 +56,7 @@ const BinaryTreeTraversal = () => {
 
     useEffect(() => {
       const audio = new Audio('/audio/binary-tree.mp3');
-      audio.volume = 0.7
+      audio.volume = 0.3
       audio.loop = true; 
       audio.play();
   

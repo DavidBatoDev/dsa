@@ -16,7 +16,7 @@ function Homepage() {
   const handleSoundToggle = () => {
     if (!audioRef.current) return;
 
-    audioRef.current.volume = 0.7;
+    audioRef.current.volume = 0.3;
 
     if (!isPlaying) {
       // Start playing
