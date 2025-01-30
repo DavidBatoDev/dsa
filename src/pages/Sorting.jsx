@@ -13,6 +13,8 @@ const SortingVisualizer = () => {
   const [animationSpeed, setAnimationSpeed] = useState(300);
   const [currentMin, setCurrentMin] = useState(null);
   const [mergingGroups, setMergingGroups] = useState([]);
+  const [timeoutId, setTimeoutId] = useState(null);  // Store the timeout ID
+  const [shouldSort, setShouldSort] = useState(true);
 
   const generateArray = (length = arrayLength) => {
     const newArray = Array.from({ length }, () => Math.floor(Math.random() * 100) + 1);
@@ -30,7 +32,12 @@ const SortingVisualizer = () => {
     setAnimationSpeed(newSpeed);
   };
 
-  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+  const delay = (ms) => {
+    return new Promise(resolve => {
+      const id = setTimeout(() => resolve(), ms);
+      setTimeoutId(id);  // Store the timeout ID
+    });
+  };
 
   const bubbleSort = async () => {
     setSorting(true);
@@ -39,7 +46,15 @@ const SortingVisualizer = () => {
     const n = arr.length;
 
     for (let i = 0; i < n - 1; i++) {
+      if (!shouldSort) {
+        clearTimeout(timeoutId);  // Cancel any ongoing timeout
+        return;
+      }
       for (let j = 0; j < n - i - 1; j++) {
+        if (!shouldSort) {
+          clearTimeout(timeoutId);  // Cancel any ongoing timeout
+          return;
+        }
         setComparing([j, j + 1]);
         await delay(animationSpeed);
 
@@ -323,9 +338,15 @@ const SortingVisualizer = () => {
   }, []);
 
   const restartGame = () => {
-    generateArray();
-    // clear the current algorithm
-    setCurrentAlgorithm('');
+    setShouldSort(false);  // Stop any ongoing sorting
+    clearTimeout(timeoutId);  // Cancel the current timeout
+    setSorting(false);     // Set sorting to false to stop animations
+    setCurrentAlgorithm(''); // Clear the current algorithm state
+    generateArray();       // Generate a new array
+    setShouldSort(true);   // Allow sorting to continue after restarting
+    setComparing([]);      // Clear the comparing state
+    setMergingGroups([]);  // Clear the merging groups state
+    setCurrentMin(null);   // Clear the current min state
 
   };
 
