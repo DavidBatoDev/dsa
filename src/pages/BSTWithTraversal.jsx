@@ -141,6 +141,8 @@ const BinarySearchTree = () => {
   // Modal for traversal type
   const [isTraversalModalOpen, setIsTraversalModalOpen] = useState(false);
 
+  const swapSound = new Audio('/audio/mine-2.mp3')
+
   useEffect(() => {
     document.title = "BST with Traversal";
   }, []);
@@ -353,6 +355,7 @@ const BinarySearchTree = () => {
       setNodes((prev) => {
         console.log("Updating nodes", prev);
         console.log("Current node", currentNode.id);
+        swapSound.play();
         return prev.map((n) => ({
           ...n,
           style: {
