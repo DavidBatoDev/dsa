@@ -350,6 +350,15 @@ const SortingVisualizer = () => {
 
   };
 
+  const handleSortSelection = (e) => {
+    const selectedAlgorithm = sortingAlgorithms.find(
+      (algo) => algo.name === e.target.value
+    );
+    if (selectedAlgorithm) {
+      selectedAlgorithm.algorithm();
+    }
+  };
+
   const sortingAlgorithms = [
     { name: 'Bubble Sort', algorithm: bubbleSort },
     { name: 'Selection Sort', algorithm: selectionSort },
@@ -423,18 +432,20 @@ const SortingVisualizer = () => {
           </button>
         </div>
 
-        <div className="flex justify-center space-x-2 mb-4 flex-wrap">
-          {sortingAlgorithms.map(({ name, algorithm }) => (
-            <CustomButton
-              key={name}
-              onClick={algorithm}
-              disabled={sorting}
-              className="font-minecraftRegular bg-[#D9D9D9] p-3 text-black hover:bg-slate-300 m-1 rounded opacity-70 hover:opacity-100"
-            >
+        <div className="flex justify-center space-x-2 mb-4">
+        <select
+          onChange={handleSortSelection}
+          disabled={sorting}
+          className="pixel-corners border-2 border-black font-minecraftRegular bg-[#D9D9D9] p-3 text-black hover:bg-slate-300 m-1 rounded opacity-70 hover:opacity-100"
+        >
+          <option value="">Select Sorting Algorithm</option>
+          {sortingAlgorithms.map(({ name }) => (
+            <option key={name} value={name}>
               {name}
-            </CustomButton>
+            </option>
           ))}
-        </div>
+        </select>
+      </div>
 
         <div className="relative h-64 mx-auto" style={{ width: `${array.length * 64}px` }}>
           <AnimatePresence mode="popLayout">
