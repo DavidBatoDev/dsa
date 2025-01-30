@@ -23,7 +23,7 @@ const Stack = () => {
 
     useEffect(() => {
       const audio = new Audio('/audio/stack.mp3');
-      audio.volume = 0.3
+      audio.volume = 0.1
       audio.loop = true; 
       audio.play();
   

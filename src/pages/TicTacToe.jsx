@@ -25,7 +25,7 @@ const TicTacToe = () => {
 
   useEffect(() => {
     const audio = new Audio('/audio/tictactoe.mp3');
-    audio.volume = 0.3
+    audio.volume = 0.1
     audio.loop = true; 
     audio.play();
 

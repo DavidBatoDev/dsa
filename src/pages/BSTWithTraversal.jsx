@@ -149,7 +149,7 @@ const BinarySearchTree = () => {
 
       useEffect(() => {
         const audio = new Audio('/audio/bst.mp3');
-        audio.volume = 0.3
+        audio.volume = 0.1
         audio.loop = true; 
         audio.play();
     
