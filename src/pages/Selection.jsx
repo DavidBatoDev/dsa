@@ -14,7 +14,7 @@ const Selection = () => {
 
   useEffect(() => {
     const audio = new Audio('/audio/homepage-bg.mp3');
-    audio.volume = 0.7;
+    audio.volume = 0.3;
     audio.loop = true;
     audio.play();
 

@@ -28,7 +28,7 @@ const Queue = () => {
 
   useEffect(() => {
     const audio = new Audio('/audio/queue.mp3');
-    audio.volume = 0.7
+    audio.volume = 0.3
     audio.loop = true; 
     audio.play();
 

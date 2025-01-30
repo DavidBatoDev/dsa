@@ -30,7 +30,7 @@ const AboutPage = () => {
 
     useEffect(() => {
     const audio = new Audio('/audio/homepage-bg.mp3');
-    audio.volume = 0.7
+    audio.volume = 0.3
     audio.loop = true; 
     audio.play();
 
@@ -90,7 +90,7 @@ const AboutPage = () => {
     <div className='absolute top-4 left-4'>
         {/* back button */}
         <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate(-1)}
             className="pixel-corners p-2 bg-minecraft-gray text-white  shadow-md hover:bg-primary-light transition"
         >
             <FiArrowLeft size={24} />

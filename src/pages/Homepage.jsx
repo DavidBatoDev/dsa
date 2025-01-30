@@ -16,7 +16,7 @@ function Homepage() {
   const handleSoundToggle = () => {
     if (!audioRef.current) return;
 
-    audioRef.current.volume = 0.7;
+    audioRef.current.volume = 0.3;
 
     if (!isPlaying) {
       // Start playing
@@ -114,6 +114,7 @@ function Homepage() {
           <MinecraftBtn onClick={() => navigate('/selection')} className="w-full">Play</MinecraftBtn>
           <MinecraftBtn onClick={() => navigate('/about')} className="w-full">About</MinecraftBtn>
         </div>
+        
 
         {/* Footer text */}
         <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex flex-col items-center">
